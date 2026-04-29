@@ -3,15 +3,16 @@ import re
 import fitz
 from groq import Groq
 
-# ✅ قراءة API KEY بشكل آمن
+# قراءة API KEY
 api_key = os.environ.get("GROQ_API_KEY")
 
-if not api_key:
-    print("❌ GROQ_API_KEY not found!")
+# Debug مؤقت للتأكد
+print("GROQ_API_KEY =", api_key)
 
-client = Groq(
-    api_key=api_key
-)
+if not api_key:
+    raise ValueError("❌ GROQ_API_KEY not found in environment variables")
+
+client = Groq(api_key=api_key)
 
 gis_docs = []
 dss_docs = []
