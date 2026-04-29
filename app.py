@@ -393,12 +393,41 @@ def chatbot():
 
 @app.route("/ask", methods=["POST"])
 def ask():
-    data = request.get_json()
-    message = data.get("message", "").strip()
-    if not message:
-        return jsonify({"reply": "⚠ Please enter a question."})
-    reply = chatbot_ai.ask_question(message)
-    return jsonify({"reply": reply})
+
+    try:
+
+        data = request.get_json()
+
+        if not data:
+            return jsonify({
+                "reply": "⚠ No data received."
+            })
+
+        message = data.get("message", "").strip()
+
+        if not message:
+            return jsonify({
+                "reply": "⚠ Please enter a question."
+            })
+
+        # استدعاء AI
+        reply = chatbot_ai.ask_question(message)
+
+        if not reply:
+            reply = "⚠ Empty AI response."
+
+        return jsonify({
+            "reply": reply
+        })
+
+    except Exception as e:
+
+        print("❌ /ask ERROR:")
+        print(str(e))
+
+        return jsonify({
+            "reply": "⚠ Connection error."
+        })
 
 @app.route("/quiz", methods=["POST"])
 def quiz():
