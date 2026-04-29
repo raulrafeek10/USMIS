@@ -1,16 +1,17 @@
 import os
 import fitz
 from groq import Groq
+import time
 
 # ================================
-# Lists لتخزين النصوص
+# Storage
 # ================================
 
 gis_docs = []
 dss_docs = []
 
 # ================================
-# تحميل ملفات PDF
+# Load PDFs
 # ================================
 
 def load_pdfs():
@@ -31,6 +32,7 @@ def load_pdfs():
             path = os.path.join(folder, file)
 
             try:
+
                 doc = fitz.open(path)
 
                 text = ""
@@ -38,8 +40,8 @@ def load_pdfs():
                 for page in doc:
                     text += page.get_text()
 
-                # تقليل الحجم (مهم جدًا)
-                text = text[:5000]
+                # مهم جدًا تقليل الحجم
+                text = text[:3000]
 
                 if file.lower().startswith("gis"):
 
@@ -57,11 +59,11 @@ def load_pdfs():
                 print(e)
 
 
-# تحميل الملفات عند بدء السيرفر
+# تحميل عند بدء السيرفر
 load_pdfs()
 
 # ================================
-# إنشاء Client
+# Create Client
 # ================================
 
 def get_client():
@@ -69,14 +71,46 @@ def get_client():
     api_key = os.getenv("GROQ_API_KEY")
 
     if not api_key:
+        raise ValueError("GROQ_API_KEY missing")
 
-        print("❌ GROQ_API_KEY not found!")
+    return Groq(
+        api_key=api_key,
+        timeout=30
+    )
 
-        raise ValueError(
-            "GROQ_API_KEY environment variable is missing"
-        )
+# ================================
+# Retry Wrapper
+# ================================
 
-    return Groq(api_key=api_key)
+def call_ai(messages):
+
+    for attempt in range(3):
+
+        try:
+
+            client = get_client()
+
+            response = client.chat.completions.create(
+
+                model="llama-3.1-8b-instant",
+
+                messages=messages,
+
+                max_tokens=200,
+
+                temperature=0.3
+
+            )
+
+            return response.choices[0].message.content
+
+        except Exception as e:
+
+            print(f"❌ Attempt {attempt+1} failed:", e)
+
+            time.sleep(2)
+
+    return "⚠ AI temporarily unavailable."
 
 
 # ================================
@@ -89,7 +123,6 @@ def ask_question(question):
 
         question_lower = question.lower()
 
-        # اختيار المادة
         if "dss" in question_lower:
 
             if not dss_docs:
@@ -104,39 +137,27 @@ def ask_question(question):
 
             content = gis_docs[0]
 
-        client = get_client()
+        messages = [
 
-        response = client.chat.completions.create(
+            {
+                "role": "system",
+                "content":
+                "Answer briefly using the given content."
+            },
 
-            # موديل خفيف وسريع
-            model="llama-3.1-8b-instant",
+            {
+                "role": "user",
+                "content":
+                f"Content:\n{content}\n\nQuestion:\n{question}"
+            }
 
-            messages=[
+        ]
 
-                {
-                    "role": "system",
-                    "content":
-                    "Answer only from the given content."
-                },
-
-                {
-                    "role": "user",
-                    "content":
-                    f"Content:\n{content}\n\nQuestion: {question}"
-                }
-
-            ],
-
-            max_tokens=300,
-            temperature=0.3
-
-        )
-
-        return response.choices[0].message.content
+        return call_ai(messages)
 
     except Exception as e:
 
-        print("❌ ERROR ask_question:", e)
+        print("❌ ask_question error:", e)
 
         return "⚠ AI connection error."
 
@@ -154,34 +175,23 @@ def generate_quiz():
 
         content = gis_docs[0]
 
-        client = get_client()
+        messages = [
 
-        response = client.chat.completions.create(
+            {
+                "role": "user",
+                "content":
+                f"Create 5 MCQ questions from:\n\n{content}"
+            }
 
-            model="llama-3.1-8b-instant",
+        ]
 
-            messages=[
-
-                {
-                    "role": "user",
-                    "content":
-                    f"Create 5 MCQ questions from this content:\n\n{content}"
-                }
-
-            ],
-
-            max_tokens=400,
-            temperature=0.4
-
-        )
-
-        return response.choices[0].message.content
+        return call_ai(messages)
 
     except Exception as e:
 
-        print("❌ ERROR generate_quiz:", e)
+        print("❌ quiz error:", e)
 
-        return "⚠ Quiz generation error."
+        return "⚠ Quiz error."
 
 
 # ================================
@@ -197,31 +207,20 @@ def summarize():
 
         content = gis_docs[0]
 
-        client = get_client()
+        messages = [
 
-        response = client.chat.completions.create(
+            {
+                "role": "user",
+                "content":
+                f"Summarize briefly:\n\n{content}"
+            }
 
-            model="llama-3.1-8b-instant",
+        ]
 
-            messages=[
-
-                {
-                    "role": "user",
-                    "content":
-                    f"Summarize this content briefly:\n\n{content}"
-                }
-
-            ],
-
-            max_tokens=250,
-            temperature=0.3
-
-        )
-
-        return response.choices[0].message.content
+        return call_ai(messages)
 
     except Exception as e:
 
-        print("❌ ERROR summarize:", e)
+        print("❌ summarize error:", e)
 
         return "⚠ Summary error."
