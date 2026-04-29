@@ -1,0 +1,364 @@
+/* ================= RESET ================= */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#f5f7fb;
+}
+
+/* ================= LAYOUT ================= */
+
+.dashboard{
+display:flex;
+min-height:100vh;
+}
+
+/* ================= SIDEBAR (زي dashboard) ================= */
+
+.sidebar{
+
+width:260px;
+
+background:white;
+
+padding:25px 18px;
+
+box-shadow:2px 0 18px rgba(0,0,0,0.05);
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:space-between;
+
+}
+
+/* Welcome */
+
+.welcome{
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+background:#eef0ff;
+
+padding:12px;
+
+border-radius:14px;
+
+margin-bottom:25px;
+
+}
+
+.welcome i{
+
+font-size:22px;
+
+color:#6a5cff;
+
+}
+
+.welcome h4{
+
+font-size:14px;
+
+font-weight:500;
+
+}
+
+.welcome p{
+
+font-size:12px;
+
+color:#777;
+
+}
+
+/* Menu */
+
+.menu{
+
+list-style:none;
+
+}
+
+.menu-item{
+
+margin-bottom:6px;
+
+border-radius:12px;
+
+}
+
+.menu-item a{
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+padding:11px 12px;
+
+text-decoration:none;
+
+color:#555;
+
+font-size:14px;
+
+border-radius:10px;
+
+transition:0.2s;
+
+}
+
+.menu-item a:hover{
+
+background:#f3f4ff;
+
+}
+
+.menu-item.active a{
+
+background:linear-gradient(
+90deg,
+#6a5cff,
+#8b7cff
+);
+
+color:white;
+
+}
+
+/* Logout */
+
+.logout-item{
+
+margin-top:10px;
+
+}
+
+/* ================= MAIN ================= */
+
+.main{
+
+flex:1;
+
+padding:28px;
+
+}
+
+/* Title */
+
+.page-title{
+
+font-size:22px;
+
+font-weight:600;
+
+margin-bottom:18px;
+
+}
+
+/* ================= CONTROLS ================= */
+
+.top-controls{
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+margin-bottom:20px;
+
+flex-wrap:wrap;
+
+}
+
+.top-controls select,
+.top-controls input{
+
+padding:8px 12px;
+
+border-radius:8px;
+
+border:1px solid #ddd;
+
+font-size:13px;
+
+}
+
+.top-controls input{
+
+flex:1;
+
+min-width:220px;
+
+}
+
+/* Download Button */
+
+#downloadBtn{
+
+background:#6a5cff;
+
+color:white;
+
+border:none;
+
+padding:8px 14px;
+
+border-radius:8px;
+
+cursor:pointer;
+
+font-size:13px;
+
+transition:0.2s;
+
+}
+
+#downloadBtn:hover{
+
+background:#5748e5;
+
+}
+
+/* ================= TABLE ================= */
+
+.table-container{
+
+background:white;
+
+border-radius:16px;
+
+padding:18px;
+
+box-shadow:0 6px 18px rgba(0,0,0,0.05);
+
+overflow-x:auto;
+
+}
+
+/* Table */
+
+table{
+
+width:100%;
+
+border-collapse:collapse;
+
+}
+
+/* Header */
+
+th{
+
+background:#eef0ff;
+
+padding:12px;
+
+font-size:13px;
+
+text-align:left;
+
+font-weight:500;
+
+color:#444;
+
+}
+
+/* Rows */
+
+td{
+
+padding:12px;
+
+border-bottom:1px solid #eee;
+
+font-size:13px;
+
+}
+
+/* Hover */
+
+tbody tr:hover{
+
+background:#fafbff;
+
+}
+
+/* ================= EDIT BUTTON ================= */
+
+.edit-btn{
+
+background:#6a5cff;
+
+color:white;
+
+border:none;
+
+padding:6px 12px;
+
+border-radius:6px;
+
+cursor:pointer;
+
+font-size:12px;
+
+display:flex;
+
+align-items:center;
+
+gap:6px;
+
+transition:0.2s;
+
+}
+
+.edit-btn:hover{
+
+background:#5748e5;
+
+}
+
+/* ================= INPUT EDIT ================= */
+
+.edit-input{
+
+width:60px;
+
+padding:4px;
+
+border-radius:6px;
+
+border:1px solid #ccc;
+
+font-size:12px;
+
+}
+
+/* ================= SCROLL FIX ================= */
+
+.table-container::-webkit-scrollbar{
+
+height:6px;
+
+}
+
+.table-container::-webkit-scrollbar-thumb{
+
+background:#ddd;
+
+border-radius:10px;
+
+}

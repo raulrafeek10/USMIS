@@ -1,0 +1,181 @@
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#f5f7fb;
+padding:40px;
+}
+
+/* Container */
+
+.container{
+
+max-width:1100px;
+margin:auto;
+
+}
+
+/* Title */
+
+.page-title{
+
+font-size:26px;
+font-weight:600;
+
+margin-bottom:25px;
+
+color:#333;
+
+display:flex;
+align-items:center;
+gap:10px;
+
+}
+
+/* Table */
+
+.submissions-table{
+
+width:100%;
+
+border-collapse:collapse;
+
+background:white;
+
+border-radius:16px;
+
+overflow:hidden;
+
+box-shadow:0 10px 22px rgba(0,0,0,0.06);
+
+}
+
+/* Header */
+
+.submissions-table th{
+
+background:linear-gradient(
+90deg,
+#6a5cff,
+#8b7cff
+);
+
+color:white;
+
+padding:16px;
+
+font-size:14px;
+
+text-align:left;
+
+letter-spacing:.5px;
+
+}
+
+/* Rows */
+
+.submissions-table td{
+
+padding:16px;
+
+border-bottom:1px solid #eee;
+
+font-size:14px;
+
+color:#444;
+
+}
+
+/* Alternate rows */
+
+.submissions-table tr:nth-child(even){
+
+background:#fafaff;
+
+}
+
+/* Hover */
+
+.submissions-table tr:hover{
+
+background:#f1f2ff;
+
+transition:.2s;
+
+}
+
+/* Download Button */
+
+.download-btn{
+
+text-decoration:none;
+
+background:linear-gradient(
+90deg,
+#6a5cff,
+#8b7cff
+);
+
+color:white;
+
+padding:9px 18px;
+
+border-radius:12px;
+
+font-size:13px;
+
+font-weight:500;
+
+display:inline-flex;
+
+align-items:center;
+
+gap:8px;
+
+transition:.25s;
+
+box-shadow:0 6px 14px rgba(106,92,255,0.25);
+
+}
+
+/* Hover */
+
+.download-btn:hover{
+
+background:linear-gradient(
+90deg,
+#5a4df0,
+#7a6cff
+);
+
+transform:translateY(-2px);
+
+box-shadow:0 10px 20px rgba(106,92,255,0.35);
+
+}
+
+/* Active click */
+
+.download-btn:active{
+
+transform:scale(.96);
+
+}
+
+/* Empty text */
+
+.empty-text{
+
+text-align:center;
+
+padding:20px;
+
+color:#777;
+
+font-size:14px;
+
+}

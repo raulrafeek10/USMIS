@@ -1,0 +1,268 @@
+
+/* ================= MAIN ================= */
+
+.main{
+
+flex:1;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+padding:40px;
+
+}
+
+
+/* ================= SUCCESS MESSAGE ================= */
+
+.success-message{
+
+position:fixed;
+
+top:20px;
+right:40px;
+
+background:#4CAF50;
+
+color:white;
+
+padding:14px 22px;
+
+border-radius:10px;
+
+font-size:14px;
+
+font-weight:500;
+
+box-shadow:0 8px 20px rgba(0,0,0,0.08);
+
+z-index:999;
+
+/* Animation */
+
+animation: fadeOut 3s forwards;
+
+}
+
+
+/* Fade animation */
+
+@keyframes fadeOut {
+
+0% {
+
+opacity:1;
+
+}
+
+80% {
+
+opacity:1;
+
+}
+
+100% {
+
+opacity:0;
+
+}
+
+}
+
+
+/* ================= FORM ================= */
+
+.assignment-wrapper{
+
+background:white;
+
+width:700px;
+
+padding:40px;
+
+border-radius:20px;
+
+box-shadow:0 12px 28px rgba(0,0,0,0.08);
+
+}
+
+
+/* ================= UPLOAD ================= */
+
+.upload-area{
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+justify-content:center;
+
+gap:8px;
+
+border:2px dashed #d6d6d6;
+
+padding:30px;
+
+border-radius:16px;
+
+cursor:pointer;
+
+margin-bottom:25px;
+
+transition:0.2s;
+
+}
+
+.upload-area:hover{
+
+border-color:#6a5cff;
+
+background:#f6f7ff;
+
+}
+
+.upload-area i{
+
+font-size:30px;
+
+color:#6a5cff;
+
+}
+
+.upload-area h4{
+
+font-weight:500;
+
+}
+
+.upload-area p{
+
+font-size:13px;
+
+color:#888;
+
+}
+
+
+/* ================= FORM GROUP ================= */
+
+.form-group{
+
+display:flex;
+
+flex-direction:column;
+
+margin-bottom:18px;
+
+}
+
+.form-group label{
+
+font-size:14px;
+
+font-weight:500;
+
+margin-bottom:6px;
+
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+
+padding:12px;
+
+border-radius:10px;
+
+border:1px solid #ddd;
+
+font-size:14px;
+
+transition:0.2s;
+
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{
+
+border-color:#6a5cff;
+
+outline:none;
+
+}
+
+
+/* ================= TEXTAREA ================= */
+
+textarea{
+
+resize:none;
+
+height:110px;
+
+}
+
+
+/* ================= DATE ================= */
+
+.date-row{
+
+display:flex;
+
+gap:20px;
+
+}
+
+.date-row .form-group{
+
+flex:1;
+
+}
+
+
+/* ================= SUBMIT BUTTON ================= */
+
+.submit-btn{
+
+margin-top:25px;
+
+background:linear-gradient(
+90deg,
+#3b82f6,
+#2563eb
+);
+
+color:white;
+
+border:none;
+
+padding:14px 28px;
+
+border-radius:12px;
+
+cursor:pointer;
+
+font-size:15px;
+
+display:block;
+
+margin-left:auto;
+margin-right:auto;
+
+transition:0.2s;
+
+}
+
+.submit-btn:hover{
+
+transform:translateY(-2px);
+
+box-shadow:0 6px 18px rgba(59,130,246,0.3);
+
+}

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DSS Course</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='dss.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- TOP SECTION -->
+
+<div class="top-section">
+
+<!-- COURSE CARD -->
+
+<div class="course-card">
+
+<h2>DSS</h2>
+
+<p class="sub">DSS Details</p>
+
+<ul>
+
+<li><i class="fa fa-user"></i> Dr. Lamiaa</li>
+
+<li><i class="fa fa-calendar"></i> Monday</li>
+
+<li><i class="fa fa-clock"></i> 12:00 AM – 2:00 PM</li>
+
+<li><i class="fa fa-map-marker"></i> R106</li>
+
+</ul>
+
+</div>
+
+<!-- UPLOAD -->
+
+<div class="upload-box">
+
+<i class="fa fa-cloud-upload upload-icon"></i>
+
+<h3>Select your file or drag and drop</h3>
+
+<p>png, pdf, jpg accepted</p>
+
+<p class="small">Max File size: 35MB</p>
+
+<button id="browseBtn">Browse</button>
+
+<input type="file" id="fileInput" hidden>
+
+</div>
+
+<!-- NOTICE -->
+
+<div class="notice-box">
+
+<h3>Course notice</h3>
+
+<p>
+New assignment has been uploaded !
+</p>
+
+<a href="#">See more</a>
+
+<hr>
+
+<p>
+Lecture 8 Material uploaded
+</p>
+
+<a href="#">See more</a>
+
+</div>
+
+</div>
+
+<!-- MATERIALS -->
+
+<div class="materials-card">
+
+<div class="materials-header">
+
+<h3>Class material</h3>
+
+<a id="viewAllBtn" class="view-all">
+
+View all →
+
+</a>
+
+</div>
+
+<div class="materials">
+
+<!-- Lecture 1 -->
+
+<div class="material-item">
+
+<div class="left">
+
+<i class="fa fa-file-pdf pdf"></i>
+
+<span>Lecture 1</span>
+
+</div>
+
+<button class="download-btn">
+
+<i class="fa fa-download"></i>
+
+</button>
+
+</div>
+
+<!-- Lecture 2 -->
+
+<div class="material-item">
+
+<div class="left">
+
+<i class="fa fa-file-pdf pdf"></i>
+
+<span>Lecture 2</span>
+
+</div>
+
+<button class="download-btn">
+
+<i class="fa fa-download"></i>
+
+</button>
+
+</div>
+
+<!-- Lecture 3 -->
+
+<div class="material-item">
+
+<div class="left">
+
+<i class="fa fa-file-pdf pdf"></i>
+
+<span>Lecture 3</span>
+
+</div>
+
+<button class="download-btn">
+
+<i class="fa fa-download"></i>
+
+</button>
+
+</div>
+
+<!-- hidden -->
+
+<div class="material-item hidden">
+
+<div class="left">
+
+<i class="fa fa-file-pdf pdf"></i>
+
+<span>Lecture 4</span>
+
+</div>
+
+<button class="download-btn">
+
+<i class="fa fa-download"></i>
+
+</button>
+
+</div>
+
+<div class="material-item hidden">
+
+<div class="left">
+
+<i class="fa fa-file-pdf pdf"></i>
+
+<span>Lecture 5</span>
+
+</div>
+
+<button class="download-btn">
+
+<i class="fa fa-download"></i>
+
+</button>
+
+</div>
+
+<div class="material-item hidden">
+
+<div class="left">
+
+<i class="fa fa-file-pdf pdf"></i>
+
+<span>Lecture 6</span>
+
+</div>
+
+<button class="download-btn">
+
+<i class="fa fa-download"></i>
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="{{ url_for('static', filename='dss.js') }}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>View GPA</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='student_dashboard.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='view_gpa.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <div class="logo"></div>
+        <ul class="menu">
+            <li class="menu-item">
+                <a href="{{ url_for('student_dashboard') }}">
+                    <i class="fa fa-home"></i>
+                    <span class="menu-text">Dashboard</span>
+                </a>
+            </li>
+            <li class="menu-item active">
+                <a href="#">
+                    <i class="fa fa-chart-line"></i>
+                    <span class="menu-text">View GPA</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+        <div class="gpa-container">
+            <div class="gpa-card">
+
+                <h2 class="gpa-title">
+                    <i class="fa fa-graduation-cap"></i>
+                    {{ name }}'s Grades
+                </h2>
+
+                {% if courses %}
+
+                <table class="gpa-table">
+                    <thead>
+                        <tr>
+                            <th>Course Name</th>
+                            <th>Grade</th>
+                            <th>Credits</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for course in courses %}
+                        <tr>
+                            <td>{{ course.course_name }}</td>
+                            <td class="
+                                {% if course.grade == 'A+' %}grade-aplus
+                                {% elif course.grade == 'A' %}grade-a
+                                {% else %}grade-b{% endif %}
+                            ">{{ course.grade }}</td>
+                            <td>{{ course.credits }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <div class="gpa-footer">
+                    <span>Overall GPA</span>
+                    <span class="gpa-value">{{ gpa }}</span>
+                </div>
+
+                {% else %}
+                <p style="text-align:center; color:#888; margin-top:30px;">
+                    ⚠ No grades found for your account.
+                </p>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

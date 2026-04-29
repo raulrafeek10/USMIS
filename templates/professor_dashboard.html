@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Professor Dashboard</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='professor.css') }}">
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+<!-- ================= SIDEBAR ================= -->
+
+<div class="sidebar">
+
+<div>
+
+<div class="welcome">
+
+<i class="fa-solid fa-user"></i>
+
+<div>
+
+<h4>Welcome, {{ session.name }}</h4>
+
+<p id="dateText"></p>
+
+</div>
+
+</div>
+
+<ul class="menu">
+
+<li class="menu-item">
+<a href="#">
+<i class="fa-solid fa-user-graduate"></i>
+Students
+</a>
+</li>
+
+<li class="menu-item active">
+<a href="#">
+<i class="fa-solid fa-chalkboard-user"></i>
+Professors
+</a>
+</li>
+
+<li class="menu-item">
+<a href="#">
+<i class="fa-solid fa-building"></i>
+Department
+</a>
+</li>
+
+<li class="menu-item">
+<a href="#">
+<i class="fa-solid fa-calendar"></i>
+Time Table
+</a>
+</li>
+
+<li class="menu-item">
+<a href="/courses_professor">
+<i class="fa-solid fa-book"></i>
+Courses
+</a>
+</li>
+
+<hr class="divider">
+
+<li class="menu-item">
+<a href="/view_submissions">
+<i class="fa-solid fa-file"></i>
+View Submissions
+</a>
+</li>
+
+<li class="menu-item">
+<a href="#">
+<i class="fa-solid fa-layer-group"></i>
+Class
+</a>
+</li>
+
+<li class="menu-item">
+<a href="#">
+<i class="fa-solid fa-robot"></i>
+Ask Semofi
+</a>
+</li>
+
+<li class="menu-item">
+<a href="#">
+<i class="fa-solid fa-gear"></i>
+Settings
+</a>
+</li>
+
+<li class="menu-item logout-item">
+<a href="/logout">
+<i class="fa-solid fa-right-from-bracket"></i>
+Log out
+</a>
+</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<!-- ================= MAIN ================= -->
+
+<div class="main">
+
+<!-- TOPBAR -->
+
+<div class="topbar">
+
+<input type="text"
+placeholder="Search anything...">
+
+<div class="notification-wrapper"
+onclick="toggleNotifications()">
+
+<i class="fa-solid fa-bell"></i>
+
+<!-- 🔔 Dynamic Badge -->
+
+<span class="notif-badge">
+
+{{ notifications|length }}
+
+</span>
+
+<div id="notifDropdown"
+class="notif-dropdown">
+
+{% if notifications %}
+
+{% for n in notifications %}
+
+<div class="notif-item">
+
+<i class="fa-solid fa-file"></i>
+
+{{ n[1] }}
+
+</div>
+
+{% endfor %}
+
+{% else %}
+
+<div class="notif-item">
+
+No notifications yet
+
+</div>
+
+{% endif %}
+
+</div>
+
+</div>
+
+</div>
+
+<!-- CARDS -->
+
+<div class="cards">
+
+<div class="card">
+<i class="fa-solid fa-users"></i>
+<h2>120</h2>
+<p>Students</p>
+</div>
+
+<div class="card">
+<i class="fa-solid fa-book"></i>
+<h2>3</h2>
+<p>Today's Classes</p>
+</div>
+
+<div class="card">
+<i class="fa-solid fa-file"></i>
+<h2>{{ notifications|length }}</h2>
+<p>Pending Assignments</p>
+</div>
+
+</div>
+
+<!-- ================= GRID ================= -->
+
+<div class="main-grid">
+
+<!-- Quick Actions -->
+
+<div class="box">
+
+<h3>Quick Actions</h3>
+
+<div class="action"
+onclick="window.location.href='/upload_material'">
+
+<i class="fa-solid fa-upload"></i>
+
+<div>
+<h4>Upload Material</h4>
+<p>Add lecture files</p>
+</div>
+
+</div>
+
+<div class="action"
+onclick="window.location.href='/add_assignment'">
+
+<i class="fa-solid fa-plus"></i>
+
+<div>
+
+<h4>Add Assignment</h4>
+
+<p>Create homework</p>
+
+</div>
+
+</div>
+
+<div class="action"
+onclick="window.location.href='/publish_announcement'">
+
+<i class="fa-solid fa-paper-plane"></i>
+
+<div>
+
+<h4>Send Announcement</h4>
+
+<p>Notify students instantly</p>
+
+</div>
+
+</div>
+
+<div class="action"
+onclick="window.location.href='/view_grades'"
+style="cursor:pointer;">
+
+<i class="fa-solid fa-chart-column"></i>
+
+<div>
+
+<h4>View Grades</h4>
+
+<p>Check performance</p>
+
+</div>
+
+</div>
+
+<div class="action"
+onclick="window.location.href='/view_submissions'">
+
+<i class="fa-solid fa-file"></i>
+
+<div>
+
+<h4>View Submissions</h4>
+
+<p>Check student uploads</p>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- Schedule -->
+
+<div class="box schedule-box">
+
+<h3>Today's Schedule</h3>
+
+<table>
+
+<tr>
+<th>Time</th>
+<th>Course</th>
+<th>Room</th>
+</tr>
+
+<tr>
+<td>9:30</td>
+<td>GIS</td>
+<td>102</td>
+</tr>
+
+<tr>
+<td>11:30</td>
+<td>English</td>
+<td>302</td>
+</tr>
+
+<tr>
+<td>1:30</td>
+<td>AI</td>
+<td>103</td>
+</tr>
+
+</table>
+
+</div>
+
+<!-- Announcements -->
+
+<div class="box">
+
+<h3>Announcements</h3>
+
+<p>• Midterm exam next week</p>
+
+<p>• Meeting next Friday</p>
+
+</div>
+
+<!-- Messages -->
+
+<div class="box">
+
+<h3>Messages</h3>
+
+<div class="message">
+
+<b>Marim</b>
+
+<span>15 min ago</span>
+
+</div>
+
+<div class="message">
+
+<b>Ahmed</b>
+
+<span>55 min ago</span>
+
+</div>
+
+</div>
+
+<!-- 🔔 Notifications Section -->
+
+<div class="box notification-box">
+
+<h3>Notifications</h3>
+
+{% if notifications %}
+
+{% for n in notifications %}
+
+<div class="notif">
+
+<i class="fa-solid fa-file"></i>
+
+<span>
+
+{{ n[1] }}
+
+</span>
+
+</div>
+
+{% endfor %}
+
+{% else %}
+
+<p>
+
+No submissions yet
+
+</p>
+
+{% endif %}
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+function toggleNotifications(){
+
+document
+.getElementById("notifDropdown")
+.classList.toggle("show");
+
+}
+
+window.onclick=function(e){
+
+if(!e.target.closest(".notification-wrapper")){
+
+document
+.getElementById("notifDropdown")
+.classList.remove("show");
+
+}
+
+}
+
+let today=new Date();
+
+document.getElementById("dateText")
+.innerText=
+today.toLocaleDateString(
+"en-US",
+{weekday:"long",day:"numeric",month:"long"}
+);
+
+</script>
+
+</body>
+
+</html>

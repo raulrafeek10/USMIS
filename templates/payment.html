@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Payment</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='payment.css') }}">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+<!-- ================= SIDEBAR ================= -->
+
+<div class="sidebar">
+
+<div class="logo">
+
+<img src="{{ url_for('static',
+filename='lshrk-01.max-500x500.png') }}">
+
+</div>
+
+<ul class="menu">
+
+<li class="menu-item">
+<a href="{{ url_for('admin_dashboard') }}">
+<i class="fa-solid fa-chart-line"></i>
+<span>Dashboard</span>
+</a>
+</li>
+
+<li class="menu-item">
+<a href="#">
+<i class="fa-solid fa-user-graduate"></i>
+<span>Students</span>
+</a>
+</li>
+
+<li class="menu-item">
+<a href="#">
+<i class="fa-solid fa-chalkboard-teacher"></i>
+<span>Professors</span>
+</a>
+</li>
+
+<li class="menu-item">
+<a href="#">
+<i class="fa-solid fa-building"></i>
+<span>Departments</span>
+</a>
+</li>
+
+<li class="menu-item">
+<a href="#">
+<i class="fa-solid fa-calendar"></i>
+<span>Time Table</span>
+</a>
+</li>
+
+<li class="menu-item active">
+<a href="{{ url_for('payment') }}">
+<i class="fa-solid fa-credit-card"></i>
+<span>Payment</span>
+</a>
+</li>
+
+<li class="menu-item">
+<a href="#">
+<i class="fa-solid fa-circle-question"></i>
+<span>Help</span>
+</a>
+</li>
+
+<li class="menu-item">
+<a href="#">
+<i class="fa-solid fa-user"></i>
+<span>Account</span>
+</a>
+</li>
+
+<li class="menu-item">
+<a href="#">
+<i class="fa-solid fa-gear"></i>
+<span>Setting</span>
+</a>
+</li>
+
+</ul>
+
+</div>
+
+
+
+<!-- ================= MAIN ================= -->
+
+<div class="main">
+
+<!-- TOP -->
+
+<div class="topbar">
+
+<h2>Payment</h2>
+
+<button class="add-btn">
+
+<i class="fa fa-plus"></i>
+
+Add New Payment
+
+</button>
+
+</div>
+
+
+
+<!-- ================= PAYMENT METHODS ================= -->
+
+<div class="card">
+
+<h3>Payment Methods</h3>
+
+<div class="method">
+
+<img src="https://img.icons8.com/color/48/visa.png">
+
+<div class="method-info">
+
+<p>Visa Card **** 4587</p>
+
+<span>Expiry 05/2026</span>
+
+</div>
+
+<i class="fa fa-ellipsis-v"></i>
+
+</div>
+
+
+
+<div class="method">
+
+<img src="https://img.icons8.com/color/48/mastercard.png">
+
+<div class="method-info">
+
+<p>MasterCard **** 9214</p>
+
+<span>Expiry 05/2027</span>
+
+</div>
+
+<i class="fa fa-ellipsis-v"></i>
+
+</div>
+
+
+
+<div class="method">
+
+<img src="https://img.icons8.com/color/48/bank.png">
+
+<div class="method-info">
+
+<p>Bank Transfer National Bank of Egypt</p>
+
+</div>
+
+<i class="fa fa-ellipsis-v"></i>
+
+</div>
+
+
+
+<div class="method">
+
+<img src="https://img.icons8.com/color/48/wallet.png">
+
+<div class="method-info">
+
+<p>Fawry Pay</p>
+
+</div>
+
+<i class="fa fa-ellipsis-v"></i>
+
+</div>
+
+</div>
+
+
+
+<!-- ================= PAYMENT HISTORY ================= -->
+
+<div class="card">
+
+<div class="table-top">
+
+<h3>Payment History</h3>
+
+<div class="table-actions">
+
+<input
+type="text"
+id="searchInput"
+placeholder="Search ID">
+
+<button class="export-btn">
+
+<i class="fa fa-download"></i>
+
+Export
+
+</button>
+
+</div>
+
+</div>
+
+
+
+<table id="paymentTable">
+
+<thead>
+
+<tr>
+
+<th>ID</th>
+<th>Payment Method</th>
+<th>Amount</th>
+<th>Status</th>
+<th>Paid on</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+<td>ID025</td>
+<td>Visa ****4587</td>
+<td>500</td>
+<td><span class="status done">Done</span></td>
+<td>12 Mar 2026</td>
+</tr>
+
+<tr>
+<td>ID045</td>
+<td>MasterCard ****9214</td>
+<td>500</td>
+<td><span class="status pending">Pending Semester</span></td>
+<td>15 Mar 2026</td>
+</tr>
+
+<tr>
+<td>ID070</td>
+<td>Bank Transfer</td>
+<td>500</td>
+<td><span class="status failed">Failed</span></td>
+<td>18 Mar 2026</td>
+</tr>
+
+<tr>
+<td>ID081</td>
+<td>Fawry Pay</td>
+<td>750</td>
+<td><span class="status done">Done</span></td>
+<td>21 Mar 2026</td>
+</tr>
+
+<tr>
+<td>ID092</td>
+<td>Visa ****4587</td>
+<td>600</td>
+<td><span class="status pending">Pending Semester</span></td>
+<td>25 Mar 2026</td>
+</tr>
+
+<tr>
+<td>ID104</td>
+<td>MasterCard ****9214</td>
+<td>500</td>
+<td><span class="status done">Done</span></td>
+<td>28 Mar 2026</td>
+</tr>
+
+<tr>
+<td>ID115</td>
+<td>Bank Transfer</td>
+<td>900</td>
+<td><span class="status failed">Failed</span></td>
+<td>30 Mar 2026</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="{{ url_for('static', filename='payment.js') }}"></script>
+
+</body>
+</html>

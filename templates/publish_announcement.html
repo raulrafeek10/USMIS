@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Publish Announcement</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='publish_announcement.css') }}">
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+<!-- ================= SIDEBAR ================= -->
+
+<div class="sidebar">
+
+<div>
+
+<!-- Welcome -->
+
+<div class="welcome">
+
+<i class="fa-solid fa-user"></i>
+
+<div>
+
+<h4>Welcome, Dr. Nouran</h4>
+
+<p id="dateText"></p>
+
+</div>
+
+</div>
+
+<!-- Menu -->
+
+<ul class="menu">
+
+<li class="menu-item">
+<a href="/professor_dashboard">
+<i class="fa-solid fa-chart-column"></i>
+Dashboard
+</a>
+</li>
+
+<li class="menu-item">
+<a href="/courses_professor">
+<i class="fa-solid fa-book"></i>
+Courses
+</a>
+</li>
+
+<li class="menu-item active">
+<a href="/publish_announcement">
+<i class="fa-solid fa-bullhorn"></i>
+Publish Announcement
+</a>
+</li>
+
+<li class="menu-item logout-item">
+<a href="#">
+<i class="fa-solid fa-right-from-bracket"></i>
+Log out
+</a>
+</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<!-- ================= MAIN ================= -->
+
+<div class="main">
+
+<!-- Success Message -->
+
+<div id="successMsg"
+class="success-message">
+
+<i class="fa-solid fa-check"></i>
+Announcement Published Successfully
+
+</div>
+
+<!-- CENTER CONTAINER -->
+
+<div class="center-wrapper">
+
+<div class="form-box">
+
+<!-- ICON -->
+
+<div class="icon-box">
+
+<div class="icon-circle">
+
+<i class="fa-solid fa-paper-plane"></i>
+
+</div>
+
+<h2>Publish Announcement</h2>
+
+<p class="subtitle">
+Send important updates to students
+</p>
+
+</div>
+
+<form id="announcementForm">
+
+<!-- Course -->
+
+<div class="form-group">
+
+<label>Course</label>
+
+<select required>
+
+<option>English</option>
+<option>GIS</option>
+<option>AI</option>
+<option>DSS</option>
+
+</select>
+
+</div>
+
+<!-- Title -->
+
+<div class="form-group">
+
+<label>Announcement Title</label>
+
+<input
+type="text"
+placeholder="Lecture Update & Assignment Reminder"
+required>
+
+</div>
+
+<!-- Summary -->
+
+<div class="form-group">
+
+<label>Summary</label>
+
+<textarea
+placeholder="Write announcement details..."
+required>
+
+</textarea>
+
+</div>
+
+<button
+type="submit"
+class="publish-btn">
+
+Publish Announcement
+
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+document
+.getElementById("announcementForm")
+.addEventListener("submit",function(e){
+
+e.preventDefault();
+
+let msg =
+document.getElementById("successMsg");
+
+msg.style.display="flex";
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+setTimeout(()=>{
+
+msg.style.display="none";
+
+},3000);
+
+});
+
+/* Date */
+
+let today=new Date();
+
+document.getElementById("dateText")
+.innerText=
+today.toLocaleDateString(
+"en-US",
+{weekday:"long",day:"numeric",month:"long"}
+);
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,435 @@
+/* ================= RESET ================= */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#f5f7fb;
+}
+
+/* ================= LAYOUT ================= */
+
+.dashboard{
+display:flex;
+min-height:100vh;
+}
+
+/* ================= SIDEBAR ================= */
+
+.sidebar{
+
+width:260px;
+
+background:white;
+
+padding:26px 22px;
+
+box-shadow:2px 0 18px rgba(0,0,0,0.05);
+
+display:flex;
+
+flex-direction:column;
+
+}
+
+/* Welcome */
+
+.welcome{
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+background:#eef0ff;
+
+padding:14px;
+
+border-radius:14px;
+
+margin-bottom:28px;
+
+}
+
+.welcome i{
+
+font-size:22px;
+
+color:#6a5cff;
+
+}
+
+.welcome h4{
+
+font-size:14px;
+
+font-weight:600;
+
+}
+
+.welcome p{
+
+font-size:12px;
+
+color:#777;
+
+}
+
+/* ================= MENU ================= */
+
+.menu{
+
+list-style:none;
+
+padding:0;
+
+}
+
+.menu-item{
+
+margin-bottom:6px;
+
+}
+
+/* أهم جزء لضبط الأيقونات */
+
+.menu-item a{
+
+display:flex;
+
+align-items:center;
+
+justify-content:flex-start;
+
+gap:12px;
+
+padding:12px 16px;
+
+text-decoration:none;
+
+color:#555;
+
+border-radius:12px;
+
+font-size:14px;
+
+transition:0.25s;
+
+}
+
+/* توحيد مكان الأيقونات */
+
+.menu-item i{
+
+width:24px;        /* أهم سطر */
+
+text-align:center;
+
+font-size:15px;
+
+}
+
+/* Hover */
+
+.menu-item a:hover{
+
+background:#f3f4ff;
+
+transform:translateX(3px);
+
+}
+
+/* Active */
+
+.menu-item.active a{
+
+background:linear-gradient(
+90deg,
+#6a5cff,
+#8b7cff
+);
+
+color:white;
+
+font-weight:500;
+
+box-shadow:0 6px 14px rgba(106,92,255,0.25);
+
+}
+
+/* Logout */
+
+.logout-item{
+
+margin-top:18px;
+
+}
+
+/* ================= MAIN ================= */
+
+.main{
+
+flex:1;
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+justify-content:flex-start;
+
+padding-top:70px;
+
+padding-left:40px;
+
+padding-right:40px;
+
+}
+
+/* ================= SUCCESS ================= */
+
+.success-message{
+
+display:none;
+
+align-items:center;
+
+gap:10px;
+
+background:#d1fae5;
+
+color:#065f46;
+
+padding:14px 22px;
+
+border-radius:12px;
+
+font-weight:500;
+
+margin-bottom:25px;
+
+box-shadow:0 6px 16px rgba(0,0,0,0.08);
+
+}
+
+/* ================= CENTER ================= */
+
+.center-wrapper{
+
+width:100%;
+
+display:flex;
+
+justify-content:center;
+
+}
+
+/* ================= FORM ================= */
+
+.form-box{
+
+background:white;
+
+padding:45px 55px;
+
+border-radius:24px;
+
+width:900px;
+
+max-width:92%;
+
+margin:auto;
+
+box-shadow:0 20px 40px rgba(0,0,0,0.06);
+
+}
+
+/* ================= ICON ================= */
+
+.icon-box{
+
+text-align:center;
+
+margin-bottom:30px;
+
+}
+
+.icon-circle{
+
+width:80px;
+
+height:80px;
+
+background:linear-gradient(
+135deg,
+#6a5cff,
+#4f46e5
+);
+
+border-radius:50%;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+margin:0 auto 14px;
+
+box-shadow:0 10px 20px rgba(79,70,229,0.25);
+
+}
+
+.icon-circle i{
+
+color:white;
+
+font-size:30px;
+
+}
+
+/* Title */
+
+.icon-box h2{
+
+text-align:center;
+
+font-size:24px;
+
+font-weight:600;
+
+margin-bottom:6px;
+
+}
+
+/* Subtitle */
+
+.subtitle{
+
+font-size:13px;
+
+color:#777;
+
+text-align:center;
+
+}
+
+/* ================= FORM ================= */
+
+.form-group{
+
+display:flex;
+
+flex-direction:column;
+
+margin-bottom:20px;
+
+}
+
+.form-group label{
+
+margin-bottom:6px;
+
+font-size:14px;
+
+font-weight:500;
+
+}
+
+/* Inputs */
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+
+padding:14px;
+
+border-radius:12px;
+
+border:1px solid #ddd;
+
+font-size:14px;
+
+background:#fafafa;
+
+transition:0.2s;
+
+}
+
+/* Focus */
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus{
+
+border-color:#6a5cff;
+
+background:white;
+
+outline:none;
+
+box-shadow:0 0 0 2px rgba(106,92,255,0.1);
+
+}
+
+textarea{
+
+resize:none;
+
+height:140px;
+
+}
+
+/* ================= BUTTON ================= */
+
+.publish-btn{
+
+margin-top:14px;
+
+background:linear-gradient(
+90deg,
+#3b82f6,
+#2563eb
+);
+
+color:white;
+
+border:none;
+
+padding:15px;
+
+border-radius:14px;
+
+cursor:pointer;
+
+font-size:15px;
+
+font-weight:500;
+
+width:240px;
+
+align-self:center;
+
+transition:0.25s;
+
+}
+
+.publish-btn:hover{
+
+transform:translateY(-2px);
+
+box-shadow:0 10px 22px rgba(0,0,0,0.12);
+
+}
+
+.publish-btn:active{
+
+transform:scale(0.98);
+
+}

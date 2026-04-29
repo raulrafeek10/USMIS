@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Material</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='upload_material.css') }}">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="dashboard">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div>
+      <div class="welcome">
+        <i class="fa-solid fa-user"></i>
+        <div>
+          <h4>Welcome, Dr. Nouran</h4>
+          <p id="dateText"></p>
+        </div>
+      </div>
+      <ul class="menu">
+        <li class="menu-item"><a href="/professor_dashboard"><i class="fa-solid fa-chart-column"></i> Dashboard</a></li>
+        <li class="menu-item active"><a href="/upload_material"><i class="fa-solid fa-upload"></i> Upload Material</a></li>
+        <li class="menu-item"><a href="/courses_professor"><i class="fa-solid fa-book"></i> Courses</a></li>
+        <li class="menu-item"><a href="/publish_announcement"><i class="fa-solid fa-bullhorn"></i> Publish Announcement</a></li>
+        <li class="menu-item logout-item"><a href="/logout"><i class="fa-solid fa-right-from-bracket"></i> Log out</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="upload-wrapper">
+
+      <h2 class="page-title">Upload Course Material</h2>
+
+      <!-- Flash Messages -->
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="flash {{ category }}">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <!-- Upload Form -->
+      <form method="POST" enctype="multipart/form-data" id="uploadForm">
+
+        <!-- Course + Title -->
+        <div class="form-row">
+
+          <div class="form-group">
+            <label for="course_id">
+              <i class="fa-solid fa-book"></i> Select Course
+            </label>
+            <select name="course_id" id="course_id" required>
+              <option value="" disabled selected>-- Choose a course --</option>
+            {% for course in courses %}
+<option value="{{ course[0] }}">
+    {{ course[1] }}
+</option>
+{% endfor %}
+
+          <div class="form-group">
+            <label for="title">
+              <i class="fa-solid fa-tag"></i> Material Title
+            </label>
+            <input
+              type="text"
+              name="title"
+              id="title"
+              placeholder="e.g. Chapter 3 - Lecture Notes"
+              required>
+          </div>
+
+        </div>
+
+        <!-- Drop Zone -->
+        <div id="dropArea" class="upload-box">
+          <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+          <h3>Drag & Drop your file here</h3>
+          <p>PDF only • Max 35MB</p>
+          <input type="file" id="fileInput" name="file" accept=".pdf" hidden>
+          <button type="button" class="browse-btn" onclick="document.getElementById('fileInput').click()">
+            Browse File
+          </button>
+        </div>
+
+        <!-- File Preview (hidden by default) -->
+        <div id="filePreview" class="file-preview" style="display:none;">
+          <div class="file-left">
+            <i class="fa-solid fa-file-pdf file-icon"></i>
+            <div>
+              <span id="fileName">file.pdf</span>
+              <div class="progress-bar"><div id="progressFill"></div></div>
+            </div>
+          </div>
+          <div class="file-actions">
+            <button type="button" id="cancelBtn" class="cancel-btn" onclick="clearFile()">Cancel</button>
+            <button type="submit" id="uploadBtn" class="download-btn">
+              <i class="fa-solid fa-upload"></i> Upload
+            </button>
+          </div>
+        </div>
+
+      </form>
+
+      {% if lectures %}
+      <div class="materials-section">
+        <h3 class="section-subtitle">
+          <i class="fa-solid fa-folder-open"></i> Uploaded Materials
+        </h3>
+        <table class="materials-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Title</th>
+              <th>File</th>
+              <th>Course</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for lec in lectures %}
+            <tr>
+              <td>{{ loop.index }}</td>
+              <td>{{ lec.title }}</td>
+              <td>
+                <a href="/download/{{ lec.filename }}" class="download-link">
+                  <i class="fa-solid fa-file-pdf"></i> {{ lec.filename }}
+                </a>
+              </td>
+              <td><span class="course-badge">{{ lec.course_name }}</span></td>
+              <td>
+                <a href="/delete_material/{{ lec.id }}" class="delete-btn"
+                   onclick="return confirm('Delete this material?')">
+                  <i class="fa-solid fa-trash"></i>
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='upload_material.js') }}"></script>
+</body>
+</html>

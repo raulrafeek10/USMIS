@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Admin Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<link rel="stylesheet"
+href="{{ url_for('static',
+filename='admin_dashboard.css') }}">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+<!-- ================= SIDEBAR ================= -->
+
+<div class="sidebar">
+
+<div class="logo">
+
+<img src="{{ url_for('static',
+filename='lshrk-01.max-500x500.png') }}">
+
+</div>
+
+<ul class="menu">
+
+<li class="menu-item active">
+<a href="{{ url_for('admin_dashboard') }}">
+<i class="fa-solid fa-chart-line"></i>
+<span>Dashboard</span>
+</a>
+</li>
+
+<li class="menu-item">
+<a href="#">
+<i class="fa-solid fa-user-graduate"></i>
+<span>Students</span>
+</a>
+</li>
+
+<li class="menu-item">
+<a href="#">
+<i class="fa-solid fa-chalkboard-teacher"></i>
+<span>Professors</span>
+</a>
+</li>
+
+<li class="menu-item">
+<a href="#">
+<i class="fa-solid fa-building"></i>
+<span>Departments</span>
+</a>
+</li>
+
+<li class="menu-item">
+<a href="#">
+<i class="fa-solid fa-calendar"></i>
+<span>Time Table</span>
+</a>
+</li>
+
+<li class="menu-item">
+<a href="{{ url_for('payment') }}">
+<i class="fa-solid fa-credit-card"></i>
+<span>Payment</span>
+</a>
+</li>
+
+<li class="menu-item">
+<a href="{{ url_for('help_page') }}">
+<i class="fa-solid fa-circle-question"></i>
+<span>Help</span>
+</a>
+</li>
+
+<li class="menu-item">
+<a href="#">
+<i class="fa-solid fa-user"></i>
+<span>Account</span>
+</a>
+</li>
+
+<li class="menu-item">
+<a href="{{ url_for('settings') }}">
+<i class="fa-solid fa-gear"></i>
+<span>Setting</span>
+</a>
+</li>
+
+</ul>
+
+</div>
+
+<!-- ================= MAIN ================= -->
+
+<div class="main">
+
+<div class="topbar">
+
+<div class="admin-box">
+
+<img src="{{ url_for('static',
+filename='staff.png') }}">
+
+<span>Admin</span>
+
+</div>
+
+</div>
+
+<!-- ================= STATS ================= -->
+
+<div class="stats">
+
+<div class="card">
+
+<div class="icon">
+<i class="fa-solid fa-users"></i>
+</div>
+
+<p>Total Students</p>
+
+<h2>5100</h2>
+
+</div>
+
+<div class="card">
+
+<div class="icon">
+<i class="fa-solid fa-book"></i>
+</div>
+
+<p>Lectures</p>
+
+<h2>2000</h2>
+
+</div>
+
+<div class="card">
+
+<div class="icon">
+<i class="fa-solid fa-laptop"></i>
+</div>
+
+<p>Total Courses</p>
+
+<h2>170</h2>
+
+</div>
+
+</div>
+
+<!-- ================= CHARTS ================= -->
+
+<div class="charts">
+
+<div class="chart">
+
+<h3>Academic Performance</h3>
+
+<canvas id="performanceChart"></canvas>
+
+</div>
+
+<div class="chart">
+
+<h3>Student Attendance</h3>
+
+<canvas id="attendanceChart"></canvas>
+
+</div>
+
+</div>
+
+<!-- ================= BOTTOM ================= -->
+
+<div class="bottom">
+
+<div class="messages">
+
+<div class="card-title">
+
+<h3>Messages</h3>
+
+<span id="viewMessages">
+View all →
+</span>
+
+</div>
+
+<div class="msg-item">
+
+<b>Omar Hassan</b>
+
+<p>
+Hi, I've uploaded the final project file.
+</p>
+
+</div>
+
+<div id="moreMessages">
+
+<div class="msg-item">
+
+<b>Mariam Nabil</b>
+
+<p>
+Reminder: Department meeting tomorrow.
+</p>
+
+</div>
+
+<div class="msg-item">
+
+<b>Ahmed Mahmoud</b>
+
+<p>
+Trouble accessing materials.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="students">
+
+<h3>Total Students</h3>
+
+<div class="circle">
+
+<span>5100</span>
+
+</div>
+
+<div class="year-data">
+
+<p>
+<span class="dot blue"></span>
+2025 : 2400 students
+</p>
+
+<p>
+<span class="dot green"></span>
+2026 : 2700 students
+</p>
+
+</div>
+
+</div>
+
+<div class="activity">
+
+<div class="card-title">
+
+<h3>Student Activity</h3>
+
+<span id="viewActivity">
+View all →
+</span>
+
+</div>
+
+<p>
+Enactus Team presented sustainability project.
+</p>
+
+<div id="moreActivity">
+
+<p>
+University Rally held.
+</p>
+
+<p>
+Tech Hackathon completed.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= CHART JS ================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+/* ========= LINE CHART ========= */
+
+const ctx1 =
+document.getElementById("performanceChart");
+
+new Chart(ctx1, {
+
+type:"line",
+
+data:{
+
+labels:
+["Jan","Feb","Mar","Apr","May","Jun"],
+
+datasets:[{
+
+label:"Performance",
+
+data:
+[60,70,55,75,65,80],
+
+borderColor:"#4A6CF7",
+
+backgroundColor:
+"rgba(74,108,247,0.1)",
+
+fill:true,
+
+tension:0.4
+
+}]
+
+},
+
+options:{
+responsive:true,
+maintainAspectRatio:false
+}
+
+});
+
+
+/* ========= BAR CHART ========= */
+
+const ctx2 =
+document.getElementById("attendanceChart");
+
+new Chart(ctx2, {
+
+type:"bar",
+
+data:{
+
+labels:
+["Jan","Feb","Mar","Apr","May","Jun"],
+
+datasets:[{
+
+label:"Attendance",
+
+data:
+[80,60,70,65,75,85],
+
+backgroundColor:"#4A6CF7"
+
+}]
+
+},
+
+options:{
+responsive:true,
+maintainAspectRatio:false
+}
+
+});
+
+
+/* ========= TOGGLE ========= */
+
+document.getElementById("moreMessages").style.display="none";
+
+document.getElementById("viewMessages").onclick=function(){
+
+let box=document.getElementById("moreMessages");
+
+if(box.style.display==="none"){
+
+box.style.display="block";
+this.innerText="Show less";
+
+}
+else{
+
+box.style.display="none";
+this.innerText="View all →";
+
+}
+
+};
+
+document.getElementById("moreActivity").style.display="none";
+
+document.getElementById("viewActivity").onclick=function(){
+
+let box=document.getElementById("moreActivity");
+
+if(box.style.display==="none"){
+
+box.style.display="block";
+this.innerText="Show less";
+
+}
+else{
+
+box.style.display="none";
+this.innerText="View all →";
+
+}
+
+};
+
+</script>
+
+</body>
+</html>

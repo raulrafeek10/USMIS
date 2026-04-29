@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Today's Classes</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<link rel="stylesheet"
+href="{{ url_for('static',
+filename='student_dashboard.css') }}">
+
+<link rel="stylesheet"
+href="{{ url_for('static',
+filename='today_classes.css') }}">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+<!-- ================= SIDEBAR ================= -->
+
+<div class="sidebar">
+
+<div class="logo">
+
+<img src="{{ url_for('static',
+filename='lshrk-01.max-500x500.png') }}">
+
+</div>
+
+<div class="welcome">
+
+<i class="fa-solid fa-user-circle"></i>
+
+<div class="welcome-text">
+
+<h4>Welcome, Ahmed!</h4>
+
+<p>Sunday, 15 March</p>
+
+</div>
+
+</div>
+
+<ul class="menu">
+
+<!-- Student -->
+
+<li class="menu-item">
+
+<a href="/student_dashboard">
+
+<i class="fa-solid fa-user"></i>
+
+<span>Student</span>
+
+</a>
+
+</li>
+
+<!-- Professor -->
+
+<li class="menu-item">
+
+<a href="#">
+
+<i class="fa-solid fa-chalkboard-user"></i>
+
+<span>Professor</span>
+
+</a>
+
+</li>
+
+<!-- Department -->
+
+<li class="menu-item">
+
+<a href="#">
+
+<i class="fa-solid fa-building"></i>
+
+<span>Department</span>
+
+</a>
+
+</li>
+
+<!-- Time Table -->
+
+<li class="menu-item">
+
+<a href="/schedule">
+
+<i class="fa-solid fa-calendar-days"></i>
+
+<span>Time Table</span>
+
+</a>
+
+</li>
+
+<!-- Courses -->
+
+<li class="menu-item">
+
+<a href="/courses">
+
+<i class="fa-solid fa-book"></i>
+
+<span>Courses</span>
+
+</a>
+
+</li>
+
+<hr>
+
+<!-- Classes (ACTIVE) -->
+
+<li class="menu-item active">
+
+<a href="/today_classes">
+
+<i class="fa-solid fa-school"></i>
+
+<span>Classes</span>
+
+</a>
+
+</li>
+
+<!-- Ask Semofi -->
+
+<li class="menu-item">
+
+<a href="#">
+
+<i class="fa-solid fa-comments"></i>
+
+<span>Ask Semofi</span>
+
+</a>
+
+</li>
+
+<!-- Settings -->
+
+<li class="menu-item">
+
+<a href="#">
+
+<i class="fa-solid fa-gear"></i>
+
+<span>Settings</span>
+
+</a>
+
+</li>
+
+<hr>
+
+<!-- Logout -->
+
+<li class="menu-item logout-item">
+
+<a href="#">
+
+<i class="fa-solid fa-right-from-bracket"></i>
+
+<span>Log out</span>
+
+</a>
+
+</li>
+
+</ul>
+
+</div>
+
+<!-- ================= MAIN ================= -->
+
+<div class="main">
+
+<!-- TOPBAR -->
+
+<div class="topbar">
+
+<input
+type="text"
+id="searchInput"
+placeholder="Search subject...">
+
+<div class="profile">
+
+<img src="{{ url_for('static',
+filename='student.png') }}">
+
+<span>Ahmed Ashraf</span>
+
+</div>
+
+</div>
+
+<!-- TITLE -->
+
+<h2 class="page-title">
+
+Today's Classes
+
+</h2>
+
+<!-- DATE -->
+
+<div class="date-box">
+
+<i class="fa-solid fa-calendar"></i>
+
+<span>8-4-2026</span>
+
+</div>
+
+<p class="full-date">
+08 Apr 2026, Monday
+</p>
+
+<div class="content-grid">
+
+<!-- ================= TIMELINE ================= -->
+
+<div class="timeline">
+
+<div class="line"></div>
+
+<div class="time-item">
+<span class="date">08/04</span>
+<div class="class blue">
+GIS Lecture
+<span>07:00 - 08:00</span>
+</div>
+</div>
+
+<div class="time-item">
+<span class="date">08/04</span>
+<div class="class red">
+GIS Section
+<span>08:00 - 09:00</span>
+</div>
+</div>
+
+<div class="time-item">
+<span class="date">08/04</span>
+<div class="class orange">
+IT Project Lecture
+<span>10:00 - 11:00</span>
+</div>
+</div>
+
+<div class="time-item">
+<span class="date">08/04</span>
+<div class="class green">
+English Lecture
+<span>11:00 - 12:00</span>
+</div>
+</div>
+
+<div class="time-item">
+<span class="date">08/04</span>
+<div class="class yellow">
+Data Mining Section
+<span>12:00 - 01:00</span>
+</div>
+</div>
+
+<div class="time-item">
+<span class="date">08/04</span>
+<div class="class cyan">
+DSS Lecture
+<span>01:00 - 02:00</span>
+</div>
+</div>
+
+</div>
+
+<!-- ================= ASSIGNMENTS ================= -->
+
+<div class="assignments">
+
+<div class="assign-header">
+
+<h3>Assignments</h3>
+
+<a href="#"
+id="viewAllBtn"
+class="view-btn">
+
+View all
+
+<i class="fa-solid fa-arrow-right"></i>
+
+</a>
+
+</div>
+
+<div class="assign-grid">
+
+<div class="assign-card orange-border">
+<strong>GIS Lecture</strong>
+<p>Assignment: Design Project 1</p>
+<span>Due Date: February 10, 2024</span>
+</div>
+
+<div class="assign-card">
+<strong>GIS Section</strong>
+<p>Assignment: Photojournalism Project</p>
+<span>Due Date: April 8, 2024</span>
+</div>
+
+<div class="assign-card green-border">
+<strong>Data Mining Lecture</strong>
+<p>Assignment: Responsive Website Project</p>
+<span>Due Date: March 5, 2024</span>
+</div>
+
+<div class="assign-card orange-border">
+<strong>DSS Lecture</strong>
+<p>Assignment: Character Animation Project</p>
+<span>Due Date: May 20, 2024</span>
+</div>
+
+<div class="assign-card purple-border">
+<strong>Mobile Lecture</strong>
+<p>Assignment: Usability Testing</p>
+<span>Due Date: April 15, 2024</span>
+</div>
+
+<div class="assign-card">
+<strong>Data Mining Section</strong>
+<p>Assignment: Responsive Website</p>
+<span>Due Date: March 5, 2024</span>
+</div>
+
+<!-- EXTRA -->
+
+<div class="assign-card extra hidden red-border">
+
+<strong>English 8</strong>
+
+<p>Assignment: Character Animation</p>
+
+<span>Due Date: May 20, 2024</span>
+
+</div>
+
+<div class="assign-card extra hidden">
+
+<strong>IT Project Management</strong>
+
+<p>Assignment: Responsive Website</p>
+
+<span>Due Date: March 5, 2024</span>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="{{ url_for('static',
+filename='today_classes.js') }}"></script>
+
+</body>
+
+</html>

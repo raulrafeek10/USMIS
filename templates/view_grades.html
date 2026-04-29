@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>View Grades</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='view_grades.css') }}">
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+<!-- ================= SIDEBAR ================= -->
+
+<div class="sidebar">
+
+<div>
+
+<div class="welcome">
+
+<i class="fa-solid fa-user"></i>
+
+<div>
+
+<h4>Welcome, Dr. Nouran</h4>
+
+<p id="dateText"></p>
+
+</div>
+
+</div>
+
+<ul class="menu">
+
+<li class="menu-item">
+<a href="/professor_dashboard">
+<i class="fa-solid fa-chalkboard-user"></i>
+Dashboard
+</a>
+</li>
+
+<li class="menu-item active">
+<a href="/view_grades">
+<i class="fa-solid fa-chart-column"></i>
+View Grades
+</a>
+</li>
+
+<li class="menu-item">
+<a href="/courses_professor">
+<i class="fa-solid fa-book"></i>
+Courses
+</a>
+</li>
+
+<li class="menu-item">
+<a href="#">
+<i class="fa-solid fa-calendar"></i>
+Time Table
+</a>
+</li>
+
+<li class="menu-item">
+<a href="#">
+<i class="fa-solid fa-layer-group"></i>
+Class
+</a>
+</li>
+
+<li class="menu-item">
+<a href="#">
+<i class="fa-solid fa-robot"></i>
+Ask Semofi
+</a>
+</li>
+
+<li class="menu-item">
+<a href="/settings">
+<i class="fa-solid fa-gear"></i>
+Settings
+</a>
+</li>
+
+<li class="menu-item logout-item">
+<a href="/">
+<i class="fa-solid fa-right-from-bracket"></i>
+Log out
+</a>
+</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<!-- ================= MAIN ================= -->
+
+<div class="main">
+
+<h2 class="page-title">Grades</h2>
+
+<div class="top-controls">
+
+<select>
+<option>English</option>
+<option>GIS</option>
+<option>DSS</option>
+<option>AI</option>
+</select>
+
+<button id="downloadBtn">
+<i class="fa-solid fa-download"></i>
+Download Excel
+</button>
+
+<input
+type="text"
+id="searchInput"
+placeholder="Search student...">
+
+</div>
+
+<div class="table-container">
+
+<table id="gradesTable">
+
+<thead>
+
+<tr>
+<th>Student Name</th>
+<th>Assignment (20)</th>
+<th>Mid term (30)</th>
+<th>Final (50)</th>
+<th>Total (100)</th>
+<th>Action</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for g in grades %}
+
+<tr id="row-{{ g['id'] }}">
+
+<td>
+{{ g['name'] }}
+</td>
+
+<td>
+<input
+type="number"
+class="assignment"
+value="{{ g['assignment'] }}"
+readonly>
+</td>
+
+<td>
+<input
+type="number"
+class="midterm"
+value="{{ g['midterm'] }}"
+readonly>
+</td>
+
+<td>
+<input
+type="number"
+class="final"
+value="{{ g['final'] }}"
+readonly>
+</td>
+
+<td class="total">
+{{ g['total'] }}
+</td>
+
+<td>
+
+<button
+type="button"
+class="edit-btn"
+<button
+type="button"
+class="edit-btn">
+
+<i class="fa-solid fa-pen"></i>
+Edit
+
+</button>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="{{ url_for('static', filename='view_grades.js') }}"></script>
+
+<script>
+
+/* Date */
+
+let today = new Date();
+
+document.getElementById("dateText").innerText =
+today.toLocaleDateString(
+"en-US",
+{
+weekday:"long",
+day:"numeric",
+month:"long"
+}
+);
+
+</script>
+
+</body>
+
+</html>

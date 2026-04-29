@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Student Profile</title>
+
+<!-- Dashboard CSS -->
+<link rel="stylesheet"
+href="{{ url_for('static', filename='student_dashboard.css') }}">
+
+<!-- Profile CSS -->
+<link rel="stylesheet"
+href="{{ url_for('static', filename='student_profile.css') }}">
+
+<!-- Icons -->
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+<!-- ================= SIDEBAR ================= -->
+
+<div class="sidebar" id="sidebar">
+
+<div class="top-section">
+
+</button>
+
+
+
+</div>
+
+
+
+<ul class="menu">
+
+<li class="menu-item active">
+<a href="/student_dashboard">
+<i class="fa fa-house"></i>
+<span class="menu-text">Dashboard</span>
+</a>
+</li>
+
+<li class="menu-item">
+<a href="#">
+<i class="fa fa-book"></i>
+<span class="menu-text">Courses</span>
+</a>
+</li>
+
+<li class="menu-item">
+<a href="#">
+<i class="fa fa-calendar"></i>
+<span class="menu-text">Schedule</span>
+</a>
+</li>
+
+<li class="menu-item">
+<a href="#">
+<i class="fa fa-file"></i>
+<span class="menu-text">Exams</span>
+</a>
+</li>
+
+<li class="menu-item">
+<a href="/student_profile">
+<i class="fa fa-user"></i>
+<span class="menu-text">My Profile</span>
+</a>
+</li>
+
+<li class="menu-item">
+<a href="#">
+<i class="fa fa-gear"></i>
+<span class="menu-text">Settings</span>
+</a>
+</li>
+
+<li class="menu-item">
+<a href="#">
+<i class="fa fa-right-from-bracket"></i>
+<span class="menu-text">Logout</span>
+</a>
+</li>
+
+</ul>
+
+</div>
+
+
+
+<!-- ================= MAIN ================= -->
+
+<div class="main">
+
+<div class="profile-wrapper">
+
+<div class="profile-frame">
+
+<!-- HEADER -->
+
+<div class="profile-top">
+
+<div class="profile-info">
+
+<img
+class="profile-avatar"
+src="{{ url_for('static', filename='student.png') }}">
+
+<div>
+
+<h3>Ahmed Ashraf</h3>
+<p>ahmedashraf@gmail.com</p>
+
+</div>
+
+</div>
+
+<button class="edit-btn">
+
+<i class="fa fa-pen"></i>
+Edit
+
+</button>
+
+</div>
+
+
+
+<!-- FORM -->
+
+<form class="profile-form">
+
+<div class="form-row">
+
+<div class="form-group">
+
+<label>First Name</label>
+
+<input type="text" value="Ahmed">
+
+</div>
+
+<div class="form-group">
+
+<label>Last Name</label>
+
+<input type="text" value="Ashraf">
+
+</div>
+
+</div>
+
+
+
+<div class="form-row">
+
+<div class="form-group">
+
+<label>Gender</label>
+
+<select>
+<option>Male</option>
+<option>Female</option>
+</select>
+
+</div>
+
+<div class="form-group">
+
+<label>Year</label>
+
+<select>
+<option>First</option>
+<option>Second</option>
+<option>Third</option>
+<option>Fourth</option>
+</select>
+
+</div>
+
+</div>
+
+
+
+<div class="form-row">
+
+<div class="form-group">
+
+<label>Major</label>
+
+<select>
+<option>BIS</option>
+<option>CS</option>
+</select>
+
+</div>
+
+<div class="form-group">
+
+<label>Semester</label>
+
+<select>
+<option>One</option>
+<option>Two</option>
+</select>
+
+</div>
+
+</div>
+
+
+
+<div class="form-row">
+
+<div class="form-group full">
+
+<label>Phone Number</label>
+
+<input type="text" value="01012345678">
+
+</div>
+
+</div>
+
+
+
+<button class="save-btn">
+Save Changes
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- JS -->
+
+<script src="{{ url_for('static', filename='sidebar.js') }}"></script>
+
+</body>
+
+</html>

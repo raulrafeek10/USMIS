@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Professor Courses</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='courses_professor.css') }}">
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+<!-- ================= SIDEBAR ================= -->
+
+<div class="sidebar">
+
+<div>
+
+<div class="welcome">
+
+<i class="fa-solid fa-user"></i>
+
+<div>
+
+<h4>Welcome, Dr. Nouran</h4>
+
+<p id="dateText"></p>
+
+</div>
+
+</div>
+
+<ul class="menu">
+
+<li class="menu-item">
+<a href="/professor_dashboard">
+<i class="fa-solid fa-chalkboard-user"></i>
+Dashboard
+</a>
+</li>
+
+<li class="menu-item active">
+<a href="/courses_professor">
+<i class="fa-solid fa-book"></i>
+Courses
+</a>
+</li>
+
+<li class="menu-item">
+<a href="#">
+<i class="fa-solid fa-calendar"></i>
+Time Table
+</a>
+</li>
+
+<li class="menu-item">
+<a href="#">
+<i class="fa-solid fa-layer-group"></i>
+Class
+</a>
+</li>
+
+<li class="menu-item">
+<a href="#">
+<i class="fa-solid fa-robot"></i>
+Ask Semofi
+</a>
+</li>
+
+<li class="menu-item">
+<a href="#">
+<i class="fa-solid fa-gear"></i>
+Settings
+</a>
+</li>
+
+<li class="menu-item logout-item">
+<a href="#">
+<i class="fa-solid fa-right-from-bracket"></i>
+Log out
+</a>
+</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<!-- ================= MAIN ================= -->
+
+<div class="main">
+
+<!-- TOP BAR -->
+
+<div class="topbar">
+
+<h2>Courses</h2>
+
+<div class="top-actions">
+
+<div class="search-box">
+
+<i class="fa-solid fa-search"></i>
+
+<input
+type="text"
+id="searchCourse"
+placeholder="Search course...">
+
+</div>
+
+<button class="add-btn"
+onclick="openPopup()">
+
+<i class="fa-solid fa-plus"></i>
+
+Add Course
+
+</button>
+
+</div>
+
+</div>
+
+<!-- TABLE -->
+
+<div class="table-container">
+
+<div class="table-header">
+
+<h3>Course List</h3>
+
+</div>
+
+<table id="coursesTable">
+
+<thead>
+
+<tr>
+
+<th>Course Name</th>
+<th>Students</th>
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+<td>GIS</td>
+<td>50</td>
+
+<td>
+
+<button class="edit-btn"
+onclick="editRow(this)">
+
+Edit
+
+</button>
+
+<button class="delete-btn"
+onclick="deleteRow(this)">
+
+Delete
+
+</button>
+
+</td>
+
+</tr>
+
+<tr>
+<td>AI</td>
+<td>40</td>
+
+<td>
+
+<button class="edit-btn"
+onclick="editRow(this)">
+
+Edit
+
+</button>
+
+<button class="delete-btn"
+onclick="deleteRow(this)">
+
+Delete
+
+</button>
+
+</td>
+
+</tr>
+
+<tr>
+<td>English</td>
+<td>120</td>
+
+<td>
+
+<button class="edit-btn"
+onclick="editRow(this)">
+
+Edit
+
+</button>
+
+<button class="delete-btn"
+onclick="deleteRow(this)">
+
+Delete
+
+</button>
+
+</td>
+
+</tr>
+
+<tr>
+<td>DSS</td>
+<td>40</td>
+
+<td>
+
+<button class="edit-btn"
+onclick="editRow(this)">
+
+Edit
+
+</button>
+
+<button class="delete-btn"
+onclick="deleteRow(this)">
+
+Delete
+
+</button>
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- Popup -->
+
+<div id="popup" class="popup">
+
+<div class="popup-content">
+
+<h3>Add Course</h3>
+
+<input
+type="text"
+id="courseName"
+placeholder="Course Name">
+
+<input
+type="number"
+id="studentCount"
+placeholder="Students">
+
+<button onclick="addCourse()">
+
+Add Course
+
+</button>
+
+</div>
+
+</div>
+
+<script src="{{ url_for('static', filename='courses_professor.js') }}"></script>
+
+<script>
+
+let today=new Date();
+
+document.getElementById("dateText")
+.innerText=
+today.toLocaleDateString(
+"en-US",
+{weekday:"long",day:"numeric",month:"long"}
+);
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Add Assignment</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='professor.css') }}">
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='add_assignment.css') }}">
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+<div>
+
+<div class="welcome">
+
+<i class="fa-solid fa-user"></i>
+
+<div class="welcome-text">
+
+<h4>Welcome, Dr. Nouran</h4>
+
+<p id="dateText"></p>
+
+</div>
+
+</div>
+
+<ul class="menu">
+
+<li class="menu-item">
+<a href="/professor_dashboard">
+<i class="fa-solid fa-table-columns"></i>
+<span>Dashboard</span>
+</a>
+</li>
+
+<li class="menu-item">
+<a href="/courses_professor">
+<i class="fa-solid fa-book"></i>
+<span>Courses</span>
+</a>
+</li>
+
+<li class="menu-item active">
+<a href="/add_assignment">
+<i class="fa-solid fa-plus"></i>
+<span>Add Assignment</span>
+</a>
+</li>
+
+<hr class="divider">
+
+<li class="menu-item logout-item">
+<a href="/">
+<i class="fa-solid fa-right-from-bracket"></i>
+<span>Logout</span>
+</a>
+</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="main">
+
+<!-- ✅ SUCCESS MESSAGE -->
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+
+<div class="success-message">
+{{ messages[0] }}
+</div>
+
+{% endif %}
+{% endwith %}
+
+<div class="assignment-wrapper">
+
+<form
+method="POST"
+action="/add_assignment"
+enctype="multipart/form-data"
+class="assignment-form">
+
+<!-- Upload -->
+
+<div class="upload-area"
+onclick="document.getElementById('fileInput').click()">
+
+<input
+type="file"
+name="file"
+id="fileInput"
+hidden>
+
+<i class="fa-solid fa-plus"></i>
+
+<h4>Add Attachment</h4>
+
+<p id="fileName">
+No file chosen
+</p>
+
+</div>
+
+<!-- Title -->
+
+<div class="form-group">
+
+<label>Assignment title</label>
+
+<input
+type="text"
+name="title"
+required>
+
+</div>
+
+<!-- Course -->
+
+<div class="form-group">
+
+<label>Course</label>
+
+<select name="course" required>
+
+<option>English</option>
+<option>GIS</option>
+<option>AI</option>
+<option>DSS</option>
+
+</select>
+
+</div>
+
+<!-- Description -->
+
+<div class="form-group">
+
+<label>Description</label>
+
+<textarea
+name="description"
+required></textarea>
+
+</div>
+
+<!-- Dates -->
+
+<div class="date-row">
+
+<div class="form-group">
+
+<label>Start date</label>
+
+<input
+type="date"
+name="start_date"
+required>
+
+</div>
+
+<div class="form-group">
+
+<label>Due date</label>
+
+<input
+type="date"
+name="due_date"
+required>
+
+</div>
+
+</div>
+
+<!-- Submit -->
+
+<button
+type="submit"
+class="submit-btn">
+
+Submit Assignment
+
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+/* Date */
+
+let today=new Date();
+
+document.getElementById("dateText")
+.innerText=
+today.toLocaleDateString(
+"en-US",
+{weekday:"long",day:"numeric",month:"long"}
+);
+
+/* Upload Name */
+
+let fileInput =
+document.getElementById("fileInput");
+
+let fileName =
+document.getElementById("fileName");
+
+fileInput.addEventListener("change",function(){
+
+if(this.files.length>0){
+
+fileName.innerText=
+this.files[0].name;
+
+}
+
+});
+
+</script>
+
+</body>
+
+</html>

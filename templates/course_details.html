@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>{{ course.name }}</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='course_details.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- ================= HEADER ================= -->
+
+<div class="topbar">
+
+<input type="text"
+placeholder="Search">
+
+<div class="profile">
+
+<img src="{{ url_for('static', filename='student.png') }}">
+
+<span>{{ session.name }}</span>
+
+</div>
+
+</div>
+
+<!-- ================= TOP ================= -->
+
+<div class="course-top">
+
+<!-- ================= COURSE INFO ================= -->
+
+<div class="course-card">
+
+<h2>
+{{ course.name }}
+</h2>
+
+<p>Course Details</p>
+
+<ul class="course-info">
+
+<li>
+<i class="fa-solid fa-user"></i>
+{{ instructor }}
+</li>
+
+<li>
+<i class="fa-solid fa-calendar"></i>
+{{ day }}
+</li>
+
+<li>
+<i class="fa-solid fa-clock"></i>
+{{ time }}
+</li>
+
+<li>
+<i class="fa-solid fa-location-dot"></i>
+{{ room }}
+</li>
+
+</ul>
+
+</div>
+
+<!-- ================= STUDENT SUBMIT ASSIGNMENT ================= -->
+
+<div class="upload-box">
+
+<form method="POST"
+      action="/submit_assignment/{{ course.name }}"
+      enctype="multipart/form-data">
+
+<i class="fa fa-cloud-upload upload-icon"></i>
+
+<h3>
+Submit Assignment
+</h3>
+
+<p>
+PDF, DOCX, JPG accepted
+</p>
+
+<p class="small">
+Max File size: 35MB
+</p>
+
+<input type="file"
+    name="file"
+    required>
+
+<br><br>
+
+<button type="submit"
+     class="browse-btn">
+
+Submit Assignment
+
+</button>
+
+</form>
+
+</div>
+
+<!-- ================= NOTICE ================= -->
+
+<div class="notice-box">
+
+<h3>
+Course notice
+</h3>
+
+<p>
+New assignment has been uploaded !
+</p>
+
+<a href="#">
+See more
+</a>
+
+<hr>
+
+<p>
+Lecture material updated
+</p>
+
+<a href="#">
+See more
+</a>
+
+</div>
+
+</div>
+
+<!-- ================= MATERIAL ================= -->
+
+<div class="materials-card">
+
+<div class="materials-header">
+
+<h3>
+Class material
+</h3>
+
+<a id="viewAllBtn"
+class="view-all">
+View all → </a>
+
+</div>
+
+<div class="materials"
+id="materialsList">
+
+{% for lec in lectures %}
+
+<div class="material-item"
+{% if loop.index > 3 %}
+style="display:none"
+{% endif %}>
+
+<div class="left">
+
+<i class="fa fa-file-pdf pdf-icon"></i>
+
+<span>
+{{ lec.title }}
+</span>
+
+</div>
+
+<a href="{{ url_for('download_file',
+filename=lec.filename) }}"
+class="download-btn">
+
+<i class="fa fa-download"></i>
+
+</a>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+</div>
+
+<script src="{{ url_for('static', filename='course_details.js') }}"></script>
+
+</body>
+
+</html>

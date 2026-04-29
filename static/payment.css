@@ -1,0 +1,506 @@
+/* ================= RESET ================= */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#f6f7fb;
+}
+
+
+/* ================= LAYOUT ================= */
+
+.dashboard{
+display:flex;
+height:100vh;
+}
+
+
+
+/* ================= SIDEBAR ================= */
+
+.sidebar{
+
+width:250px;
+
+background:white;
+
+padding:25px 20px;
+
+box-shadow:2px 0 18px rgba(0,0,0,0.05);
+
+}
+
+
+/* LOGO */
+
+.logo{
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+margin-bottom:35px;
+
+font-weight:600;
+
+font-size:18px;
+
+}
+
+.logo img{
+
+width:140px;
+
+}
+
+
+
+/* MENU */
+
+.menu{
+
+list-style:none;
+
+padding-top:10px;
+
+}
+
+.menu-item{
+
+margin-bottom:10px; /* مسافة بين الأزرار */
+
+}
+
+.menu-item a{
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+padding:14px 16px;
+
+border-radius:12px;
+
+text-decoration:none;
+
+color:#666;
+
+font-size:14px;
+
+transition:0.25s;
+
+width:100%;
+
+}
+
+.menu-item a i{
+
+width:20px;
+
+text-align:center;
+
+}
+
+
+/* Hover */
+
+.menu-item a:hover{
+
+background:#f3f1ff;
+
+color:#6c63ff;
+
+}
+
+
+/* Active */
+
+.menu-item.active a{
+
+background:linear-gradient(
+135deg,
+#6c63ff,
+#5a52e0
+);
+
+color:white;
+
+font-weight:500;
+
+box-shadow:
+0 6px 18px rgba(108,99,255,0.35);
+
+}
+
+
+
+/* ================= MAIN ================= */
+
+.main{
+
+flex:1;
+
+padding:30px 35px;
+
+background:#f6f7fb;
+
+overflow-y:auto;
+
+}
+
+
+
+/* ================= TOPBAR ================= */
+
+.topbar{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:25px;
+
+}
+
+.topbar h2{
+
+font-size:24px;
+
+font-weight:600;
+
+}
+
+
+
+/* ADD BUTTON */
+
+.add-btn{
+
+background:linear-gradient(
+135deg,
+#6c63ff,
+#5a52e0
+);
+
+color:white;
+
+border:none;
+
+padding:10px 18px;
+
+border-radius:10px;
+
+cursor:pointer;
+
+font-weight:500;
+
+transition:0.25s;
+
+}
+
+.add-btn:hover{
+
+transform:translateY(-2px);
+
+box-shadow:0 6px 15px rgba(108,99,255,0.4);
+
+}
+
+
+
+/* ================= CARD ================= */
+
+.card{
+
+background:white;
+
+padding:22px;
+
+border-radius:16px;
+
+margin-bottom:22px;
+
+box-shadow:0 6px 18px rgba(0,0,0,0.05);
+
+}
+
+.card h3{
+
+font-size:18px;
+
+font-weight:600;
+
+margin-bottom:15px;
+
+}
+
+
+
+/* ================= METHODS ================= */
+
+.method{
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+padding:14px 18px;
+
+border:1px solid #eee;
+
+border-radius:12px;
+
+margin-top:12px;
+
+transition:0.2s;
+
+cursor:pointer;
+
+background:white;
+
+}
+
+.method:hover{
+
+background:#f7f8ff;
+
+border-color:#6c63ff;
+
+transform:translateX(4px);
+
+}
+
+.method img{
+
+width:40px;
+
+}
+
+.method-info{
+
+flex:1;
+
+margin-left:12px;
+
+}
+
+.method-info p{
+
+font-size:14px;
+
+font-weight:500;
+
+}
+
+.method-info span{
+
+font-size:12px;
+
+color:#888;
+
+}
+
+.method i{
+
+color:#999;
+
+cursor:pointer;
+
+transition:0.2s;
+
+}
+
+.method i:hover{
+
+color:#6c63ff;
+
+}
+
+
+
+/* ================= TABLE ================= */
+
+.table-top{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:15px;
+
+}
+
+.table-actions{
+
+display:flex;
+
+gap:10px;
+
+}
+
+
+
+/* SEARCH */
+
+.table-actions input{
+
+padding:9px 12px;
+
+border-radius:8px;
+
+border:1px solid #ddd;
+
+font-size:13px;
+
+outline:none;
+
+}
+
+.table-actions input:focus{
+
+border-color:#6c63ff;
+
+}
+
+
+
+/* EXPORT BUTTON */
+
+.export-btn{
+
+background:white;
+
+border:1px solid #ddd;
+
+padding:9px 14px;
+
+border-radius:8px;
+
+cursor:pointer;
+
+transition:0.2s;
+
+font-size:13px;
+
+}
+
+.export-btn:hover{
+
+background:#6c63ff;
+
+color:white;
+
+border-color:#6c63ff;
+
+}
+
+
+
+/* TABLE */
+
+table{
+
+width:100%;
+
+border-collapse:collapse;
+
+margin-top:10px;
+
+}
+
+thead{
+
+background:#fafafa;
+
+}
+
+th{
+
+padding:14px;
+
+font-size:13px;
+
+color:#666;
+
+text-align:left;
+
+font-weight:500;
+
+}
+
+td{
+
+padding:14px;
+
+border-bottom:1px solid #eee;
+
+font-size:14px;
+
+}
+
+
+
+/* ROW HOVER */
+
+tbody tr:hover{
+
+background:#f9f9ff;
+
+}
+
+
+
+/* ================= STATUS ================= */
+
+.status{
+
+padding:6px 12px;
+
+border-radius:20px;
+
+font-size:13px;
+
+font-weight:500;
+
+display:inline-block;
+
+}
+
+.status.done{
+
+background:#d1fae5;
+
+color:#065f46;
+
+}
+
+.status.pending{
+
+background:#fef3c7;
+
+color:#92400e;
+
+}
+
+.status.failed{
+
+background:#fee2e2;
+
+color:#991b1b;
+
+}

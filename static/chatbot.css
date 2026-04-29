@@ -1,0 +1,163 @@
+/* CHAT CONTAINER */
+
+.chat-container {
+
+background: white;
+padding: 30px;
+border-radius: 20px;
+
+width: 100%;
+max-width: 900px;
+
+margin: auto;
+
+box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+
+}
+
+/* TITLE */
+
+.chat-container h2 {
+
+font-size: 26px;
+margin-bottom: 5px;
+
+}
+
+/* SUBTITLE */
+
+.subtitle {
+
+color: #777;
+margin-bottom: 20px;
+
+}
+
+/* CHAT BOX */
+
+.chat-box {
+
+height: 420px;
+
+border: 1px solid #eee;
+border-radius: 15px;
+
+padding: 15px;
+
+overflow-y: auto;
+
+margin-bottom: 15px;
+
+background: #fafafa;
+
+}
+
+/* BOT MESSAGE */
+
+.bot-message {
+
+background: #f1f2f6;
+
+padding: 12px;
+
+border-radius: 12px;
+
+margin-bottom: 10px;
+
+width: fit-content;
+
+max-width: 70%;
+
+}
+
+/* USER MESSAGE */
+
+.user-message {
+
+background: #6c63ff;
+
+color: white;
+
+padding: 12px;
+
+border-radius: 12px;
+
+margin-bottom: 10px;
+
+margin-left: auto;
+
+width: fit-content;
+
+max-width: 70%;
+
+}
+
+/* INPUT */
+
+.chat-input {
+
+display: flex;
+
+gap: 10px;
+
+}
+
+/* INPUT FIELD */
+
+.chat-input input {
+
+flex: 1;
+
+padding: 12px;
+
+border-radius: 12px;
+
+border: 1px solid #ddd;
+
+}
+
+/* SEND BUTTON */
+
+.chat-input button {
+
+background: #6c63ff;
+
+border: none;
+
+color: white;
+
+padding: 12px 18px;
+
+border-radius: 12px;
+
+cursor: pointer;
+
+}
+
+/* ACTION BUTTONS */
+
+.chat-actions {
+
+margin-top: 15px;
+
+display: flex;
+
+gap: 10px;
+
+}
+
+.chat-actions button {
+
+padding: 10px 16px;
+
+border-radius: 12px;
+
+border: none;
+
+background: #eef0ff;
+
+cursor: pointer;
+
+font-weight: 500;
+
+}

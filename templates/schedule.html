@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Schedule</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<link rel="stylesheet"
+href="{{ url_for('static',
+filename='student_dashboard.css') }}">
+
+<link rel="stylesheet"
+href="{{ url_for('static',
+filename='schedule.css') }}">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+<!-- ================= SIDEBAR ================= -->
+
+<div class="sidebar">
+
+<div class="logo">
+
+<img src="{{ url_for('static',
+filename='lshrk-01.max-500x500.png') }}">
+
+</div>
+
+<div class="welcome">
+
+<i class="fa-solid fa-user-circle"></i>
+
+<div class="welcome-text">
+
+<h4>Welcome, Ahmed!</h4>
+
+<p>Sunday, 15 March</p>
+
+</div>
+
+</div>
+
+<ul class="menu">
+
+<!-- Student -->
+
+<li class="menu-item">
+
+<a href="/student_dashboard">
+
+<i class="fa-solid fa-user"></i>
+
+<span>Student</span>
+
+</a>
+
+</li>
+
+<!-- Professor -->
+
+<li class="menu-item">
+
+<a href="#">
+
+<i class="fa-solid fa-chalkboard-user"></i>
+
+<span>Professor</span>
+
+</a>
+
+</li>
+
+<!-- Department -->
+
+<li class="menu-item">
+
+<a href="#">
+
+<i class="fa-solid fa-building"></i>
+
+<span>Department</span>
+
+</a>
+
+</li>
+
+<!-- Time Table -->
+
+<li class="menu-item active">
+
+<a href="/schedule">
+
+<i class="fa-solid fa-calendar-days"></i>
+
+<span>Time Table</span>
+
+</a>
+
+</li>
+
+<!-- Courses -->
+
+<li class="menu-item">
+
+<a href="/courses">
+
+<i class="fa-solid fa-book"></i>
+
+<span>Courses</span>
+
+</a>
+
+</li>
+
+<hr>
+
+<!-- Classes -->
+
+<li class="menu-item">
+
+<a href="/today_classes">
+
+<i class="fa-solid fa-school"></i>
+
+<span>Classes</span>
+
+</a>
+
+</li>
+
+<!-- Ask Semofi -->
+
+<li class="menu-item">
+
+<a href="#">
+
+<i class="fa-solid fa-comments"></i>
+
+<span>Ask Semofi</span>
+
+</a>
+
+</li>
+
+<!-- Settings -->
+
+<li class="menu-item">
+
+<a href="#">
+
+<i class="fa-solid fa-gear"></i>
+
+<span>Settings</span>
+
+</a>
+
+</li>
+
+<hr>
+
+<!-- Logout -->
+
+<li class="menu-item logout-item">
+
+<a href="#">
+
+<i class="fa-solid fa-right-from-bracket"></i>
+
+<span>Log out</span>
+
+</a>
+
+</li>
+
+</ul>
+
+</div>
+
+<!-- ================= MAIN ================= -->
+
+<div class="main">
+
+<!-- ================= TOPBAR ================= -->
+
+<div class="topbar">
+
+<input 
+type="text"
+id="searchInput"
+placeholder="Search subject...">
+
+<div class="profile">
+
+<img src="{{ url_for('static',
+filename='student.png') }}">
+
+<span>Ahmed Ashraf</span>
+
+</div>
+
+</div>
+
+<!-- ================= CENTER ================= -->
+
+<div class="schedule-wrapper">
+
+<div class="schedule-card">
+
+<table id="scheduleTable">
+
+<thead>
+
+<tr>
+
+<th>Days</th>
+<th>7-8</th>
+<th>8-9</th>
+<th>9-10</th>
+<th>10-11</th>
+<th>11-12</th>
+<th>12-1</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td class="day">Sunday</td>
+
+<td></td>
+<td></td>
+<td>IT Project</td>
+<td>Data Mining</td>
+<td>Mobile Computing</td>
+<td></td>
+
+</tr>
+
+<tr>
+
+<td class="day">Monday</td>
+
+<td>GIS LEC</td>
+<td>GIS SEC</td>
+<td>English 8</td>
+<td></td>
+<td></td>
+<td></td>
+
+</tr>
+
+<tr>
+
+<td class="day">Tuesday</td>
+
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+
+</tr>
+
+<tr>
+
+<td class="day">Wednesday</td>
+
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+
+</tr>
+
+<tr>
+
+<td class="day">Thursday</td>
+
+<td>IT Project</td>
+<td>DSS LEC</td>
+<td>DSS Section</td>
+<td>Data Mining</td>
+<td>Mobile</td>
+<td></td>
+
+</tr>
+
+<tr>
+
+<td class="day">Friday</td>
+
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+
+</tr>
+
+<tr>
+
+<td class="day">Saturday</td>
+
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= SEARCH SCRIPT ================= -->
+
+<script>
+
+const input =
+document.getElementById("searchInput");
+
+input.addEventListener("keyup", function () {
+
+let filter =
+input.value.toLowerCase();
+
+let table =
+document.getElementById("scheduleTable");
+
+let cells =
+table.getElementsByTagName("td");
+
+for (let i = 0; i < cells.length; i++) {
+
+let txt =
+cells[i].textContent.toLowerCase();
+
+cells[i].classList.remove("highlight");
+
+if (txt.includes(filter) && filter !== "") {
+
+cells[i].classList.add("highlight");
+
+cells[i].scrollIntoView({
+
+behavior: "smooth",
+
+block: "center"
+
+});
+
+}
+
+}
+
+});
+
+</script>
+
+</body>
+
+</html>

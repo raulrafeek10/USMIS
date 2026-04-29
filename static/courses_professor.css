@@ -1,0 +1,516 @@
+/* ================= RESET ================= */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#f5f7fb;
+min-height:100vh;
+}
+
+
+/* ================= LAYOUT ================= */
+
+.dashboard{
+
+display:flex;
+
+min-height:100vh;
+
+}
+
+
+/* ================= SIDEBAR ================= */
+
+.sidebar{
+
+width:260px;
+
+background:white;
+
+padding:25px;
+
+box-shadow:2px 0 18px rgba(0,0,0,0.05);
+
+display:flex;
+
+flex-direction:column;
+
+}
+
+
+/* Welcome */
+
+.welcome{
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+background:#eef0ff;
+
+padding:14px;
+
+border-radius:14px;
+
+margin-bottom:25px;
+
+}
+
+.welcome i{
+
+font-size:22px;
+
+color:#6a5cff;
+
+}
+
+.welcome h4{
+
+font-size:14px;
+
+font-weight:500;
+
+}
+
+.welcome p{
+
+font-size:12px;
+
+color:#777;
+
+}
+
+
+/* ================= MENU ================= */
+
+.menu{
+
+list-style:none;
+
+margin-top:10px;
+
+}
+
+.menu-item{
+
+margin-bottom:6px;
+
+}
+
+.menu-item a{
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+padding:12px;
+
+text-decoration:none;
+
+color:#555;
+
+border-radius:10px;
+
+font-size:14px;
+
+transition:0.2s;
+
+}
+
+.menu-item a:hover{
+
+background:#f3f4ff;
+
+}
+
+.menu-item.active a{
+
+background:linear-gradient(
+90deg,
+#6a5cff,
+#8b7cff
+);
+
+color:white;
+
+}
+
+.logout-item{
+
+margin-top:20px;
+
+}
+
+
+/* ================= MAIN ================= */
+
+.main{
+
+flex:1;
+
+/* تقليل العرض */
+
+max-width:1100px;
+
+/* توسيط */
+
+margin:0 auto;
+
+padding:30px 20px;
+
+}
+
+
+/* ================= TOPBAR ================= */
+
+.topbar{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:25px;
+
+}
+
+.topbar h2{
+
+font-size:22px;
+
+font-weight:600;
+
+}
+
+
+/* Actions */
+
+.top-actions{
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+}
+
+
+/* Search */
+
+.search-box{
+
+display:flex;
+
+align-items:center;
+
+gap:6px;
+
+background:white;
+
+padding:8px 12px;
+
+border-radius:10px;
+
+border:1px solid #ddd;
+
+}
+
+.search-box input{
+
+border:none;
+
+outline:none;
+
+font-size:13px;
+
+background:none;
+
+}
+
+
+/* Add Button */
+
+.add-btn{
+
+background:linear-gradient(
+90deg,
+#6a5cff,
+#8b7cff
+);
+
+color:white;
+
+border:none;
+
+padding:10px 16px;
+
+border-radius:10px;
+
+cursor:pointer;
+
+font-size:13px;
+
+transition:0.2s;
+
+}
+
+.add-btn:hover{
+
+opacity:0.9;
+
+}
+
+
+/* ================= TABLE CONTAINER ================= */
+
+.table-container{
+
+background:white;
+
+border-radius:18px;
+
+box-shadow:0 8px 24px rgba(0,0,0,0.06);
+
+overflow:hidden;
+
+/* يخلي الطول أكبر */
+
+min-height:520px;
+
+display:flex;
+
+flex-direction:column;
+
+}
+
+
+/* Header */
+
+.table-header{
+
+background:#cdd3f6;
+
+padding:18px 20px;
+
+font-weight:600;
+
+font-size:16px;
+
+}
+
+
+/* ================= TABLE ================= */
+
+table{
+
+width:100%;
+
+border-collapse:collapse;
+
+}
+
+
+/* Header */
+
+th{
+
+text-align:left;
+
+padding:16px 14px;
+
+font-size:14px;
+
+font-weight:600;
+
+background:#eef0ff;
+
+}
+
+
+/* Rows */
+
+td{
+
+padding:16px 14px;
+
+font-size:14px;
+
+border-bottom:1px solid #eee;
+
+}
+
+
+/* Hover */
+
+tbody tr:hover{
+
+background:#f7f8ff;
+
+}
+
+
+/* ================= BUTTONS ================= */
+
+.edit-btn{
+
+background:#6a5cff;
+
+color:white;
+
+border:none;
+
+padding:6px 12px;
+
+border-radius:8px;
+
+cursor:pointer;
+
+font-size:12px;
+
+transition:0.2s;
+
+}
+
+.edit-btn:hover{
+
+background:#5848ff;
+
+}
+
+
+.delete-btn{
+
+background:#ff4d4d;
+
+color:white;
+
+border:none;
+
+padding:6px 12px;
+
+border-radius:8px;
+
+cursor:pointer;
+
+font-size:12px;
+
+margin-left:6px;
+
+transition:0.2s;
+
+}
+
+.delete-btn:hover{
+
+background:#e63939;
+
+}
+
+
+/* ================= POPUP ================= */
+
+.popup{
+
+position:fixed;
+
+top:0;
+left:0;
+
+width:100%;
+height:100%;
+
+background:rgba(0,0,0,0.4);
+
+display:none;
+
+justify-content:center;
+
+align-items:center;
+
+z-index:1000;
+
+}
+
+.popup-content{
+
+background:white;
+
+padding:22px;
+
+border-radius:14px;
+
+display:flex;
+
+flex-direction:column;
+
+gap:12px;
+
+width:300px;
+
+box-shadow:0 10px 30px rgba(0,0,0,0.1);
+
+}
+
+.popup-content input{
+
+padding:10px;
+
+border-radius:8px;
+
+border:1px solid #ddd;
+
+font-size:13px;
+
+}
+
+.popup-content button{
+
+background:#6a5cff;
+
+color:white;
+
+border:none;
+
+padding:10px;
+
+border-radius:8px;
+
+cursor:pointer;
+
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width:1200px){
+
+.main{
+
+max-width:100%;
+
+padding:20px;
+
+}
+
+}
+
+@media (min-width:1400px){
+
+.main{
+
+max-width:1200px;
+
+}
+
+}

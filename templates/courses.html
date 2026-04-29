@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Courses</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<link rel="stylesheet"
+href="{{ url_for('static',
+filename='student_dashboard.css') }}">
+
+<link rel="stylesheet"
+href="{{ url_for('static',
+filename='courses.css') }}">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+<!-- ================= SIDEBAR (زي dashboard بالظبط) ================= -->
+
+<div class="sidebar">
+
+<div class="logo">
+
+<img src="{{ url_for('static',
+filename='lshrk-01.max-500x500.png') }}">
+
+</div>
+
+<div class="welcome">
+
+<i class="fa-solid fa-user-circle"></i>
+
+<div class="welcome-text">
+
+<h4>Welcome, Ahmed!</h4>
+
+<p>Sunday, 15 March</p>
+
+</div>
+
+</div>
+
+<ul class="menu">
+
+<!-- Student -->
+
+<li class="menu-item">
+
+<a href="/student_dashboard">
+
+<i class="fa-solid fa-user"></i>
+
+<span>Student</span>
+
+</a>
+
+</li>
+
+<!-- Professor -->
+
+<li class="menu-item">
+
+<a href="#">
+
+<i class="fa-solid fa-chalkboard-user"></i>
+
+<span>Professor</span>
+
+</a>
+
+</li>
+
+<!-- Department -->
+
+<li class="menu-item">
+
+<a href="#">
+
+<i class="fa-solid fa-building"></i>
+
+<span>Department</span>
+
+</a>
+
+</li>
+
+<!-- Time Table -->
+
+<li class="menu-item">
+
+<a href="/schedule">
+
+<i class="fa-solid fa-calendar-days"></i>
+
+<span>Time Table</span>
+
+</a>
+
+</li>
+
+<!-- Courses -->
+
+<li class="menu-item active">
+
+<a href="/courses">
+
+<i class="fa-solid fa-book"></i>
+
+<span>Courses</span>
+
+</a>
+
+</li>
+
+<hr>
+
+<!-- Classes -->
+
+<li class="menu-item">
+
+<a href="/today_classes">
+
+<i class="fa-solid fa-school"></i>
+
+<span>Classes</span>
+
+</a>
+
+</li>
+
+<!-- Ask Semofi -->
+
+<li class="menu-item">
+
+<a href="#">
+
+<i class="fa-solid fa-comments"></i>
+
+<span>Ask Semofi</span>
+
+</a>
+
+</li>
+
+<!-- Settings -->
+
+<li class="menu-item">
+
+<a href="#">
+
+<i class="fa-solid fa-gear"></i>
+
+<span>Settings</span>
+
+</a>
+
+</li>
+
+<hr>
+
+<!-- Logout -->
+
+<li class="menu-item logout-item">
+
+<a href="#">
+
+<i class="fa-solid fa-right-from-bracket"></i>
+
+<span>Log out</span>
+
+</a>
+
+</li>
+
+</ul>
+
+</div>
+
+<!-- ================= MAIN ================= -->
+
+<div class="main">
+
+<!-- TOPBAR -->
+
+<div class="topbar">
+
+<input
+type="text"
+id="searchCourse"
+placeholder="Search course...">
+
+<div class="profile">
+
+<img src="{{ url_for('static',
+filename='student.png') }}">
+
+<span>Ahmed Ashraf</span>
+
+</div>
+
+</div>
+
+<!-- COURSES -->
+
+<h2 class="title">
+
+Enrolled Courses
+
+<span class="see-all">
+
+See all
+
+</span>
+
+</h2>
+
+<div class="courses-grid" id="coursesGrid">
+
+<!-- English -->
+
+<div class="course-card">
+
+<a href="/course/english"
+class="course-link">
+
+<h3>English 8</h3>
+
+<img src="https://img.icons8.com/fluency/64/laptop.png">
+
+</a>
+
+<button onclick="openCourse('english')">
+
+View
+
+</button>
+
+</div>
+
+<!-- GIS -->
+
+<div class="course-card">
+
+<a href="/course/gis"
+class="course-link">
+
+<h3>GIS</h3>
+
+<img src="https://img.icons8.com/fluency/64/combo-chart.png">
+
+</a>
+
+<button onclick="openCourse('gis')">
+
+View
+
+</button>
+
+</div>
+
+<!-- IT -->
+
+<div class="course-card">
+
+<a href="/course/it"
+class="course-link">
+
+<h3>IT Project Management</h3>
+
+<img src="https://img.icons8.com/fluency/64/laptop.png">
+
+</a>
+
+<button onclick="openCourse('it')">
+
+View
+
+</button>
+
+</div>
+
+<!-- Mobile -->
+
+<div class="course-card">
+
+<a href="/course/mobile"
+class="course-link">
+
+<h3>Mobile Computing</h3>
+
+<img src="https://img.icons8.com/fluency/64/combo-chart.png">
+
+</a>
+
+<button onclick="openCourse('mobile')">
+
+View
+
+</button>
+
+</div>
+
+<!-- Data Mining -->
+
+<div class="course-card">
+
+<a href="/course/data"
+class="course-link">
+
+<h3>Data Mining</h3>
+
+<img src="https://img.icons8.com/fluency/64/laptop.png">
+
+</a>
+
+<button onclick="openCourse('data')">
+
+View
+
+</button>
+
+</div>
+
+<!-- DSS -->
+
+<div class="course-card">
+
+<a href="/course/dss"
+class="course-link">
+
+<h3>DSS</h3>
+
+<img src="https://img.icons8.com/fluency/64/combo-chart.png">
+
+</a>
+
+<button onclick="openCourse('dss')">
+
+View
+
+</button>
+
+</div>
+
+</div>
+
+<!-- INSTRUCTORS -->
+
+<h3 class="section-title">
+
+Course instructors
+
+</h3>
+
+<div class="instructors">
+
+<img src="https://i.pravatar.cc/60?img=1">
+<img src="https://i.pravatar.cc/60?img=2">
+<img src="https://i.pravatar.cc/60?img=3">
+
+</div>
+
+<!-- NOTICE -->
+
+<div class="notice">
+
+<h3>
+
+Daily notice
+
+<span class="see-all">
+
+See all
+
+</span>
+
+</h3>
+
+<div class="notice-box">
+
+<h4>Prelim payment due</h4>
+
+<p>
+
+Your 2nd term payment has been successfully paid
+
+</p>
+
+<a onclick="openNotice()">
+
+See more
+
+</a>
+
+</div>
+
+<div class="notice-box">
+
+<h4>Exam schedule</h4>
+
+<p>
+
+Midterm exams schedule has been uploaded!
+
+</p>
+
+<a onclick="openNotice()">
+
+See more
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+/* OPEN COURSE */
+
+function openCourse(name){
+
+window.location.href =
+"/course/" + name;
+
+}
+
+/* NOTICE */
+
+function openNotice(){
+
+alert("Opening notice");
+
+}
+
+/* SEARCH */
+
+const searchInput =
+document.getElementById("searchCourse");
+
+searchInput.addEventListener("keyup", function(){
+
+let filter =
+searchInput.value.toLowerCase();
+
+let courses =
+document.querySelectorAll(".course-card");
+
+courses.forEach(card => {
+
+let text =
+card.textContent.toLowerCase();
+
+if(text.includes(filter)){
+
+card.style.display = "block";
+
+}else{
+
+card.style.display = "none";
+
+}
+
+});
+
+});
+
+</script>
+
+</body>
+
+</html>

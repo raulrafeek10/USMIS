@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Ask Semofi</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+
+<link rel="stylesheet"
+href="{{ url_for('static',
+filename='student_dashboard.css') }}">
+
+<link rel="stylesheet"
+href="{{ url_for('static',
+filename='chatbot.css') }}">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+
+<div class="sidebar">
+
+<div class="logo">
+
+<img src="{{ url_for('static',
+filename='lshrk-01.max-500x500.png') }}">
+
+</div>
+
+<div class="welcome">
+
+<i class="fa-solid fa-user-circle"></i>
+
+<div class="welcome-text">
+
+<h4>Welcome, Ahmed!</h4>
+
+<p>Sunday, 15 March</p>
+
+</div>
+
+</div>
+
+<ul class="menu">
+
+<li class="menu-item">
+
+<a href="/student_dashboard">
+
+<i class="fa-solid fa-user"></i>
+
+<span>Student</span>
+
+</a>
+
+</li>
+
+<li class="menu-item">
+
+<a href="/courses">
+
+<i class="fa-solid fa-book"></i>
+
+<span>Courses</span>
+
+</a>
+
+</li>
+
+<li class="menu-item">
+
+<a href="/schedule">
+
+<i class="fa-solid fa-calendar-days"></i>
+
+<span>Schedule</span>
+
+</a>
+
+</li>
+
+<li class="menu-item">
+
+<a href="/today_classes">
+
+<i class="fa-solid fa-school"></i>
+
+<span>Classes</span>
+
+</a>
+
+</li>
+
+<!-- ACTIVE -->
+
+<li class="menu-item active">
+
+<a href="/chatbot">
+
+<i class="fa-solid fa-comments"></i>
+
+<span>Ask Semofi</span>
+
+</a>
+
+</li>
+
+<li class="menu-item">
+
+<a href="#">
+
+<i class="fa-solid fa-gear"></i>
+
+<span>Settings</span>
+
+</a>
+
+</li>
+
+<hr>
+
+<li class="menu-item logout-item">
+
+<a href="#">
+
+<i class="fa-solid fa-right-from-bracket"></i>
+
+<span>Log out</span>
+
+</a>
+
+</li>
+
+</ul>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="main">
+
+<!-- TOPBAR -->
+
+<div class="topbar">
+
+<input
+type="text"
+placeholder="Search">
+
+<div class="profile">
+
+<img src="{{ url_for('static',
+filename='student.png') }}">
+
+<span>Ahmed Ashraf</span>
+
+</div>
+
+</div>
+
+<!-- CHATBOT FULL WIDTH -->
+
+<div class="chat-container">
+
+<h2>Ask Semofi</h2>
+
+<p class="subtitle">
+
+Ask questions about your chapters,
+generate quizzes, or summarize lessons instantly.
+
+</p>
+
+<!-- CHAT BOX -->
+
+<div
+class="chat-box"
+id="chatBox">
+
+<div class="bot-message">
+
+👋 Hello Ahmed!
+Ask me anything about your chapters.
+
+</div>
+
+</div>
+
+<!-- INPUT -->
+
+<div class="chat-input">
+
+<input
+type="text"
+id="userInput"
+placeholder="Ask about your chapters...">
+
+<button
+onclick="sendMessage()">
+
+<i class="fa-solid fa-paper-plane"></i>
+
+</button>
+
+</div>
+
+<!-- BUTTONS -->
+
+<div class="chat-actions">
+
+<button onclick="generateQuiz()">
+
+Generate Quiz
+
+</button>
+
+<button onclick="summarizeChapter()">
+
+Summarize Chapter
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="{{ url_for('static',
+filename='chatbot.js') }}"></script>
+
+</body>
+
+</html>

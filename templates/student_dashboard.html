@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Student Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<link rel="stylesheet"
+href="{{ url_for('static',
+filename='student_dashboard.css') }}">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+<!-- ================= SIDEBAR ================= -->
+
+<div class="sidebar">
+
+<div class="logo">
+
+<img src="{{ url_for('static',
+filename='lshrk-01.max-500x500.png') }}">
+
+</div>
+
+<div class="welcome">
+
+<i class="fa-solid fa-user-circle"></i>
+
+<div class="welcome-text">
+
+<h4>Welcome, Ahmed!</h4>
+
+<p>Sunday, 15 March</p>
+
+</div>
+
+</div>
+
+<ul class="menu">
+
+<li class="menu-item active">
+
+<a href="/student_dashboard">
+
+<i class="fa-solid fa-user"></i>
+<span>Student</span>
+
+</a>
+
+</li>
+
+<li class="menu-item">
+
+<a href="#">
+
+<i class="fa-solid fa-chalkboard-user"></i>
+<span>Professor</span>
+
+</a>
+
+</li>
+
+<li class="menu-item">
+
+<a href="#">
+
+<i class="fa-solid fa-building"></i>
+<span>Department</span>
+
+</a>
+
+</li>
+
+<li class="menu-item">
+
+<a href="/schedule">
+
+<i class="fa-solid fa-calendar-days"></i>
+<span>Time Table</span>
+
+</a>
+
+</li>
+
+<li class="menu-item">
+
+<a href="/courses">
+
+<i class="fa-solid fa-book"></i>
+<span>Courses</span>
+
+</a>
+
+</li>
+
+<hr>
+
+<li class="menu-item">
+
+<a href="/today_classes">
+
+<i class="fa-solid fa-school"></i>
+<span>Classes</span>
+
+</a>
+
+</li>
+
+<li class="menu-item">
+
+<a href="/chatbot">
+
+<i class="fa-solid fa-comments"></i>
+<span>Ask Semofi</span>
+
+</a>
+
+</li>
+
+<li class="menu-item">
+
+<a href="#">
+
+<i class="fa-solid fa-gear"></i>
+<span>Settings</span>
+
+</a>
+
+</li>
+
+<hr>
+
+<li class="menu-item logout-item">
+
+<a href="#">
+
+<i class="fa-solid fa-right-from-bracket"></i>
+<span>Log out</span>
+
+</a>
+
+</li>
+
+</ul>
+
+</div>
+
+<!-- ================= MAIN ================= -->
+
+<div class="main">
+
+<!-- ================= TOPBAR ================= -->
+
+<div class="topbar">
+
+<input type="text" placeholder="Search">
+
+
+<div class="profile-container">
+
+<div class="profile"
+onclick="toggleProfileMenu()">
+
+<img src="{{ url_for('static',
+filename='student.png') }}">
+
+<span>Ahmed Ashraf</span>
+
+<i class="fa-solid fa-chevron-down"></i>
+
+</div>
+
+<div id="profileMenu"
+class="profile-menu">
+
+<a href="{{ url_for('student_profile') }}">
+
+<i class="fa fa-user"></i>
+My Profile
+
+</a>
+
+<a href="#">
+
+<i class="fa fa-gear"></i>
+Settings
+
+</a>
+
+<a href="#">
+
+<i class="fa fa-bell"></i>
+Notifications
+
+</a>
+
+<a href="/logout"
+class="logout">
+
+<i class="fa fa-right-from-bracket"></i>
+Log Out
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= CARDS ================= -->
+
+<div class="cards">
+
+<a href="/courses" class="card pro-card">
+
+<div class="card-icon">
+<i class="fa-solid fa-book"></i>
+</div>
+
+<h3>Courses</h3>
+
+</a>
+
+<a href="/schedule" class="card pro-card">
+
+<div class="card-icon">
+<i class="fa-solid fa-calendar-days"></i>
+</div>
+
+<h3>Schedule</h3>
+
+</a>
+
+<a href="/today_classes" class="card pro-card">
+
+<div class="card-icon">
+<i class="fa-solid fa-clock"></i>
+</div>
+
+<h3>Today's Classes</h3>
+
+</a>
+
+<!-- ✅ VIEW GPA CARD -->
+
+<a href="{{ url_for('view_gpa') }}"
+class="card pro-card gpa-card-btn">
+
+<div class="card-icon">
+
+<i class="fa-solid fa-chart-line"></i>
+
+</div>
+
+<h3>View GPA</h3>
+
+</a>
+
+</div>
+
+<!-- ================= BANNER ================= -->
+
+<div class="banner">
+
+<h3>
+Get Involved – Join a Club Today!
+</h3>
+
+<p>
+Explore your interests and meet
+like-minded students by joining
+one of our clubs.
+</p>
+
+<button>
+Learn More →
+</button>
+
+</div>
+
+<!-- ================= TABLE ================= -->
+
+<div class="table-card">
+
+<h3>
+
+Exam Board
+
+<span
+class="view-all"
+id="viewAllBtn">
+
+View all →
+
+</span>
+
+</h3>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Exam Name</th>
+<th>Exam Time</th>
+<th>Date</th>
+<th>Time</th>
+<th>Location</th>
+<th>Status</th>
+
+</tr>
+
+</thead>
+
+<tbody id="examTableBody">
+
+<tr>
+<td>DSS</td>
+<td>1 Hour</td>
+<td>Apr 2, 2026</td>
+<td>10:00 AM</td>
+<td>Lab 1</td>
+<td><span class="status done">Completed</span></td>
+</tr>
+
+<tr>
+<td>Mobile Computing</td>
+<td>1 Hour</td>
+<td>Apr 3, 2026</td>
+<td>02:00 PM</td>
+<td>Lab 3</td>
+<td><span class="status upcoming">Upcoming</span></td>
+</tr>
+
+<tr>
+<td>IT Project</td>
+<td>1 Hour</td>
+<td>Apr 4, 2026</td>
+<td>01:00 PM</td>
+<td>Hall 1</td>
+<td><span class="status upcoming">Upcoming</span></td>
+</tr>
+
+<tr>
+<td>GIS</td>
+<td>1 Hour</td>
+<td>Apr 5, 2026</td>
+<td>09:45 AM</td>
+<td>Hall 2</td>
+<td><span class="status upcoming">Upcoming</span></td>
+</tr>
+
+<tr>
+<td>Data Mining</td>
+<td>1 Hour</td>
+<td>Apr 6, 2026</td>
+<td>11:15 AM</td>
+<td>Hall 3</td>
+<td><span class="status upcoming">Upcoming</span></td>
+</tr>
+
+<tr>
+<td>English 8</td>
+<td>1 Hour</td>
+<td>Apr 7, 2026</td>
+<td>02:15 PM</td>
+<td>R 103</td>
+<td><span class="status upcoming">Upcoming</span></td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="{{ url_for('static',
+filename='student_dashboard.js') }}"></script>
+
+</body>
+
+</html>

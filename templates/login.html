@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Sadat Academy LMS</title>
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+rel="stylesheet">
+
+<!-- Font Awesome -->
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<!-- CSS -->
+<link rel="stylesheet"
+href="{{ url_for('static', filename='login.css') }}">
+
+</head>
+
+
+
+<body>
+
+<!-- ✅ ERROR TOAST (المكان الصح فوق خالص) -->
+
+{% if error %}
+
+<div id="toastError" class="toast-error">
+
+<i class="fa-solid fa-circle-xmark"></i>
+
+<span>{{ error }}</span>
+
+</div>
+
+{% endif %}
+
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+<div class="logo">
+
+<img
+src="{{ url_for('static',
+filename='lshrk-01.max-500x500.png') }}"
+class="logo-img"
+alt="Sadat Logo">
+
+<span class="logo-text">
+Sadat Academy LMS
+</span>
+
+</div>
+
+<ul class="nav-links">
+
+<li>Home</li>
+<li>Programs</li>
+<li>Students</li>
+<li>About</li>
+<li>Contact</li>
+
+</ul>
+
+</nav>
+
+
+
+<!-- ================= HERO ================= -->
+
+<section class="hero">
+
+<div class="hero-container">
+
+<!-- LEFT SIDE -->
+
+<div class="hero-left">
+
+<div class="blue-circle"></div>
+
+<img
+id="roleImage"
+src="{{ url_for('static',
+filename='student.png') }}"
+class="student-img"
+alt="Role Image">
+
+</div>
+
+
+
+<!-- RIGHT SIDE -->
+
+<div class="hero-right">
+
+<h1>Welcome Back</h1>
+
+<p class="subtitle">
+Login to your academic portal
+</p>
+
+
+
+<!-- ROLE SWITCH -->
+
+<div class="role-switch">
+
+<button
+type="button"
+class="role active"
+data-role="student">
+
+<i class="fa fa-user-graduate"></i>
+Student
+
+</button>
+
+<button
+type="button"
+class="role"
+data-role="professor">
+
+<i class="fa fa-book"></i>
+Professor
+
+</button>
+
+<button
+type="button"
+class="role"
+data-role="staff">
+
+<i class="fa fa-user-tie"></i>
+Staff
+
+</button>
+
+</div>
+
+
+
+<!-- LOGIN FORM -->
+
+<form method="POST"
+action="{{ url_for('login') }}">
+
+<input
+type="hidden"
+name="role"
+id="roleInput"
+value="student">
+
+
+
+<div class="input-box">
+
+<i class="fa fa-envelope"></i>
+
+<input
+type="email"
+name="email"
+placeholder="Email Address"
+required>
+
+</div>
+
+
+
+<div class="input-box">
+
+<i class="fa fa-lock"></i>
+
+<input
+type="password"
+name="password"
+placeholder="Password"
+required>
+
+</div>
+
+
+
+<button class="login-btn"
+type="submit">
+
+<i class="fa fa-right-to-bracket"></i>
+
+Login
+
+</button>
+
+
+
+<!-- REGISTER + FORGOT -->
+
+<div class="login-links">
+
+<p>
+Don’t have an account?
+
+<a href="{{ url_for('register') }}">
+Register now
+</a>
+
+</p>
+
+<a href="{{ url_for('forgot') }}"
+class="forgot-link">
+
+Forgot password?
+
+</a>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ================= ABOUT ================= -->
+
+<section class="about">
+
+<h2>About Sadat Academy</h2>
+
+<p>
+
+Sadat Academy for Management Sciences
+is one of Egypt’s leading academic
+institutions, dedicated to providing
+high-quality education in management,
+information systems, and business
+technology.
+
+The academy focuses on innovation,
+practical learning, and modern
+educational tools to prepare students
+for professional careers in today's
+competitive world.
+
+Through advanced learning systems
+and experienced faculty members,
+Sadat Academy continues to develop
+future leaders and professionals.
+
+</p>
+
+</section>
+
+
+
+<!-- ================= FEATURES ================= -->
+
+<section class="features">
+
+<div class="feature">
+
+<i class="fa fa-calendar-check"></i>
+
+<h3>Attendance</h3>
+
+<p>
+Track attendance easily and
+accurately using smart tools.
+</p>
+
+</div>
+
+<div class="feature">
+
+<i class="fa fa-book"></i>
+
+<h3>Courses</h3>
+
+<p>
+Access lectures, assignments,
+and course materials anytime.
+</p>
+
+</div>
+
+<div class="feature">
+
+<i class="fa fa-chart-line"></i>
+
+<h3>Grades</h3>
+
+<p>
+Monitor academic performance
+and progress instantly.
+</p>
+
+</div>
+
+</section>
+
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+© 2026 Sadat Academy for Management Sciences
+
+</footer>
+
+
+
+<!-- ================= GSAP ================= -->
+
+<script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+
+<script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
+
+
+
+<!-- JS -->
+
+<script src="{{ url_for('static', filename='login.js') }}"></script>
+
+</body>
+
+</html>
