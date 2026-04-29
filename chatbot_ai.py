@@ -3,11 +3,15 @@ import re
 import fitz
 from groq import Groq
 
+# ================================
+# تخزين النصوص
+# ================================
+
 gis_docs = []
 dss_docs = []
 
 # ================================
-# Load PDFs
+# تحميل PDF وتقليل الحجم
 # ================================
 
 def load_pdfs():
@@ -18,7 +22,7 @@ def load_pdfs():
     dss_docs.clear()
 
     if not os.path.exists(folder):
-        print("Folder not found:", folder)
+        print("❌ Folder not found:", folder)
         return
 
     for file in os.listdir(folder):
@@ -36,23 +40,29 @@ def load_pdfs():
                 for page in doc:
                     text += page.get_text()
 
+                # 🔥 تقليل الحجم (مهم)
+                small_text = text[:4000]
+
                 if file.lower().startswith("gis"):
-                    gis_docs.append(text[:15000])
+                    gis_docs.append(small_text)
+                    print("✅ GIS Loaded:", file)
 
                 elif file.lower().startswith("dss"):
-                    dss_docs.append(text[:15000])
+                    dss_docs.append(small_text)
+                    print("✅ DSS Loaded:", file)
 
             except Exception as e:
 
-                print("Error loading:", file)
+                print("❌ Error loading:", file)
                 print(e)
 
 
+# تحميل عند بدء السيرفر
 load_pdfs()
 
 
 # ================================
-# Safe Client
+# إنشاء client آمن
 # ================================
 
 def get_client():
@@ -69,7 +79,7 @@ def get_client():
 
 
 # ================================
-# Ask
+# Ask Question
 # ================================
 
 def ask_question(question):
@@ -77,23 +87,25 @@ def ask_question(question):
     client = get_client()
 
     if not client:
-        return "AI not configured"
+        return "⚠ AI not configured"
 
     question_lower = question.lower()
 
+    # اختيار المادة
     if re.search(r'\bdss\b', question_lower):
 
         if not dss_docs:
-            return "No DSS chapters loaded."
+            return "⚠ No DSS chapters loaded."
 
-        content = "\n".join(dss_docs[:3])
+        # 🔥 نستخدم ملف واحد فقط
+        content = "\n".join(dss_docs[:1])
 
     else:
 
         if not gis_docs:
-            return "No GIS chapters loaded."
+            return "⚠ No GIS chapters loaded."
 
-        content = "\n".join(gis_docs[:3])
+        content = "\n".join(gis_docs[:1])
 
     try:
 
@@ -105,9 +117,12 @@ def ask_question(question):
                 {
                     "role": "user",
                     "content":
-                    f"Answer based only on:\n{content}\n\nQuestion: {question}"
+                    f"Answer based only on this content:\n\n{content}\n\nQuestion: {question}"
                 }
-            ]
+            ],
+
+            temperature=0.3,
+            max_tokens=500
 
         )
 
@@ -115,13 +130,13 @@ def ask_question(question):
 
     except Exception as e:
 
-        print("ERROR:", e)
+        print("❌ ERROR:", e)
 
-        return "AI error"
+        return "⚠ AI connection error."
 
 
 # ================================
-# Quiz
+# Generate Quiz
 # ================================
 
 def generate_quiz():
@@ -129,12 +144,12 @@ def generate_quiz():
     client = get_client()
 
     if not client:
-        return "AI not configured"
+        return "⚠ AI not configured"
 
     if not gis_docs:
-        return "No GIS chapters loaded."
+        return "⚠ No GIS chapters loaded."
 
-    content = "\n".join(gis_docs[:3])
+    content = "\n".join(gis_docs[:1])
 
     try:
 
@@ -146,9 +161,12 @@ def generate_quiz():
                 {
                     "role": "user",
                     "content":
-                    f"Create 5 MCQ from:\n{content}"
+                    f"Create 5 multiple choice questions from:\n\n{content}"
                 }
-            ]
+            ],
+
+            temperature=0.5,
+            max_tokens=700
 
         )
 
@@ -156,13 +174,13 @@ def generate_quiz():
 
     except Exception as e:
 
-        print("ERROR:", e)
+        print("❌ ERROR:", e)
 
-        return "Quiz error"
+        return "⚠ Quiz generation error."
 
 
 # ================================
-# Summary
+# Summarize
 # ================================
 
 def summarize():
@@ -170,12 +188,12 @@ def summarize():
     client = get_client()
 
     if not client:
-        return "AI not configured"
+        return "⚠ AI not configured"
 
     if not gis_docs:
-        return "No GIS chapters loaded."
+        return "⚠ No GIS chapters loaded."
 
-    content = "\n".join(gis_docs[:3])
+    content = "\n".join(gis_docs[:1])
 
     try:
 
@@ -187,9 +205,12 @@ def summarize():
                 {
                     "role": "user",
                     "content":
-                    f"Summarize:\n{content}"
+                    f"Summarize these chapters:\n\n{content}"
                 }
-            ]
+            ],
+
+            temperature=0.3,
+            max_tokens=500
 
         )
 
@@ -197,6 +218,6 @@ def summarize():
 
     except Exception as e:
 
-        print("ERROR:", e)
+        print("❌ ERROR:", e)
 
-        return "Summary error"
+        return "⚠ Summary error."
