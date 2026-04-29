@@ -718,6 +718,18 @@ def view_submissions():
         "view_submissions.html",
         submissions=submissions
     )
+@app.route("/check-key")
+def check_key():
+
+    import os
+
+    key = os.getenv("GROQ_API_KEY")
+
+    if key:
+        return "KEY FOUND ✅"
+
+    else:
+        return "KEY NOT FOUND ❌"
 
 @app.route("/test-ai")
 def test_ai():
@@ -751,6 +763,9 @@ def test_ai():
     except Exception as e:
 
         return str(e)
+    
+    
+    
 # ================= RUN =================
 import os
 
