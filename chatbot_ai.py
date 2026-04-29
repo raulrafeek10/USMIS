@@ -95,12 +95,8 @@ def ask_question(question):
 
         messages = [
             {
-                "role": "system",
-                "content": "Answer briefly using the provided content only."
-            },
-            {
                 "role": "user",
-                "content": f"{content}\n\nQuestion: {question}"
+                "content": f"Answer briefly using this content only:\n\n{content}\n\nQuestion: {question}"
             }
         ]
 
