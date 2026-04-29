@@ -718,6 +718,20 @@ def view_submissions():
         "view_submissions.html",
         submissions=submissions
     )
+
+@app.route("/check-pdfs")
+def check_pdfs():
+
+    import os
+
+    folder = "static/files"
+
+    if not os.path.exists(folder):
+        return "FOLDER NOT FOUND ❌"
+
+    files = os.listdir(folder)
+
+    return f"FILES: {files}"
 @app.route("/check-key")
 def check_key():
 
