@@ -3,68 +3,92 @@ import re
 import fitz
 from groq import Groq
 
-# قراءة API KEY
-api_key = os.environ.get("GROQ_API_KEY")
-
-# Debug مؤقت للتأكد
-print("GROQ_API_KEY =", api_key)
-
-if not api_key:
-    raise ValueError("❌ GROQ_API_KEY not found in environment variables")
-
-client = Groq(api_key=api_key)
-
+# Lists لتخزين النصوص
 gis_docs = []
 dss_docs = []
 
+# ================================
+# تحميل ملفات PDF
+# ================================
 def load_pdfs():
     folder = "static/files"
+
     gis_docs.clear()
     dss_docs.clear()
 
     if not os.path.exists(folder):
-        print("❌ Folder not found")
+        print("❌ Folder not found:", folder)
         return
 
     for file in os.listdir(folder):
+
         if file.endswith(".pdf"):
+
             path = os.path.join(folder, file)
+
             try:
                 doc = fitz.open(path)
-                text = "".join(page.get_text() for page in doc)
 
+                text = ""
+
+                for page in doc:
+                    text += page.get_text()
+
+                # تقسيم حسب المادة
                 if file.lower().startswith("gis"):
+
                     gis_docs.append(text[:15000])
                     print("✅ GIS Loaded:", file)
 
                 elif file.lower().startswith("dss"):
+
                     dss_docs.append(text[:15000])
                     print("✅ DSS Loaded:", file)
 
             except Exception as e:
-                print("❌ Error loading:", file, e)
 
+                print("❌ Error loading:", file)
+                print(e)
+
+
+# تحميل الملفات عند بدء السيرفر
 load_pdfs()
 
 
-# ===============================
-# Ask Question
-# ===============================
+# ================================
+# إنشاء Groq client وقت الحاجة فقط
+# ================================
+def get_client():
 
+    api_key = os.environ.get("GROQ_API_KEY")
+
+    if not api_key:
+
+        print("❌ GROQ_API_KEY not found!")
+
+        raise ValueError(
+            "GROQ_API_KEY environment variable is missing"
+        )
+
+    return Groq(api_key=api_key)
+
+
+# ================================
+# سؤال AI
+# ================================
 def ask_question(question):
-
-    if not client:
-        return "⚠ Chatbot not configured."
 
     question_lower = question.lower()
 
     if re.search(r'\bdss\b', question_lower):
+
         if not dss_docs:
             return "⚠ No DSS chapters loaded."
 
         content = "\n".join(dss_docs[:3])
 
     else:
+
         if not gis_docs:
             return "⚠ No GIS chapters loaded."
 
@@ -72,33 +96,36 @@ def ask_question(question):
 
     try:
 
+        client = get_client()
+
         response = client.chat.completions.create(
+
             model="llama-3.3-70b-versatile",
+
             messages=[
                 {
                     "role": "user",
                     "content":
-                    f"Answer based only on this content:\n{content}\n\nQuestion: {question}"
+                    f"Answer based only on this content:\n\n{content}\n\nQuestion: {question}"
                 }
             ]
+
         )
 
         return response.choices[0].message.content
 
     except Exception as e:
-        print("ERROR:", e)
-        return "⚠ AI error."
+
+        print("❌ ERROR:", e)
+
+        return "⚠ AI error occurred."
 
 
-# ===============================
+# ================================
 # Generate Quiz
-# ===============================
-
+# ================================
 def generate_quiz():
 
-    if not client:
-        return "⚠ Chatbot not configured."
-
     if not gis_docs:
         return "⚠ No GIS chapters loaded."
 
@@ -106,33 +133,36 @@ def generate_quiz():
 
     try:
 
+        client = get_client()
+
         response = client.chat.completions.create(
+
             model="llama-3.3-70b-versatile",
+
             messages=[
                 {
                     "role": "user",
                     "content":
-                    f"Create 5 multiple choice questions from:\n{content}"
+                    f"Create 5 multiple choice questions from:\n\n{content}"
                 }
             ]
+
         )
 
         return response.choices[0].message.content
 
     except Exception as e:
-        print("ERROR:", e)
-        return "⚠ Quiz error."
+
+        print("❌ ERROR:", e)
+
+        return "⚠ Quiz generation error."
 
 
-# ===============================
-# Summarize Content
-# ===============================
-
+# ================================
+# Summarize
+# ================================
 def summarize():
 
-    if not client:
-        return "⚠ Chatbot not configured."
-
     if not gis_docs:
         return "⚠ No GIS chapters loaded."
 
@@ -140,19 +170,26 @@ def summarize():
 
     try:
 
+        client = get_client()
+
         response = client.chat.completions.create(
+
             model="llama-3.3-70b-versatile",
+
             messages=[
                 {
                     "role": "user",
                     "content":
-                    f"Summarize these chapters:\n{content}"
+                    f"Summarize these chapters:\n\n{content}"
                 }
             ]
+
         )
 
         return response.choices[0].message.content
 
     except Exception as e:
-        print("ERROR:", e)
+
+        print("❌ ERROR:", e)
+
         return "⚠ Summary error."
