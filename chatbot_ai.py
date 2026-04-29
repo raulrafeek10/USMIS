@@ -6,7 +6,7 @@ gis_docs = []
 dss_docs = []
 
 # =========================
-# Load PDFs
+# Load PDFs (خفيف جدًا)
 # =========================
 
 def load_pdfs():
@@ -14,8 +14,11 @@ def load_pdfs():
     folder = "static/files"
 
     if not os.path.exists(folder):
-        print("❌ Folder not found")
+        print("❌ Folder not found:", folder)
         return
+
+    gis_docs.clear()
+    dss_docs.clear()
 
     for file in os.listdir(folder):
 
@@ -29,26 +32,30 @@ def load_pdfs():
 
                 text = ""
 
-                # خد أول صفحتين بس
-                for page in doc[:2]:
-                    text += page.get_text()
+                # ⬅️ خد صفحة واحدة فقط (مهم جدًا)
+                if len(doc) > 0:
+                    text = doc[0].get_text()
 
-                # قص النص
-                text = text[:2000]
+                # ⬅️ قص النص بشدة
+                text = text[:1200]
 
                 if file.lower().startswith("gis"):
+
                     gis_docs.append(text)
+                    print("✅ GIS Loaded:", file)
 
                 elif file.lower().startswith("dss"):
-                    dss_docs.append(text)
 
-                print("✅ Loaded:", file)
+                    dss_docs.append(text)
+                    print("✅ DSS Loaded:", file)
 
             except Exception as e:
-                print("❌ Error:", e)
+
+                print("❌ PDF ERROR:", e)
 
 
 load_pdfs()
+
 
 # =========================
 # Client
@@ -56,9 +63,16 @@ load_pdfs()
 
 def get_client():
 
-    return Groq(
-        api_key=os.getenv("GROQ_API_KEY")
-    )
+    api_key = os.getenv("GROQ_API_KEY")
+
+    if not api_key:
+
+        print("❌ API KEY NOT FOUND")
+
+        raise ValueError("Missing GROQ_API_KEY")
+
+    return Groq(api_key=api_key)
+
 
 # =========================
 # Ask Question
@@ -68,7 +82,9 @@ def ask_question(question):
 
     try:
 
-        if "dss" in question.lower():
+        question_lower = question.lower()
+
+        if "dss" in question_lower:
 
             if not dss_docs:
                 return "⚠ DSS not loaded"
@@ -91,27 +107,41 @@ def ask_question(question):
             messages=[
 
                 {
+                    "role": "system",
+                    "content":
+                    "Answer briefly using the provided content only."
+                },
+
+                {
                     "role": "user",
                     "content":
-                    f"Answer shortly:\n\n{content}\n\nQuestion:{question}"
+                    f"{content}\n\nQuestion: {question}"
                 }
 
             ],
 
-            max_tokens=150
+            max_tokens=120
 
         )
 
-        return response.choices[0].message.content
+        answer = response.choices[0].message.content
+
+        if not answer:
+            return "⚠ Empty response"
+
+        return answer
+
 
     except Exception as e:
 
-        print("❌ ERROR:", e)
+        print("❌ ASK ERROR:")
+        print(str(e))
 
         return "⚠ AI temporarily unavailable."
 
+
 # =========================
-# Quiz
+# Generate Quiz
 # =========================
 
 def generate_quiz():
@@ -134,22 +164,25 @@ def generate_quiz():
                 {
                     "role": "user",
                     "content":
-                    f"Create 3 MCQ questions:\n\n{content}"
+                    f"Create 3 multiple choice questions from:\n\n{content}"
                 }
 
             ],
 
-            max_tokens=200
+            max_tokens=180
 
         )
 
         return response.choices[0].message.content
 
+
     except Exception as e:
 
-        print("❌ ERROR:", e)
+        print("❌ QUIZ ERROR:")
+        print(str(e))
 
         return "⚠ Quiz error."
+
 
 # =========================
 # Summarize
@@ -175,19 +208,21 @@ def summarize():
                 {
                     "role": "user",
                     "content":
-                    f"Summarize shortly:\n\n{content}"
+                    f"Summarize briefly:\n\n{content}"
                 }
 
             ],
 
-            max_tokens=120
+            max_tokens=100
 
         )
 
         return response.choices[0].message.content
 
+
     except Exception as e:
 
-        print("❌ ERROR:", e)
+        print("❌ SUMMARY ERROR:")
+        print(str(e))
 
         return "⚠ Summary error."
