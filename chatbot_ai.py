@@ -3,11 +3,15 @@ import re
 import fitz
 from groq import Groq
 
+# ================================
+# Lists لتخزين النصوص
+# ================================
+
 gis_docs = []
 dss_docs = []
 
 # ================================
-# Load PDFs (small size جدا)
+# تحميل ملفات PDF
 # ================================
 
 def load_pdfs():
@@ -18,7 +22,7 @@ def load_pdfs():
     dss_docs.clear()
 
     if not os.path.exists(folder):
-        print("Folder not found:", folder)
+        print("❌ Folder not found:", folder)
         return
 
     for file in os.listdir(folder):
@@ -28,7 +32,6 @@ def load_pdfs():
             path = os.path.join(folder, file)
 
             try:
-
                 doc = fitz.open(path)
 
                 text = ""
@@ -36,26 +39,30 @@ def load_pdfs():
                 for page in doc:
                     text += page.get_text()
 
-                # 🔥 صغير جدًا لتجنب timeout
-                small_text = text[:2000]
+                # تقليل الحجم (مهم جدًا)
+                text = text[:6000]
 
                 if file.lower().startswith("gis"):
-                    gis_docs.append(small_text)
+
+                    gis_docs.append(text)
+                    print("✅ GIS Loaded:", file)
 
                 elif file.lower().startswith("dss"):
-                    dss_docs.append(small_text)
+
+                    dss_docs.append(text)
+                    print("✅ DSS Loaded:", file)
 
             except Exception as e:
 
-                print("Error loading:", file)
+                print("❌ Error loading:", file)
                 print(e)
 
 
+# تحميل الملفات عند بدء السيرفر
 load_pdfs()
 
-
 # ================================
-# Safe client
+# إنشاء Client
 # ================================
 
 def get_client():
@@ -64,20 +71,13 @@ def get_client():
 
     if not api_key:
 
-        print("GROQ_API_KEY missing")
+        print("❌ GROQ_API_KEY not found!")
 
-        return None
+        raise ValueError(
+            "GROQ_API_KEY environment variable is missing"
+        )
 
     return Groq(api_key=api_key)
-
-
-# ================================
-# Simple fallback response
-# ================================
-
-def fallback_answer():
-
-    return "⚠ AI temporarily unavailable. Try asking about GIS or DSS."
 
 
 # ================================
@@ -86,43 +86,49 @@ def fallback_answer():
 
 def ask_question(question):
 
-    client = get_client()
-
-    if not client:
-        return fallback_answer()
-
-    question_lower = question.lower()
-
-    if re.search(r'\bdss\b', question_lower):
-
-        if not dss_docs:
-            return "No DSS chapters loaded."
-
-        content = dss_docs[0]
-
-    else:
-
-        if not gis_docs:
-            return "No GIS chapters loaded."
-
-        content = gis_docs[0]
-
     try:
+
+        question_lower = question.lower()
+
+        # اختيار المادة
+        if "dss" in question_lower:
+
+            if not dss_docs:
+                return "⚠ DSS content not found."
+
+            content = dss_docs[0]
+
+        else:
+
+            if not gis_docs:
+                return "⚠ GIS content not found."
+
+            content = gis_docs[0]
+
+        client = get_client()
 
         response = client.chat.completions.create(
 
             model="llama-3.3-70b-versatile",
 
             messages=[
+
+                {
+                    "role": "system",
+                    "content":
+                    "Answer only from the given content. If not found, say 'Not found in chapter'."
+                },
+
                 {
                     "role": "user",
                     "content":
-                    f"Answer shortly based on:\n{content}\n\nQuestion: {question}"
+                    f"Content:\n{content}\n\nQuestion: {question}"
                 }
+
             ],
 
-            temperature=0.3,
-            max_tokens=300
+            max_tokens=400,
+            temperature=0.3
 
         )
 
@@ -130,9 +136,9 @@ def ask_question(question):
 
     except Exception as e:
 
-        print("ERROR:", e)
+        print("❌ ERROR ask_question:", e)
 
-        return fallback_answer()
+        return "⚠ AI connection error."
 
 
 # ================================
@@ -141,30 +147,31 @@ def ask_question(question):
 
 def generate_quiz():
 
-    client = get_client()
-
-    if not client:
-        return fallback_answer()
-
-    if not gis_docs:
-        return "No GIS chapters loaded."
-
     try:
+
+        if not gis_docs:
+            return "⚠ GIS content not found."
+
+        content = gis_docs[0]
+
+        client = get_client()
 
         response = client.chat.completions.create(
 
             model="llama-3.3-70b-versatile",
 
             messages=[
+
                 {
                     "role": "user",
                     "content":
-                    f"Create 3 MCQ from:\n{gis_docs[0]}"
+                    f"Create 5 MCQ questions from this content:\n\n{content}"
                 }
+
             ],
 
-            temperature=0.5,
-            max_tokens=400
+            max_tokens=500,
+            temperature=0.4
 
         )
 
@@ -172,9 +179,9 @@ def generate_quiz():
 
     except Exception as e:
 
-        print("ERROR:", e)
+        print("❌ ERROR generate_quiz:", e)
 
-        return fallback_answer()
+        return "⚠ Quiz generation error."
 
 
 # ================================
@@ -183,30 +190,31 @@ def generate_quiz():
 
 def summarize():
 
-    client = get_client()
-
-    if not client:
-        return fallback_answer()
-
-    if not gis_docs:
-        return "No GIS chapters loaded."
-
     try:
+
+        if not gis_docs:
+            return "⚠ GIS content not found."
+
+        content = gis_docs[0]
+
+        client = get_client()
 
         response = client.chat.completions.create(
 
             model="llama-3.3-70b-versatile",
 
             messages=[
+
                 {
                     "role": "user",
                     "content":
-                    f"Summarize briefly:\n{gis_docs[0]}"
+                    f"Summarize this content briefly:\n\n{content}"
                 }
+
             ],
 
-            temperature=0.3,
-            max_tokens=300
+            max_tokens=300,
+            temperature=0.3
 
         )
 
@@ -214,6 +222,6 @@ def summarize():
 
     except Exception as e:
 
-        print("ERROR:", e)
+        print("❌ ERROR summarize:", e)
 
-        return fallback_answer()
+        return "⚠ Summary error."
