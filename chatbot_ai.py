@@ -3,52 +3,34 @@ import re
 import fitz
 from groq import Groq
 
-# ===============================
-# Initialize Groq Client Safely
-# ===============================
+# ✅ قراءة API KEY بشكل آمن
+api_key = os.environ.get("GROQ_API_KEY")
 
-api_key = os.getenv("GROQ_API_KEY")
+if not api_key:
+    print("❌ GROQ_API_KEY not found!")
 
-client = None
-
-if api_key:
-    try:
-        client = Groq(api_key=api_key)
-        print("✅ GROQ client initialized")
-    except Exception as e:
-        print("❌ Error initializing GROQ:", e)
-else:
-    print("⚠ GROQ_API_KEY not found — chatbot disabled")
-
-
-# ===============================
-# Load PDF Files
-# ===============================
+client = Groq(
+    api_key=api_key
+)
 
 gis_docs = []
 dss_docs = []
 
-
 def load_pdfs():
     folder = "static/files"
-
     gis_docs.clear()
     dss_docs.clear()
 
     if not os.path.exists(folder):
-        print("❌ Folder not found:", folder)
+        print("❌ Folder not found")
         return
 
     for file in os.listdir(folder):
         if file.endswith(".pdf"):
             path = os.path.join(folder, file)
-
             try:
                 doc = fitz.open(path)
-                text = ""
-
-                for page in doc:
-                    text += page.get_text()
+                text = "".join(page.get_text() for page in doc)
 
                 if file.lower().startswith("gis"):
                     gis_docs.append(text[:15000])
@@ -61,8 +43,6 @@ def load_pdfs():
             except Exception as e:
                 print("❌ Error loading:", file, e)
 
-
-# Load PDFs once
 load_pdfs()
 
 
