@@ -1,28 +1,20 @@
 import os
 import fitz
 from groq import Groq
-import time
-
-# ================================
-# Storage
-# ================================
 
 gis_docs = []
 dss_docs = []
 
-# ================================
+# =========================
 # Load PDFs
-# ================================
+# =========================
 
 def load_pdfs():
 
     folder = "static/files"
 
-    gis_docs.clear()
-    dss_docs.clear()
-
     if not os.path.exists(folder):
-        print("❌ Folder not found:", folder)
+        print("❌ Folder not found")
         return
 
     for file in os.listdir(folder):
@@ -37,190 +29,165 @@ def load_pdfs():
 
                 text = ""
 
-                for page in doc:
+                # خد أول صفحتين بس
+                for page in doc[:2]:
                     text += page.get_text()
 
-                # مهم جدًا تقليل الحجم
-                text = text[:3000]
+                # قص النص
+                text = text[:2000]
 
                 if file.lower().startswith("gis"):
-
                     gis_docs.append(text)
-                    print("✅ GIS Loaded:", file)
 
                 elif file.lower().startswith("dss"):
-
                     dss_docs.append(text)
-                    print("✅ DSS Loaded:", file)
+
+                print("✅ Loaded:", file)
 
             except Exception as e:
-
-                print("❌ Error loading:", file)
-                print(e)
+                print("❌ Error:", e)
 
 
-# تحميل عند بدء السيرفر
 load_pdfs()
 
-# ================================
-# Create Client
-# ================================
+# =========================
+# Client
+# =========================
 
 def get_client():
 
-    api_key = os.getenv("GROQ_API_KEY")
-
-    if not api_key:
-        raise ValueError("GROQ_API_KEY missing")
-
     return Groq(
-        api_key=api_key,
-        timeout=30
+        api_key=os.getenv("GROQ_API_KEY")
     )
 
-# ================================
-# Retry Wrapper
-# ================================
-
-def call_ai(messages):
-
-    for attempt in range(3):
-
-        try:
-
-            client = get_client()
-
-            response = client.chat.completions.create(
-
-                model="llama-3.1-8b-instant",
-
-                messages=messages,
-
-                max_tokens=200,
-
-                temperature=0.3
-
-            )
-
-            return response.choices[0].message.content
-
-        except Exception as e:
-
-            print(f"❌ Attempt {attempt+1} failed:", e)
-
-            time.sleep(2)
-
-    return "⚠ AI temporarily unavailable."
-
-
-# ================================
+# =========================
 # Ask Question
-# ================================
+# =========================
 
 def ask_question(question):
 
     try:
 
-        question_lower = question.lower()
-
-        if "dss" in question_lower:
+        if "dss" in question.lower():
 
             if not dss_docs:
-                return "⚠ DSS content not found."
+                return "⚠ DSS not loaded"
 
             content = dss_docs[0]
 
         else:
 
             if not gis_docs:
-                return "⚠ GIS content not found."
+                return "⚠ GIS not loaded"
 
             content = gis_docs[0]
 
-        messages = [
+        client = get_client()
 
-            {
-                "role": "system",
-                "content":
-                "Answer briefly using the given content."
-            },
+        response = client.chat.completions.create(
 
-            {
-                "role": "user",
-                "content":
-                f"Content:\n{content}\n\nQuestion:\n{question}"
-            }
+            model="llama-3.1-8b-instant",
 
-        ]
+            messages=[
 
-        return call_ai(messages)
+                {
+                    "role": "user",
+                    "content":
+                    f"Answer shortly:\n\n{content}\n\nQuestion:{question}"
+                }
+
+            ],
+
+            max_tokens=150
+
+        )
+
+        return response.choices[0].message.content
 
     except Exception as e:
 
-        print("❌ ask_question error:", e)
+        print("❌ ERROR:", e)
 
-        return "⚠ AI connection error."
+        return "⚠ AI temporarily unavailable."
 
-
-# ================================
-# Generate Quiz
-# ================================
+# =========================
+# Quiz
+# =========================
 
 def generate_quiz():
 
     try:
 
         if not gis_docs:
-            return "⚠ GIS content not found."
+            return "⚠ GIS not loaded"
 
         content = gis_docs[0]
 
-        messages = [
+        client = get_client()
 
-            {
-                "role": "user",
-                "content":
-                f"Create 5 MCQ questions from:\n\n{content}"
-            }
+        response = client.chat.completions.create(
 
-        ]
+            model="llama-3.1-8b-instant",
 
-        return call_ai(messages)
+            messages=[
+
+                {
+                    "role": "user",
+                    "content":
+                    f"Create 3 MCQ questions:\n\n{content}"
+                }
+
+            ],
+
+            max_tokens=200
+
+        )
+
+        return response.choices[0].message.content
 
     except Exception as e:
 
-        print("❌ quiz error:", e)
+        print("❌ ERROR:", e)
 
         return "⚠ Quiz error."
 
-
-# ================================
+# =========================
 # Summarize
-# ================================
+# =========================
 
 def summarize():
 
     try:
 
         if not gis_docs:
-            return "⚠ GIS content not found."
+            return "⚠ GIS not loaded"
 
         content = gis_docs[0]
 
-        messages = [
+        client = get_client()
 
-            {
-                "role": "user",
-                "content":
-                f"Summarize briefly:\n\n{content}"
-            }
+        response = client.chat.completions.create(
 
-        ]
+            model="llama-3.1-8b-instant",
 
-        return call_ai(messages)
+            messages=[
+
+                {
+                    "role": "user",
+                    "content":
+                    f"Summarize shortly:\n\n{content}"
+                }
+
+            ],
+
+            max_tokens=120
+
+        )
+
+        return response.choices[0].message.content
 
     except Exception as e:
 
-        print("❌ summarize error:", e)
+        print("❌ ERROR:", e)
 
         return "⚠ Summary error."
