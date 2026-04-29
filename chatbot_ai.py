@@ -26,7 +26,6 @@ def load_pdfs():
             try:
 
                 doc = fitz.open(path)
-
                 text = ""
 
                 if len(doc) > 0:
@@ -71,6 +70,10 @@ def call_ai(messages):
     )
 
     data = response.json()
+    print("🔍 OpenRouter Response:", data)
+
+    if "choices" not in data:
+        return f"⚠ OpenRouter Error: {data}"
 
     return data["choices"][0]["message"]["content"]
 
