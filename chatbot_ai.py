@@ -3,14 +3,19 @@ import re
 import fitz
 from groq import Groq
 
-# Lists لتخزين النصوص
+# ================================
+# تخزين النصوص
+# ================================
+
 gis_docs = []
 dss_docs = []
 
 # ================================
-# تحميل ملفات PDF
+# تحميل PDF
 # ================================
+
 def load_pdfs():
+
     folder = "static/files"
 
     gis_docs.clear()
@@ -27,6 +32,7 @@ def load_pdfs():
             path = os.path.join(folder, file)
 
             try:
+
                 doc = fitz.open(path)
 
                 text = ""
@@ -34,7 +40,6 @@ def load_pdfs():
                 for page in doc:
                     text += page.get_text()
 
-                # تقسيم حسب المادة
                 if file.lower().startswith("gis"):
 
                     gis_docs.append(text[:15000])
@@ -51,32 +56,38 @@ def load_pdfs():
                 print(e)
 
 
-# تحميل الملفات عند بدء السيرفر
+# تحميل الملفات مرة واحدة
 load_pdfs()
 
 
 # ================================
-# إنشاء Groq client وقت الحاجة فقط
+# إنشاء client وقت الطلب فقط
 # ================================
+
 def get_client():
 
-    api_key = os.environ.get("GROQ_API_KEY")
+    api_key = os.getenv("GROQ_API_KEY")
 
     if not api_key:
 
-        print("❌ GROQ_API_KEY not found!")
+        print("❌ GROQ_API_KEY missing")
 
-        raise ValueError(
-            "GROQ_API_KEY environment variable is missing"
-        )
+        # مهم جدًا: نرجع None بدل crash
+        return None
 
     return Groq(api_key=api_key)
 
 
 # ================================
-# سؤال AI
+# Ask
 # ================================
+
 def ask_question(question):
+
+    client = get_client()
+
+    if not client:
+        return "⚠ AI not configured (missing API key)"
 
     question_lower = question.lower()
 
@@ -95,8 +106,6 @@ def ask_question(question):
         content = "\n".join(gis_docs[:3])
 
     try:
-
-        client = get_client()
 
         response = client.chat.completions.create(
 
@@ -118,13 +127,19 @@ def ask_question(question):
 
         print("❌ ERROR:", e)
 
-        return "⚠ AI error occurred."
+        return "⚠ AI error."
 
 
 # ================================
-# Generate Quiz
+# Quiz
 # ================================
+
 def generate_quiz():
+
+    client = get_client()
+
+    if not client:
+        return "⚠ AI not configured"
 
     if not gis_docs:
         return "⚠ No GIS chapters loaded."
@@ -132,8 +147,6 @@ def generate_quiz():
     content = "\n".join(gis_docs[:3])
 
     try:
-
-        client = get_client()
 
         response = client.chat.completions.create(
 
@@ -155,13 +168,19 @@ def generate_quiz():
 
         print("❌ ERROR:", e)
 
-        return "⚠ Quiz generation error."
+        return "⚠ Quiz error."
 
 
 # ================================
-# Summarize
+# Summary
 # ================================
+
 def summarize():
+
+    client = get_client()
+
+    if not client:
+        return "⚠ AI not configured"
 
     if not gis_docs:
         return "⚠ No GIS chapters loaded."
@@ -169,8 +188,6 @@ def summarize():
     content = "\n".join(gis_docs[:3])
 
     try:
-
-        client = get_client()
 
         response = client.chat.completions.create(
 
