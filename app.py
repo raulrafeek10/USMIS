@@ -719,6 +719,38 @@ def view_submissions():
         submissions=submissions
     )
 
+@app.route("/test-ai")
+def test_ai():
+
+    import os
+    from groq import Groq
+
+    try:
+
+        client = Groq(
+            api_key=os.getenv("GROQ_API_KEY")
+        )
+
+        response = client.chat.completions.create(
+
+            model="llama-3.3-70b-versatile",
+
+            messages=[
+                {
+                    "role": "user",
+                    "content": "Say hello"
+                }
+            ],
+
+            max_tokens=10
+
+        )
+
+        return response.choices[0].message.content
+
+    except Exception as e:
+
+        return str(e)
 # ================= RUN =================
 import os
 
