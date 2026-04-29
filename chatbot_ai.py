@@ -1,5 +1,6 @@
 import os
 import fitz
+import httpx
 from groq import Groq
 
 gis_docs = []
@@ -60,7 +61,8 @@ def get_client():
         print("❌ API KEY NOT FOUND")
         raise ValueError("Missing GROQ_API_KEY")
 
-    return Groq(api_key=api_key)
+    http_client = httpx.Client(verify=False)
+    return Groq(api_key=api_key, http_client=http_client)
 
 
 def ask_question(question):
