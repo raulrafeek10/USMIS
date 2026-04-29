@@ -62,8 +62,7 @@ def call_ai(messages):
             "Content-Type": "application/json"
         },
         json={
-            "model": "mistralai/mistral-7b-instruct:free",
-            "messages": messages,
+         "model": "mistralai/mistral-7b-instruct-v0.2:free","messages": messages,
             "max_tokens": 150
         },
         timeout=30
