@@ -1,7 +1,6 @@
 import os
 import fitz
-import httpx
-from groq import Groq
+import requests
 
 gis_docs = []
 dss_docs = []
@@ -36,33 +35,44 @@ def load_pdfs():
                 text = text[:1200]
 
                 if file.lower().startswith("gis"):
-
                     gis_docs.append(text)
                     print("✅ GIS Loaded:", file)
 
                 elif file.lower().startswith("dss"):
-
                     dss_docs.append(text)
                     print("✅ DSS Loaded:", file)
 
             except Exception as e:
-
                 print("❌ PDF ERROR:", e)
 
 
 load_pdfs()
 
 
-def get_client():
+def call_ai(messages):
 
-    api_key = os.getenv("GROQ_API_KEY")
+    api_key = os.getenv("OPENROUTER_API_KEY")
 
     if not api_key:
-        print("❌ API KEY NOT FOUND")
-        raise ValueError("Missing GROQ_API_KEY")
+        raise ValueError("Missing OPENROUTER_API_KEY")
 
-    http_client = httpx.Client(verify=False)
-    return Groq(api_key=api_key, http_client=http_client)
+    response = requests.post(
+        url="https://openrouter.ai/api/v1/chat/completions",
+        headers={
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json"
+        },
+        json={
+            "model": "mistralai/mistral-7b-instruct:free",
+            "messages": messages,
+            "max_tokens": 150
+        },
+        timeout=30
+    )
+
+    data = response.json()
+
+    return data["choices"][0]["message"]["content"]
 
 
 def ask_question(question):
@@ -72,52 +82,28 @@ def ask_question(question):
         question_lower = question.lower()
 
         if "dss" in question_lower:
-
             if not dss_docs:
                 return "⚠ DSS not loaded"
-
             content = dss_docs[0]
-
         else:
-
             if not gis_docs:
                 return "⚠ GIS not loaded"
-
             content = gis_docs[0]
 
-        client = get_client()
+        messages = [
+            {
+                "role": "system",
+                "content": "Answer briefly using the provided content only."
+            },
+            {
+                "role": "user",
+                "content": f"{content}\n\nQuestion: {question}"
+            }
+        ]
 
-        response = client.chat.completions.create(
-
-            model="llama-3.1-8b-instant",
-
-            messages=[
-
-                {
-                    "role": "system",
-                    "content": "Answer briefly using the provided content only."
-                },
-
-                {
-                    "role": "user",
-                    "content": f"{content}\n\nQuestion: {question}"
-                }
-
-            ],
-
-            max_tokens=120
-
-        )
-
-        answer = response.choices[0].message.content
-
-        if not answer:
-            return "⚠ Empty response"
-
-        return answer
+        return call_ai(messages)
 
     except Exception as e:
-
         print(f"❌ ASK ERROR: {type(e).__name__}: {str(e)}")
         return f"⚠ Error: {type(e).__name__}: {str(e)}"
 
@@ -131,29 +117,16 @@ def generate_quiz():
 
         content = gis_docs[0]
 
-        client = get_client()
+        messages = [
+            {
+                "role": "user",
+                "content": f"Create 3 multiple choice questions from:\n\n{content}"
+            }
+        ]
 
-        response = client.chat.completions.create(
-
-            model="llama-3.1-8b-instant",
-
-            messages=[
-
-                {
-                    "role": "user",
-                    "content": f"Create 3 multiple choice questions from:\n\n{content}"
-                }
-
-            ],
-
-            max_tokens=180
-
-        )
-
-        return response.choices[0].message.content
+        return call_ai(messages)
 
     except Exception as e:
-
         print(f"❌ QUIZ ERROR: {type(e).__name__}: {str(e)}")
         return f"⚠ Error: {type(e).__name__}: {str(e)}"
 
@@ -167,28 +140,15 @@ def summarize():
 
         content = gis_docs[0]
 
-        client = get_client()
+        messages = [
+            {
+                "role": "user",
+                "content": f"Summarize briefly:\n\n{content}"
+            }
+        ]
 
-        response = client.chat.completions.create(
-
-            model="llama-3.1-8b-instant",
-
-            messages=[
-
-                {
-                    "role": "user",
-                    "content": f"Summarize briefly:\n\n{content}"
-                }
-
-            ],
-
-            max_tokens=100
-
-        )
-
-        return response.choices[0].message.content
+        return call_ai(messages)
 
     except Exception as e:
-
         print(f"❌ SUMMARY ERROR: {type(e).__name__}: {str(e)}")
         return f"⚠ Error: {type(e).__name__}: {str(e)}"
