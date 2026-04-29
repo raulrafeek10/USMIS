@@ -54,7 +54,6 @@ load_pdfs()
 
 def get_content(question_lower):
 
-    # شيل رقم الـ chapter من السؤال
     chapter_num = None
     for word in question_lower.split():
         if word.isdigit():
@@ -68,7 +67,6 @@ def get_content(question_lower):
             return dss_docs[min(dss_docs.keys())]
         else:
             return None
-
     else:
         if chapter_num and chapter_num in gis_docs:
             return gis_docs[chapter_num]
@@ -85,27 +83,43 @@ def call_ai(messages):
     if not api_key:
         raise ValueError("Missing OPENROUTER_API_KEY")
 
-    response = requests.post(
-        url="https://openrouter.ai/api/v1/chat/completions",
-        headers={
-            "Authorization": f"Bearer {api_key}",
-            "Content-Type": "application/json"
-        },
-        json={
-            "model": "google/gemma-3-4b-it:free",
-            "messages": messages,
-            "max_tokens": 300
-        },
-        timeout=30
-    )
+    models = [
+        "google/gemma-3-4b-it:free",
+        "meta-llama/llama-3.2-3b-instruct:free",
+        "qwen/qwen-2.5-7b-instruct:free"
+    ]
 
-    data = response.json()
-    print("🔍 OpenRouter Response:", data)
+    for model in models:
 
-    if "choices" not in data:
-        return f"⚠ OpenRouter Error: {data}"
+        try:
 
-    return data["choices"][0]["message"]["content"]
+            response = requests.post(
+                url="https://openrouter.ai/api/v1/chat/completions",
+                headers={
+                    "Authorization": f"Bearer {api_key}",
+                    "Content-Type": "application/json"
+                },
+                json={
+                    "model": model,
+                    "messages": messages,
+                    "max_tokens": 300
+                },
+                timeout=30
+            )
+
+            data = response.json()
+            print(f"🔍 Model: {model} | Response: {data}")
+
+            if "choices" in data:
+                return data["choices"][0]["message"]["content"]
+
+            print(f"⚠ Model {model} failed, trying next...")
+
+        except Exception as e:
+            print(f"❌ Model {model} error: {str(e)}")
+            continue
+
+    return "⚠ All models unavailable, please try again later."
 
 
 def ask_question(question):
@@ -132,14 +146,18 @@ def ask_question(question):
         return f"⚠ Error: {type(e).__name__}: {str(e)}"
 
 
-def generate_quiz():
+def generate_quiz(question=""):
 
     try:
 
-        if not gis_docs:
-            return "⚠ GIS not loaded"
+        question_lower = question.lower() if question else "gis"
+        content = get_content(question_lower)
 
-        content = gis_docs[min(gis_docs.keys())]
+        if not content:
+            if gis_docs:
+                content = gis_docs[min(gis_docs.keys())]
+            else:
+                return "⚠ No content loaded"
 
         messages = [
             {
@@ -155,14 +173,18 @@ def generate_quiz():
         return f"⚠ Error: {type(e).__name__}: {str(e)}"
 
 
-def summarize():
+def summarize(question=""):
 
     try:
 
-        if not gis_docs:
-            return "⚠ GIS not loaded"
+        question_lower = question.lower() if question else "gis"
+        content = get_content(question_lower)
 
-        content = gis_docs[min(gis_docs.keys())]
+        if not content:
+            if gis_docs:
+                content = gis_docs[min(gis_docs.keys())]
+            else:
+                return "⚠ No content loaded"
 
         messages = [
             {
