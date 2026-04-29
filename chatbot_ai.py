@@ -2,8 +2,8 @@ import os
 import fitz
 import requests
 
-gis_docs = []
-dss_docs = []
+gis_docs = {}
+dss_docs = {}
 
 
 def load_pdfs():
@@ -28,24 +28,54 @@ def load_pdfs():
                 doc = fitz.open(path)
                 text = ""
 
-                if len(doc) > 0:
-                    text = doc[0].get_text()
+                for page in doc:
+                    text += page.get_text()
 
-                text = text[:1200]
+                text = text[:2000]
 
                 if file.lower().startswith("gis"):
-                    gis_docs.append(text)
-                    print("✅ GIS Loaded:", file)
+                    num = ''.join(filter(str.isdigit, file))
+                    if num:
+                        gis_docs[int(num)] = text
+                        print("✅ GIS Loaded:", file)
 
                 elif file.lower().startswith("dss"):
-                    dss_docs.append(text)
-                    print("✅ DSS Loaded:", file)
+                    num = ''.join(filter(str.isdigit, file))
+                    if num:
+                        dss_docs[int(num)] = text
+                        print("✅ DSS Loaded:", file)
 
             except Exception as e:
                 print("❌ PDF ERROR:", e)
 
 
 load_pdfs()
+
+
+def get_content(question_lower):
+
+    # شيل رقم الـ chapter من السؤال
+    chapter_num = None
+    for word in question_lower.split():
+        if word.isdigit():
+            chapter_num = int(word)
+            break
+
+    if "dss" in question_lower:
+        if chapter_num and chapter_num in dss_docs:
+            return dss_docs[chapter_num]
+        elif dss_docs:
+            return dss_docs[min(dss_docs.keys())]
+        else:
+            return None
+
+    else:
+        if chapter_num and chapter_num in gis_docs:
+            return gis_docs[chapter_num]
+        elif gis_docs:
+            return gis_docs[min(gis_docs.keys())]
+        else:
+            return None
 
 
 def call_ai(messages):
@@ -64,7 +94,7 @@ def call_ai(messages):
         json={
             "model": "google/gemma-3-4b-it:free",
             "messages": messages,
-            "max_tokens": 150
+            "max_tokens": 300
         },
         timeout=30
     )
@@ -83,15 +113,10 @@ def ask_question(question):
     try:
 
         question_lower = question.lower()
+        content = get_content(question_lower)
 
-        if "dss" in question_lower:
-            if not dss_docs:
-                return "⚠ DSS not loaded"
-            content = dss_docs[0]
-        else:
-            if not gis_docs:
-                return "⚠ GIS not loaded"
-            content = gis_docs[0]
+        if not content:
+            return "⚠ No content loaded"
 
         messages = [
             {
@@ -114,7 +139,7 @@ def generate_quiz():
         if not gis_docs:
             return "⚠ GIS not loaded"
 
-        content = gis_docs[0]
+        content = gis_docs[min(gis_docs.keys())]
 
         messages = [
             {
@@ -137,7 +162,7 @@ def summarize():
         if not gis_docs:
             return "⚠ GIS not loaded"
 
-        content = gis_docs[0]
+        content = gis_docs[min(gis_docs.keys())]
 
         messages = [
             {
