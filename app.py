@@ -694,7 +694,7 @@ def submit_assignment(course_name):
             course_name=course_name
         )
     )
-# ================= VIEW SUBMISSIONS =================
+
 
 @app.route("/view_submissions")
 def view_submissions():
@@ -720,6 +720,7 @@ def view_submissions():
     )
 
 # ================= RUN =================
+import os
 
 if __name__ == "__main__":
     create_tables()
@@ -728,4 +729,6 @@ if __name__ == "__main__":
     insert_student_courses()
 
     print(" Server Started...")
-    app.run(debug=True)
+
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host="0.0.0.0", port=port)
