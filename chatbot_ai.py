@@ -5,9 +5,6 @@ from groq import Groq
 gis_docs = []
 dss_docs = []
 
-# =========================
-# Load PDFs (خفيف جدًا)
-# =========================
 
 def load_pdfs():
 
@@ -32,11 +29,9 @@ def load_pdfs():
 
                 text = ""
 
-                # ⬅️ خد صفحة واحدة فقط (مهم جدًا)
                 if len(doc) > 0:
                     text = doc[0].get_text()
 
-                # ⬅️ قص النص بشدة
                 text = text[:1200]
 
                 if file.lower().startswith("gis"):
@@ -57,26 +52,16 @@ def load_pdfs():
 load_pdfs()
 
 
-# =========================
-# Client
-# =========================
-
 def get_client():
 
     api_key = os.getenv("GROQ_API_KEY")
 
     if not api_key:
-
         print("❌ API KEY NOT FOUND")
-
         raise ValueError("Missing GROQ_API_KEY")
 
     return Groq(api_key=api_key)
 
-
-# =========================
-# Ask Question
-# =========================
 
 def ask_question(question):
 
@@ -108,14 +93,12 @@ def ask_question(question):
 
                 {
                     "role": "system",
-                    "content":
-                    "Answer briefly using the provided content only."
+                    "content": "Answer briefly using the provided content only."
                 },
 
                 {
                     "role": "user",
-                    "content":
-                    f"{content}\n\nQuestion: {question}"
+                    "content": f"{content}\n\nQuestion: {question}"
                 }
 
             ],
@@ -131,18 +114,11 @@ def ask_question(question):
 
         return answer
 
-
     except Exception as e:
 
-        print("❌ ASK ERROR:")
-        print(str(e))
+        print(f"❌ ASK ERROR: {type(e).__name__}: {str(e)}")
+        return f"⚠ Error: {type(e).__name__}: {str(e)}"
 
-        return "⚠ AI temporarily unavailable."
-
-
-# =========================
-# Generate Quiz
-# =========================
 
 def generate_quiz():
 
@@ -163,8 +139,7 @@ def generate_quiz():
 
                 {
                     "role": "user",
-                    "content":
-                    f"Create 3 multiple choice questions from:\n\n{content}"
+                    "content": f"Create 3 multiple choice questions from:\n\n{content}"
                 }
 
             ],
@@ -175,18 +150,11 @@ def generate_quiz():
 
         return response.choices[0].message.content
 
-
     except Exception as e:
 
-        print("❌ QUIZ ERROR:")
-        print(str(e))
+        print(f"❌ QUIZ ERROR: {type(e).__name__}: {str(e)}")
+        return f"⚠ Error: {type(e).__name__}: {str(e)}"
 
-        return "⚠ Quiz error."
-
-
-# =========================
-# Summarize
-# =========================
 
 def summarize():
 
@@ -207,8 +175,7 @@ def summarize():
 
                 {
                     "role": "user",
-                    "content":
-                    f"Summarize briefly:\n\n{content}"
+                    "content": f"Summarize briefly:\n\n{content}"
                 }
 
             ],
@@ -219,10 +186,7 @@ def summarize():
 
         return response.choices[0].message.content
 
-
     except Exception as e:
 
-        print("❌ SUMMARY ERROR:")
-        print(str(e))
-
-        return "⚠ Summary error."
+        print(f"❌ SUMMARY ERROR: {type(e).__name__}: {str(e)}")
+        return f"⚠ Error: {type(e).__name__}: {str(e)}"
