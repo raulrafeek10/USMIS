@@ -1,5 +1,4 @@
 import os
-import re
 import fitz
 from groq import Groq
 
@@ -40,7 +39,7 @@ def load_pdfs():
                     text += page.get_text()
 
                 # تقليل الحجم (مهم جدًا)
-                text = text[:6000]
+                text = text[:5000]
 
                 if file.lower().startswith("gis"):
 
@@ -109,14 +108,15 @@ def ask_question(question):
 
         response = client.chat.completions.create(
 
-            model="llama-3.3-70b-versatile",
+            # موديل خفيف وسريع
+            model="llama-3.1-8b-instant",
 
             messages=[
 
                 {
                     "role": "system",
                     "content":
-                    "Answer only from the given content. If not found, say 'Not found in chapter'."
+                    "Answer only from the given content."
                 },
 
                 {
@@ -127,7 +127,7 @@ def ask_question(question):
 
             ],
 
-            max_tokens=400,
+            max_tokens=300,
             temperature=0.3
 
         )
@@ -158,7 +158,7 @@ def generate_quiz():
 
         response = client.chat.completions.create(
 
-            model="llama-3.3-70b-versatile",
+            model="llama-3.1-8b-instant",
 
             messages=[
 
@@ -170,7 +170,7 @@ def generate_quiz():
 
             ],
 
-            max_tokens=500,
+            max_tokens=400,
             temperature=0.4
 
         )
@@ -201,7 +201,7 @@ def summarize():
 
         response = client.chat.completions.create(
 
-            model="llama-3.3-70b-versatile",
+            model="llama-3.1-8b-instant",
 
             messages=[
 
@@ -213,7 +213,7 @@ def summarize():
 
             ],
 
-            max_tokens=300,
+            max_tokens=250,
             temperature=0.3
 
         )
