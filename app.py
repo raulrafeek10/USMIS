@@ -72,35 +72,28 @@ def create_tables():
     )
     """)
 
-    # ================= NEW TABLE (SUBMISSIONS) 🔥 =================
+    # ================= SUBMISSIONS =================
 
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS assignment_submissions (
 
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-
         student_name TEXT,
-
         assignment_title TEXT,
-
         filename TEXT,
-
         course_name TEXT,
-
         submission_date TEXT
 
     )
     """)
 
-    # ================= NEW TABLE (NOTIFICATIONS) 🔔 =================
+    # ================= NOTIFICATIONS =================
 
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS notifications (
 
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-
         message TEXT,
-
         created_at TEXT
 
     )
@@ -137,6 +130,30 @@ def create_tables():
         grade TEXT,
         credits INTEGER,
         FOREIGN KEY(student_id) REFERENCES students(id)
+    )
+    """)
+
+    # ================= PAYMENT TABLE 🔥 =================
+
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS payments (
+
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+        student_id TEXT,
+
+        method TEXT,
+
+        program TEXT,
+
+        year TEXT,
+
+        amount INTEGER,
+
+        status TEXT,
+
+        paid_on TEXT
+
     )
     """)
 
@@ -451,8 +468,24 @@ def today_classes():
 
 @app.route("/payment")
 def payment():
-    return render_template("payment.html")
 
+    conn = sqlite3.connect("lms.db")
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    SELECT id, method, amount, status, paid_on
+    FROM payments
+    ORDER BY id DESC
+    """)
+
+    payments = cursor.fetchall()
+
+    conn.close()
+
+    return render_template(
+        "payment.html",
+        payments=payments
+    )
 @app.route("/register")
 def register():
     return render_template("register.html")
@@ -723,7 +756,33 @@ def submit_assignment(course_name):
             course_name=course_name
         )
     )
+@app.route("/payment_history")
+def payment_history():
 
+    conn = sqlite3.connect("lms.db")
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    SELECT * FROM payments
+    ORDER BY id DESC
+    """)
+
+    payments = cursor.fetchall()
+
+    conn.close()
+
+    return render_template(
+        "payment_history.html",
+        payments=payments
+    )
+
+@app.route("/pay/<method>")
+def pay(method):
+
+    return render_template(
+        "payment_gateway.html",
+        method=method
+    )
 
 @app.route("/view_submissions")
 def view_submissions():
@@ -747,6 +806,57 @@ def view_submissions():
         "view_submissions.html",
         submissions=submissions
     )
+@app.route("/confirm_payment", methods=["POST"])
+def confirm_payment():
+
+    import random
+
+    method = request.form.get("method")
+    student_id = request.form.get("student_id")
+    year = request.form.get("year")
+    program = request.form.get("program")
+    amount = request.form.get("amount")
+
+    transaction_id = "TX" + str(random.randint(10000,99999))
+
+    conn = sqlite3.connect("lms.db")
+    cursor = conn.cursor()
+
+    cursor.execute("""
+
+    INSERT INTO payments
+    (
+        student_id,
+        method,
+        program,
+        year,
+        amount,
+        status,
+        paid_on
+    )
+
+    VALUES (?, ?, ?, ?, ?, ?, datetime('now'))
+
+    """,
+
+    (
+        student_id,
+        method,
+        program,
+        year,
+        amount,
+        "Done"
+    ))
+
+    conn.commit()
+    conn.close()
+
+    return render_template(
+        "payment_success.html",
+        transaction_id=transaction_id,
+        amount=amount
+    )
+
 
 @app.route("/check-pdfs")
 def check_pdfs():
@@ -792,16 +902,19 @@ def test_ai():
         return f"ERROR TYPE: {type(e).__name__} | MESSAGE: {str(e)}"  # ← غير السطر ده
     
     
+    
 # ================= RUN =================
 import os
-
 if __name__ == "__main__":
     create_tables()
     insert_default_data()
     insert_random_students()
     insert_student_courses()
 
-    print(" Server Started...")
+    print("Server Started...")
 
-    port = int(os.environ.get("PORT", 8080))
-    app.run(host="0.0.0.0", port=port)
+    app.run(
+        host="127.0.0.1",
+        port=5000,
+        debug=True
+    )

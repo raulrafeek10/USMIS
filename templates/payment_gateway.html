@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Payment</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+/* ===== PAGE ===== */
+
+body{
+
+font-family:'Poppins',sans-serif;
+
+background:linear-gradient(
+135deg,
+#f6f7fb,
+#eef1ff
+);
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+min-height:100vh;
+
+margin:0;
+
+}
+
+
+/* ===== CARD ===== */
+
+.container{
+
+width:520px;
+
+background:white;
+
+padding:35px;
+
+border-radius:18px;
+
+box-shadow:
+0 12px 35px rgba(0,0,0,0.08);
+
+animation:fadeIn 0.4s ease;
+
+}
+
+
+/* ===== TITLE ===== */
+
+h2{
+
+text-align:center;
+
+font-size:26px;
+
+font-weight:600;
+
+margin-bottom:25px;
+
+color:#333;
+
+}
+
+
+/* ===== LABEL ===== */
+
+label{
+
+display:block;
+
+font-size:14px;
+
+font-weight:500;
+
+margin-top:14px;
+
+margin-bottom:6px;
+
+color:#444;
+
+}
+
+
+/* ===== INPUT ===== */
+
+input,
+select{
+
+width:100%;
+
+padding:12px;
+
+border-radius:10px;
+
+border:1px solid #ddd;
+
+font-size:14px;
+
+transition:0.2s;
+
+outline:none;
+
+}
+
+
+input:focus,
+select:focus{
+
+border-color:#6c63ff;
+
+box-shadow:
+0 0 0 2px rgba(108,99,255,0.15);
+
+}
+
+
+/* ===== BUTTON ===== */
+
+button{
+
+width:100%;
+
+padding:14px;
+
+background:linear-gradient(
+135deg,
+#6c63ff,
+#5a52e0
+);
+
+color:white;
+
+border:none;
+
+border-radius:10px;
+
+font-size:15px;
+
+font-weight:500;
+
+cursor:pointer;
+
+transition:0.25s;
+
+margin-top:12px;
+
+}
+
+
+button:hover{
+
+transform:translateY(-2px);
+
+box-shadow:
+0 6px 18px rgba(108,99,255,0.35);
+
+}
+
+
+/* ===== AMOUNT ===== */
+
+#amount{
+
+font-weight:600;
+
+color:#065f46;
+
+background:#f0fdf4;
+
+}
+
+
+/* ===== ANIMATION ===== */
+
+@keyframes fadeIn{
+
+from{
+opacity:0;
+transform:translateY(15px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
+
+}
+
+</style>
+
+
+
+<script>
+
+function calculateFees() {
+
+let year = document.getElementById("year").value;
+let program = document.getElementById("program").value;
+
+let amount = 0;
+
+if (program == "BIS") {
+
+if (year == "1")
+amount = 14000;
+
+else if (year == "2")
+amount = 13500;
+
+else if (year == "3")
+amount = 13000;
+
+else
+amount = 12500;
+
+}
+
+if (program == "IBM") {
+
+if (year == "1")
+amount = 15000;
+
+else if (year == "2")
+amount = 14500;
+
+else if (year == "3")
+amount = 14000;
+
+else
+amount = 13500;
+
+}
+
+document.getElementById("amount").value = amount;
+
+}
+
+</script>
+
+</head>
+
+
+
+<body>
+
+<div class="container">
+
+<h2>
+
+Pay using {{ method|capitalize }}
+
+</h2>
+
+<form method="POST" action="/confirm_payment">
+
+<input type="hidden"
+       name="method"
+       value="{{ method }}">
+
+
+
+<label>Student ID</label>
+
+<input type="text"
+       name="student_id"
+       placeholder="Enter Student ID"
+       required>
+
+
+
+<label>Year</label>
+
+<select name="year"
+        id="year">
+
+<option value="1">Year 1</option>
+
+<option value="2">Year 2</option>
+
+<option value="3">Year 3</option>
+
+<option value="4">Year 4</option>
+
+</select>
+
+
+
+<label>Program</label>
+
+<select name="program"
+        id="program">
+
+<option value="BIS">BIS</option>
+
+<option value="IBM">IBM</option>
+
+</select>
+
+
+
+<button type="button"
+        onclick="calculateFees()">
+
+Calculate Fees
+
+</button>
+
+
+
+<label>Amount</label>
+
+<input type="number"
+       name="amount"
+       id="amount"
+       placeholder="Calculated Amount"
+       readonly>
+
+
+
+<button type="submit">
+
+Pay Now
+
+</button>
+
+</form>
+
+</div>
+
+</body>
+
+</html>

@@ -132,6 +132,8 @@ Add New Payment
 
 <h3>Payment Methods</h3>
 
+<a href="{{ url_for('pay', method='visa') }}" class="method-link">
+
 <div class="method">
 
 <img src="https://img.icons8.com/color/48/visa.png">
@@ -148,7 +150,11 @@ Add New Payment
 
 </div>
 
+</a>
 
+
+
+<a href="{{ url_for('pay', method='mastercard') }}" class="method-link">
 
 <div class="method">
 
@@ -166,7 +172,11 @@ Add New Payment
 
 </div>
 
+</a>
 
+
+
+<a href="{{ url_for('pay', method='bank') }}" class="method-link">
 
 <div class="method">
 
@@ -182,7 +192,11 @@ Add New Payment
 
 </div>
 
+</a>
 
+
+
+<a href="{{ url_for('pay', method='fawry') }}" class="method-link">
 
 <div class="method">
 
@@ -198,8 +212,9 @@ Add New Payment
 
 </div>
 
-</div>
+</a>
 
+</div>
 
 
 <!-- ================= PAYMENT HISTORY ================= -->

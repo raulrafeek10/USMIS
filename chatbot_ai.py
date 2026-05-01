@@ -31,7 +31,7 @@ def load_pdfs():
                 for page in doc:
                     text += page.get_text()
 
-                text = text[:2000]
+                text = text[:4000]
 
                 if file.lower().startswith("gis"):
                     num = ''.join(filter(str.isdigit, file))
