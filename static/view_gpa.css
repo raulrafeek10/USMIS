@@ -1,171 +1,127 @@
-/* ================= GPA PAGE ================= */
-
-.gpa-container{
-
-width:100%;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-margin-top:40px;
-
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", sans-serif;
 }
 
-
-/* ================= CARD ================= */
-
-.gpa-card{
-
-width:900px;   /* أكبر */
-
-max-width:95%;
-
-background:white;
-
-padding:40px;
-
-border-radius:20px;
-
-box-shadow:0 15px 35px rgba(0,0,0,0.08);
-
-transition:0.3s;
-
+/* Layout */
+body {
+    background: #f4f6fb;
 }
 
-
-/* ================= TITLE ================= */
-
-.gpa-title{
-
-font-size:26px;
-
-font-weight:600;
-
-margin-bottom:25px;
-
-display:flex;
-
-align-items:center;
-
-gap:12px;
-
-color:#111827;
-
+.dashboard {
+    display: flex;
 }
 
-
-/* ================= TABLE ================= */
-
-.gpa-table{
-
-width:100%;
-
-border-collapse:collapse;
-
+/* Sidebar */
+.sidebar {
+    width: 220px;
+    height: 100vh;
+    background: white;
+    padding: 25px;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.05);
 }
 
-.gpa-table th{
-
-text-align:left;
-
-padding:16px;
-
-font-size:15px;
-
-color:#6b7280;
-
-border-bottom:1px solid #e5e7eb;
-
+.logo {
+    margin-bottom: 30px;
+    color: #6c5ce7;
 }
 
-.gpa-table td{
-
-padding:16px;
-
-font-size:16px;
-
-border-bottom:1px solid #f1f1f1;
-
+.menu {
+    list-style: none;
 }
 
-.gpa-table tr:hover{
-
-background:#f9fafb;
-
+.menu li {
+    margin-bottom: 15px;
 }
 
-
-/* ================= GRADES COLORS ================= */
-
-.grade-a{
-
-color:#16a34a;
-
-font-weight:600;
-
+.menu a {
+    text-decoration: none;
+    color: #333;
+    padding: 10px;
+    display: block;
+    border-radius: 8px;
+    transition: 0.3s;
 }
 
-.grade-aplus{
-
-color:#2563eb;
-
-font-weight:600;
-
+.menu li.active a {
+    background: #6c5ce7;
+    color: white;
 }
 
-.grade-b{
-
-color:#f59e0b;
-
-font-weight:600;
-
+.main {
+    flex: 1;
+    display: flex;
+    justify-content: center;   /* يوسّط أفقي */
+    align-items: center;       /* يوسّط رأسي */
+    min-height: 100vh;
+    padding: 20px;
 }
 
-
-/* ================= FOOTER ================= */
-
-.gpa-footer{
-
-margin-top:30px;
-
-background:#1f3b6f;
-
-color:white;
-
-padding:18px 24px;
-
-border-radius:12px;
-
-display:flex;
-
-justify-content:space-between;
-
-font-weight:600;
-
-font-size:18px;
-
+.card {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    width: 950px;   /* عرض مظبوط */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
 }
 
-.gpa-value{
-
-font-size:20px;
-
+/* Title */
+.title {
+    margin-bottom: 20px;
+    color: #2c3e50;
 }
 
-
-/* ================= RESPONSIVE ================= */
-
-@media(max-width:768px){
-
-.gpa-card{
-
-width:95%;
-
-padding:25px;
-
+/* Table */
+.table {
+    width: 100%;
+    border-collapse: collapse;
 }
 
+.table th {
+    background: #eef1f7;
+    padding: 12px;
+    text-align: left;
+}
+
+.table td {
+    padding: 12px;
+}
+
+/* Hover effect */
+.clickable {
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.clickable:hover {
+    background: #f1f3ff;
+}
+
+/* Grades */
+.grade-a {
+    color: green;
+    font-weight: bold;
+}
+
+.grade-aplus {
+    color: blue;
+    font-weight: bold;
+}
+
+.grade-b {
+    color: orange;
+    font-weight: bold;
+}
+
+/* GPA */
+.gpa {
+    margin-top: 20px;
+    background: #2c3e50;
+    color: white;
+    padding: 12px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
 }

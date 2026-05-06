@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>USMIS – BIS Department</title>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<style>
+
+/* ===== RESET ===== */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+
+display:flex;
+background:#f4f6fb;
+
+}
+
+/* ===== SIDEBAR ===== */
+
+.sidebar{
+
+width:240px;
+background:white;
+
+position:fixed;
+top:0;
+bottom:0;
+left:0;
+
+border-right:1px solid #e5e7eb;
+
+padding:20px;
+
+}
+
+/* LOGO */
+
+.logo{
+
+font-size:20px;
+font-weight:700;
+
+color:#4f46e5;
+
+margin-bottom:25px;
+
+}
+
+/* PROFILE */
+
+.profile-box{
+
+display:flex;
+align-items:center;
+
+gap:10px;
+
+background:#f5f7ff;
+
+padding:12px;
+
+border-radius:12px;
+
+margin-bottom:20px;
+
+}
+
+.avatar{
+
+width:38px;
+height:38px;
+
+border-radius:50%;
+
+background:#4f46e5;
+
+color:white;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-weight:600;
+
+}
+
+.avatar.small{
+
+width:30px;
+height:30px;
+font-size:12px;
+
+}
+
+/* MENU */
+
+.menu-item{
+
+display:flex;
+align-items:center;
+
+gap:10px;
+
+padding:12px;
+
+border-radius:10px;
+
+color:#374151;
+
+text-decoration:none;
+
+margin-bottom:6px;
+
+transition:.2s;
+
+}
+
+.menu-item:hover{
+
+background:#f3f4f6;
+transform:translateX(3px);
+
+}
+
+.menu-item.active{
+
+background:linear-gradient(
+90deg,
+#4f46e5,
+#6366f1
+);
+
+color:white;
+
+}
+
+.menu-item.active i{
+
+color:white;
+
+}
+
+/* ===== TOPBAR ===== */
+
+.topbar{
+
+position:fixed;
+
+left:240px;
+right:0;
+top:0;
+
+height:65px;
+
+background:white;
+
+border-bottom:1px solid #e5e7eb;
+
+display:flex;
+align-items:center;
+justify-content:space-between;
+
+padding:0 25px;
+
+}
+
+/* SEARCH */
+
+.search{
+
+background:#f3f4f6;
+
+padding:8px 14px;
+
+border-radius:8px;
+
+width:260px;
+
+font-size:14px;
+
+border:none;
+
+outline:none;
+
+}
+
+/* ===== MAIN ===== */
+
+.main{
+
+margin-left:240px;
+margin-top:65px;
+
+padding:30px;
+
+width:100%;
+
+animation:fadeUp .4s ease;
+
+}
+
+/* HEADER */
+
+.page-header{
+
+margin-bottom:20px;
+
+}
+
+.page-header h1{
+
+font-size:26px;
+font-weight:700;
+
+}
+
+.page-header p{
+
+color:#6b7280;
+
+}
+
+/* HERO */
+
+.hero{
+
+display:flex;
+justify-content:space-between;
+
+align-items:center;
+
+background:white;
+
+padding:22px;
+
+border-radius:16px;
+
+border:1px solid #e5e7eb;
+
+margin-bottom:20px;
+
+transition:.2s;
+
+}
+
+.hero:hover{
+
+transform:translateY(-3px);
+
+box-shadow:0 10px 25px rgba(0,0,0,.05);
+
+}
+
+.hero-left{
+
+display:flex;
+gap:15px;
+
+align-items:center;
+
+}
+
+.hero-icon{
+
+font-size:30px;
+color:#4f46e5;
+
+}
+
+/* STATS */
+
+.stats{
+
+display:flex;
+
+}
+
+.stat{
+
+padding:0 20px;
+
+border-left:1px solid #eee;
+
+text-align:center;
+
+}
+
+.stat:first-child{
+
+border-left:none;
+
+}
+
+.stat h3{
+
+font-size:18px;
+
+}
+
+.stat span{
+
+font-size:12px;
+color:#6b7280;
+
+}
+
+/* GRID */
+
+.grid{
+
+display:grid;
+
+grid-template-columns:1fr 1fr;
+
+gap:20px;
+
+}
+
+/* FULL WIDTH */
+
+.full-width{
+
+grid-column:1/3;
+
+}
+
+/* CARD */
+
+.card{
+
+background:white;
+
+border-radius:16px;
+
+border:1px solid #e5e7eb;
+
+overflow:hidden;
+
+transition:.2s;
+
+}
+
+.card:hover{
+
+transform:translateY(-3px);
+
+box-shadow:0 10px 25px rgba(0,0,0,.05);
+
+}
+
+.card-header{
+
+padding:14px 18px;
+
+font-weight:600;
+
+border-bottom:1px solid #eee;
+
+}
+
+/* INFO */
+
+.info-row{
+
+display:flex;
+
+padding:12px 18px;
+
+border-bottom:1px solid #f3f4f6;
+
+}
+
+.info-label{
+
+width:160px;
+
+color:#6b7280;
+
+}
+
+.info-value{
+
+font-weight:500;
+
+}
+
+/* TABLE */
+
+table{
+
+width:100%;
+border-collapse:collapse;
+
+}
+
+th{
+
+padding:12px 18px;
+
+background:#fafafa;
+
+font-size:12px;
+
+color:#6b7280;
+
+text-align:left;
+
+}
+
+td{
+
+padding:12px 18px;
+
+border-bottom:1px solid #f3f4f6;
+
+}
+
+tr:hover{
+
+background:#f9f9ff;
+
+}
+
+/* PROFESSOR */
+
+.prof{
+
+display:flex;
+align-items:center;
+gap:8px;
+
+}
+
+/* ANNOUNCE */
+
+.announce{
+
+padding:18px;
+
+color:#6b7280;
+
+}
+
+/* ANIMATION */
+
+@keyframes fadeUp{
+
+from{
+
+opacity:0;
+transform:translateY(20px);
+
+}
+
+to{
+
+opacity:1;
+transform:translateY(0);
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+
+<div class="sidebar">
+
+<div class="logo">
+
+</div>
+
+<div class="profile-box">
+
+<div class="avatar">
+NR
+</div>
+
+<div>
+<h4>Dr. Nouran Radwan</h4>
+<p>Professor</p>
+</div>
+
+</div>
+
+<a href="{{ url_for('professor_dashboard') }}"
+class="menu-item">
+
+<i class="fa-solid fa-house"></i>
+Dashboard
+
+</a>
+
+<a href="#" class="menu-item">
+
+<i class="fa-solid fa-users"></i>
+Students
+
+</a>
+
+<a href="#" class="menu-item">
+
+<i class="fa-solid fa-book"></i>
+Courses
+
+</a>
+
+<a href="{{ url_for('department_professor') }}"
+class="menu-item active">
+
+<i class="fa-solid fa-building"></i>
+Department
+
+</a>
+
+<a href="#" class="menu-item">
+
+<i class="fa-solid fa-gear"></i>
+Settings
+
+</a>
+
+</div>
+
+<!-- ===== TOPBAR ===== -->
+
+<div class="topbar">
+
+<input
+type="text"
+placeholder="Search..."
+class="search">
+
+<div>
+
+<i class="fa-solid fa-bell"></i>
+
+</div>
+
+</div>
+
+<!-- ===== MAIN ===== -->
+
+<div class="main">
+
+<div class="page-header">
+
+<h1>BIS Department</h1>
+
+<p>
+View information about your department
+</p>
+
+</div>
+
+<!-- HERO -->
+
+<div class="hero">
+
+<div class="hero-left">
+
+<div class="hero-icon">
+<i class="fa-solid fa-building-columns"></i>
+</div>
+
+<div>
+
+<h2>
+Business Information Systems (BIS) Department
+</h2>
+
+<p>
+
+The BIS Department integrates business
+knowledge with modern IT systems to
+support digital transformation.
+
+</p>
+
+</div>
+
+</div>
+
+<div class="stats">
+
+<div class="stat">
+<h3>4</h3>
+<span>Professors</span>
+</div>
+
+<div class="stat">
+<h3>120</h3>
+<span>Students</span>
+</div>
+
+<div class="stat">
+<h3>4</h3>
+<span>Courses</span>
+</div>
+
+<div class="stat">
+<h3>Building B</h3>
+<span>Location</span>
+</div>
+
+</div>
+
+</div>
+
+<!-- GRID -->
+
+<div class="grid">
+
+<!-- INFO -->
+
+<div class="card">
+
+<div class="card-header">
+Department Information
+</div>
+
+<div class="info-row">
+<div class="info-label">Department Name</div>
+<div class="info-value">Business Information Systems</div>
+</div>
+
+<div class="info-row">
+<div class="info-label">Head of Department</div>
+<div class="info-value">Dr. Lamiaa Adel</div>
+</div>
+
+<div class="info-row">
+<div class="info-label">Established</div>
+<div class="info-value">2008</div>
+</div>
+
+<div class="info-row">
+<div class="info-label">Location</div>
+<div class="info-value">Building B – Floor 2</div>
+</div>
+
+</div>
+
+<!-- COURSES -->
+
+<div class="card">
+
+<div class="card-header">
+My Department Courses
+</div>
+
+<table>
+
+<tr>
+<th>Course</th>
+<th>Code</th>
+<th>Credit</th>
+<th>Students</th>
+</tr>
+
+<tr>
+<td>DSS</td>
+<td>DSS101</td>
+<td>3</td>
+<td>45</td>
+</tr>
+
+<tr>
+<td>GIS</td>
+<td>GIS201</td>
+<td>3</td>
+<td>50</td>
+</tr>
+
+<tr>
+<td>Mobile Computing</td>
+<td>MOB401</td>
+<td>3</td>
+<td>52</td>
+</tr>
+
+<tr>
+<td>ITPM</td>
+<td>ITPM301</td>
+<td>3</td>
+<td>48</td>
+</tr>
+
+</table>
+
+</div>
+
+<div class="card full-width">
+
+<div class="card-header">
+Professors in Department
+</div>
+
+<table>
+
+<tr>
+<th>Name</th>
+<th>Email</th>
+<th>Office</th>
+<th>Specialization</th>
+</tr>
+
+<tr>
+
+<td>
+
+<div class="prof">
+
+<div class="avatar small">LA</div>
+
+Dr. Lamiaa Adel
+
+</div>
+
+</td>
+
+<td>lamiaa@usmis.edu</td>
+<td>B-201</td>
+<td>DSS</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<div class="prof">
+
+<div class="avatar small">NL</div>
+
+Dr. Nermen Louz
+
+</div>
+
+</td>
+
+<td>nermen@usmis.edu</td>
+<td>B-202</td>
+<td>GIS</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<div class="prof">
+
+<div class="avatar small">MY</div>
+
+Mostafa Yakoub
+
+</div>
+
+</td>
+
+<td>mostafa@usmis.edu</td>
+<td>B-203</td>
+<td>Mobile Computing</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<div class="prof">
+
+<div class="avatar small">NR</div>
+
+Nouran Radwan
+
+</div>
+
+</td>
+
+<td>nouran@usmis.edu</td>
+<td>B-204</td>
+<td>ITPM</td>
+
+</tr>
+
+</table>
+
+</div>
+
+<div class="card full-width">
+
+<div class="card-header">
+Recent Announcements
+</div>
+
+<div class="announce">
+
+• GIS Midterm Exam next week
+• DSS Project deadline Sunday
+• Mobile Computing lecture updated
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+
+</html>

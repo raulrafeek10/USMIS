@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>GIS Grades – Semofi</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='gis_grades.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <div class="logo-badge">
+        <i class="fa fa-map-location-dot"></i>
+      </div>
+      <div>
+        <h1>Ahmed Ashraf</h1>
+        <p class="subtitle">Geographic Information Systems &nbsp;·&nbsp;</p>
+      </div>
+    </div>
+    <div class="header-right">
+      <a href="/view_gpa" class="back-btn">
+        <i class="fa fa-arrow-left"></i> Back to GPA
+      </a>
+    </div>
+  </div>
+
+  <!-- GRADES CARD -->
+  <div class="card">
+    <div class="card-label">Current Performance</div>
+    <div class="grades-grid">
+
+      <div class="grade-block">
+        <div class="grade-icon assi-icon"><i class="fa fa-file-pen"></i></div>
+        <div class="grade-info">
+          <span class="grade-label">Assignment</span>
+          <span class="grade-max">out of 30</span>
+        </div>
+        <div class="grade-value" id="assi">18</div>
+      </div>
+
+      <div class="grade-sep"><i class="fa fa-plus"></i></div>
+
+      <div class="grade-block">
+        <div class="grade-icon mid-icon"><i class="fa fa-book-open"></i></div>
+        <div class="grade-info">
+          <span class="grade-label">Midterm</span>
+          <span class="grade-max">out of 30</span>
+        </div>
+        <div class="grade-value" id="mid">25</div>
+      </div>
+
+      <div class="grade-sep"><i class="fa fa-plus"></i></div>
+
+      <div class="grade-block final-block">
+        <div class="grade-icon final-icon"><i class="fa fa-clock"></i></div>
+        <div class="grade-info">
+          <span class="grade-label">Final Exam</span>
+          <span class="grade-max">out of 40</span>
+        </div>
+        <div class="grade-value final-val">—</div>
+      </div>
+
+      <div class="grade-sep"><i class="fa fa-equals"></i></div>
+
+      <div class="grade-block total-block">
+        <div class="grade-icon total-icon"><i class="fa fa-star"></i></div>
+        <div class="grade-info">
+          <span class="grade-label">Total So Far</span>
+          <span class="grade-max">out of 100</span>
+        </div>
+        <div class="grade-value total-val" id="total">43</div>
+      </div>
+
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-bar">
+        <!-- 43 out of 60 completed marks = 71.6% of completed work -->
+        <div class="progress-fill" style="width: 43%"></div>
+      </div>
+      <span class="progress-label">43 / 100 so far &nbsp;·&nbsp; Final exam pending</span>
+    </div>
+  </div>
+
+  <!-- SEMOFI CHAT -->
+  <div class="chat-wrap">
+
+    <!-- Chat Header -->
+    <div class="chat-header">
+      <div class="semofi-avatar">
+        <i class="fa fa-robot"></i>
+        <div class="online-dot"></div>
+      </div>
+      <div class="chat-header-info">
+        <div class="chat-title">Semofi Assistant</div>
+        <div class="chat-status">
+          <span class="status-dot"></span> Ready to help you succeed
+        </div>
+      </div>
+      <div class="chat-badge">AI</div>
+    </div>
+
+    <!-- Pills -->
+    <div class="pills-bar">
+      <button class="pill" onclick="quickSend('Analyze my current grades and tell me exactly where I stand')">
+        <i class="fa fa-chart-bar"></i> Analyze grades
+      </button>
+      <button class="pill" onclick="quickSend('How can I improve my GIS performance before the final exam?')">
+        <i class="fa fa-arrow-trend-up"></i> How to improve
+      </button>
+      <button class="pill" onclick="quickSend('Give me a GIS quiz with 4 multiple-choice questions')">
+        <i class="fa fa-circle-question"></i> Quiz me
+      </button>
+      <button class="pill" onclick="quickSend('Summarize the most important GIS topics I must study for the final exam')">
+        <i class="fa fa-list-check"></i> Key topics
+      </button>
+      <button class="pill" onclick="quickSend('If I score 34 out of 40 on the final exam, what will my total grade and letter grade be?')">
+        <i class="fa fa-wand-magic-sparkles"></i> Predict grade
+      </button>
+    </div>
+
+    <!-- Messages -->
+    <div class="chat-messages" id="chatMessages">
+      <div class="msg bot-msg">
+        <div class="msg-avatar bot-avatar"><i class="fa fa-robot"></i></div>
+        <div class="msg-bubble">
+          👋 Hi Ahmed! I'm <strong>Semofi</strong>, your personal GIS academic assistant.<br><br>
+          📊 Current score: <strong>43 / 60</strong> completed marks (Assignment + Midterm).<br>
+          ⏳ Your <strong>Final Exam (40 marks)</strong> is still pending — maximum possible total is <strong>100</strong>.<br><br>
+          Ask me anything — grade predictions, improvement tips, a quiz, or key topics to master before the final!
+        </div>
+      </div>
+    </div>
+
+    <!-- Typing -->
+    <div class="typing-row" id="typingRow" style="display:none">
+      <div class="msg-avatar bot-avatar"><i class="fa fa-robot"></i></div>
+      <div class="typing-bubble">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <!-- Input -->
+    <div class="chat-input-row">
+      <input
+        type="text"
+        id="userInput"
+        placeholder="Ask Semofi anything about your grades or GIS…"
+        onkeydown="if(event.key==='Enter') sendMessage()"
+        autocomplete="off"
+      >
+      <button class="send-btn" onclick="sendMessage()" id="sendBtn">
+        <i class="fa fa-paper-plane"></i>
+      </button>
+    </div>
+
+  </div><!-- /chat-wrap -->
+
+</div><!-- /page -->
+
+<script>
+// ── Student data — source of truth
+const student = {
+  name:           "Ahmed Ashraf",
+  assignment:     18,
+  assignmentMax:  30,
+  midterm:        25,
+  midtermMax:     30,
+  finalMax:       40,
+  totalMax:       100
+};
+
+// Current earned marks (no final yet)
+student.currentTotal = student.assignment + student.midterm; // 43
+student.currentMax   = student.assignmentMax + student.midtermMax; // 60
+
+const conversationHistory = [];
+
+// ── System prompt — explains the grade structure clearly
+function buildSystemPrompt() {
+  return `You are Semofi, a warm and expert academic coach for a GIS university student.
+
+## Student Profile
+- Name: ${student.name}
+- Course: Geographic Information Systems (GIS)
+- Assignment score : ${student.assignment} / ${student.assignmentMax}
+- Midterm score    : ${student.midterm}  / ${student.midtermMax}
+- Final exam       : NOT YET TAKEN — worth ${student.finalMax} marks
+- Current total    : ${student.currentTotal} / ${student.totalMax}  (final still pending)
+- Maximum possible : ${student.totalMax} marks
+
+## Grade breakdown
+The course has 3 components:
+  1. Assignment  → ${student.assignmentMax} marks   (Ahmed scored ${student.assignment})
+  2. Midterm     → ${student.midtermMax} marks   (Ahmed scored ${student.midterm})
+  3. Final exam  → ${student.finalMax} marks   (NOT TAKEN YET — this is what we predict)
+
+So far Ahmed has earned ${student.currentTotal} marks out of the ${student.currentMax} available before the final.
+
+## How to calculate grade predictions
+When Ahmed asks "if I score X on the final":
+  total = ${student.currentTotal} + X
+  percentage = (${student.currentTotal} + X) / ${student.totalMax} × 100
+  
+Always show the full formula. Example — if X = 34:
+  43 + 34 = 77 / 100 = 77% → Grade B
+
+## Grade Scale
+A+ = 90–100 | A = 80–89 | B = 70–79 | C = 60–69 | D = 50–59 | F < 50
+
+## Minimum needed on final to pass (D)
+  50 - ${student.currentTotal} = ${50 - student.currentTotal} marks on final (out of ${student.finalMax})
+
+## Your responsibilities
+1. GRADE ANALYSIS — honest, specific, encouraging
+2. PREDICTIONS — always show the formula and letter grade
+3. IMPROVEMENT TIPS — personalised to Ahmed's actual scores
+4. GIS QUIZZES — 4 multiple-choice questions on: coordinate systems, map projections, spatial analysis, GPS, remote sensing, QGIS/ArcGIS, raster vs vector, georeferencing, topology
+5. TOPIC SUMMARIES — concise bullet list of key final-exam topics
+
+## Style
+- Use emojis and clear line breaks
+- Be warm, direct, and encouraging
+- Always give concrete numbers
+- Never be vague`;
+}
+
+async function sendMessage() {
+  const input   = document.getElementById("userInput");
+  const sendBtn = document.getElementById("sendBtn");
+  const text    = input.value.trim();
+  if (!text) return;
+
+  input.value = "";
+  input.disabled = true;
+  sendBtn.disabled = true;
+
+  appendMsg("user", text);
+  conversationHistory.push({ role: "user", content: text });
+  showTyping(true);
+
+  try {
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        system:   buildSystemPrompt(),
+        messages: conversationHistory
+      })
+    });
+
+    const data  = await res.json();
+    showTyping(false);
+
+    const reply = data.reply || "⚠️ Empty response from Semofi.";
+    appendMsg("bot", reply);
+    conversationHistory.push({ role: "assistant", content: reply });
+
+  } catch (e) {
+    showTyping(false);
+    appendMsg("bot", "⚠️ Could not reach Semofi. Please check your connection and try again.");
+  }
+
+  input.disabled = false;
+  sendBtn.disabled = false;
+  input.focus();
+}
+
+function quickSend(text) {
+  document.getElementById("userInput").value = text;
+  sendMessage();
+}
+
+function appendMsg(role, html) {
+  const chat = document.getElementById("chatMessages");
+  const wrap = document.createElement("div");
+  wrap.className = "msg " + (role === "bot" ? "bot-msg" : "user-msg");
+
+  if (role === "bot") {
+    const av = document.createElement("div");
+    av.className = "msg-avatar bot-avatar";
+    av.innerHTML = '<i class="fa fa-robot"></i>';
+    wrap.appendChild(av);
+  }
+
+  const bubble = document.createElement("div");
+  bubble.className = "msg-bubble";
+  bubble.innerHTML = html.replace(/\n/g, "<br>");
+  wrap.appendChild(bubble);
+
+  chat.appendChild(wrap);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function showTyping(show) {
+  document.getElementById("typingRow").style.display = show ? "flex" : "none";
+  if (show) document.getElementById("chatMessages").scrollTop = 9999;
+}
+</script>
+</body>
+</html>

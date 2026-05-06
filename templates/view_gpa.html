@@ -3,9 +3,8 @@
 
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>View GPA</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='student_dashboard.css') }}">
+
 <link rel="stylesheet" href="{{ url_for('static', filename='view_gpa.css') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
@@ -14,76 +13,104 @@
 
 <div class="dashboard">
 
-    <!-- SIDEBAR -->
+    <!-- Sidebar -->
     <div class="sidebar">
-        <div class="logo"></div>
+        <h2 class="logo">SAMS</h2>
+
         <ul class="menu">
-            <li class="menu-item">
+            <li>
                 <a href="{{ url_for('student_dashboard') }}">
-                    <i class="fa fa-home"></i>
-                    <span class="menu-text">Dashboard</span>
+                    <i class="fa fa-home"></i> Dashboard
                 </a>
             </li>
-            <li class="menu-item active">
-                <a href="#">
-                    <i class="fa fa-chart-line"></i>
-                    <span class="menu-text">View GPA</span>
+
+            <li class="active">
+                <a href="{{ url_for('view_gpa') }}">
+                    <i class="fa fa-chart-line"></i> View GPA
                 </a>
             </li>
         </ul>
     </div>
 
-    <!-- MAIN -->
+    <!-- Main -->
     <div class="main">
-        <div class="gpa-container">
-            <div class="gpa-card">
 
-                <h2 class="gpa-title">
-                    <i class="fa fa-graduation-cap"></i>
-                    {{ name }}'s Grades
-                </h2>
+        <div class="card">
 
-                {% if courses %}
+            <h2 class="title">
+                <i class="fa fa-graduation-cap"></i>
+                Ahmed Ashraf's Grades
+            </h2>
 
-                <table class="gpa-table">
-                    <thead>
-                        <tr>
-                            <th>Course Name</th>
-                            <th>Grade</th>
-                            <th>Credits</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for course in courses %}
-                        <tr>
-                            <td>{{ course.course_name }}</td>
-                            <td class="
-                                {% if course.grade == 'A+' %}grade-aplus
-                                {% elif course.grade == 'A' %}grade-a
-                                {% else %}grade-b{% endif %}
-                            ">{{ course.grade }}</td>
-                            <td>{{ course.credits }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+            <table class="table">
 
-                <div class="gpa-footer">
-                    <span>Overall GPA</span>
-                    <span class="gpa-value">{{ gpa }}</span>
-                </div>
+                <thead>
+                    <tr>
+                        <th>Course Name</th>
+                        <th>Grade</th>
+                        <th>Credits</th>
+                    </tr>
+                </thead>
 
-                {% else %}
-                <p style="text-align:center; color:#888; margin-top:30px;">
-                    ⚠ No grades found for your account.
-                </p>
-                {% endif %}
+                <tbody>
 
+                    <tr>
+                        <td>DSS</td>
+                        <td class="grade-a">A</td>
+                        <td>3</td>
+                    </tr>
+
+                    <tr>
+                        <td>Mobile Computing</td>
+                        <td class="grade-aplus">A+</td>
+                        <td>2</td>
+                    </tr>
+
+                    <!-- 🔥 clickable GIS -->
+                    <tr class="clickable" onclick="goGIS()">
+                        <td>GIS</td>
+                        <td class="grade-a">A</td>
+                        <td>3</td>
+                    </tr>
+
+                    <tr>
+                        <td>English</td>
+                        <td class="grade-b">B+</td>
+                        <td>2</td>
+                    </tr>
+
+                    <tr>
+                        <td>ITPM</td>
+                        <td class="grade-aplus">A+</td>
+                        <td>3</td>
+                    </tr>
+
+                    <tr>
+                        <td>Data Mining</td>
+                        <td class="grade-a">A</td>
+                        <td>3</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+            <div class="gpa">
+                <span>Overall GPA</span>
+                <span>3.94</span>
             </div>
+
         </div>
+
     </div>
 
 </div>
+
+<script>
+function goGIS() {
+    window.location.href = "/gis-grades";
+}
+</script>
 
 </body>
 </html>

@@ -1,9 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory, jsonify, flash, session
 from werkzeug.security import generate_password_hash, check_password_hash
+from dotenv import load_dotenv
 import sqlite3
 import chatbot_ai
 import random
 import os
+
+load_dotenv()  # ← يقرأ الـ .env تلقائياً
 
 app = Flask(__name__)
 app.secret_key = "lms_secret_key"
@@ -21,8 +24,6 @@ def create_tables():
     conn = sqlite3.connect("lms.db")
     cursor = conn.cursor()
 
-    # ================= USERS =================
-
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -33,8 +34,6 @@ def create_tables():
     )
     """)
 
-    # ================= STUDENTS =================
-
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS students (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -43,8 +42,6 @@ def create_tables():
         FOREIGN KEY(user_id) REFERENCES users(id)
     )
     """)
-
-    # ================= GRADES =================
 
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS grades (
@@ -58,8 +55,6 @@ def create_tables():
     )
     """)
 
-    # ================= ASSIGNMENTS =================
-
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS assignments (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -72,34 +67,24 @@ def create_tables():
     )
     """)
 
-    # ================= SUBMISSIONS =================
-
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS assignment_submissions (
-
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         student_name TEXT,
         assignment_title TEXT,
         filename TEXT,
         course_name TEXT,
         submission_date TEXT
-
     )
     """)
-
-    # ================= NOTIFICATIONS =================
 
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS notifications (
-
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         message TEXT,
         created_at TEXT
-
     )
     """)
-
-    # ================= COURSES =================
 
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS courses (
@@ -107,8 +92,6 @@ def create_tables():
         name TEXT NOT NULL
     )
     """)
-
-    # ================= LECTURES =================
 
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS lectures (
@@ -119,8 +102,6 @@ def create_tables():
         FOREIGN KEY(course_id) REFERENCES courses(id)
     )
     """)
-
-    # ================= STUDENT COURSES =================
 
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS student_courses (
@@ -133,32 +114,22 @@ def create_tables():
     )
     """)
 
-    # ================= PAYMENT TABLE 🔥 =================
-
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS payments (
-
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-
         student_id TEXT,
-
         method TEXT,
-
         program TEXT,
-
         year TEXT,
-
         amount INTEGER,
-
         status TEXT,
-
         paid_on TEXT
-
     )
     """)
 
     conn.commit()
     conn.close()
+
 # ================= INSERT STUDENT COURSES =================
 
 def insert_student_courses():
@@ -325,27 +296,17 @@ def admin_dashboard():
 
 @app.route("/professor_dashboard")
 def professor_dashboard():
-
     if session.get("role") != "professor":
         return redirect(url_for("login"))
 
     conn = sqlite3.connect("lms.db")
     cursor = conn.cursor()
-
-    cursor.execute("""
-    SELECT * FROM notifications
-    ORDER BY id DESC
-    LIMIT 5
-    """)
-
+    cursor.execute("SELECT * FROM notifications ORDER BY id DESC LIMIT 5")
     notifications = cursor.fetchall()
-
     conn.close()
 
-    return render_template(
-        "professor_dashboard.html",
-        notifications=notifications
-    )
+    return render_template("professor_dashboard.html", notifications=notifications)
+
 # ================= LOGOUT =================
 
 @app.route("/logout")
@@ -410,50 +371,70 @@ def chatbot():
 
 @app.route("/ask", methods=["POST"])
 def ask():
-
     try:
-
         data = request.get_json()
 
         if not data:
-            return jsonify({
-                "reply": "⚠ No data received."
-            })
+            return jsonify({"reply": "⚠ No data received."})
 
         message = data.get("message", "").strip()
 
         if not message:
-            return jsonify({
-                "reply": "⚠ Please enter a question."
-            })
+            return jsonify({"reply": "⚠ Please enter a question."})
 
-        # استدعاء AI
         reply = chatbot_ai.ask_question(message)
 
         if not reply:
             reply = "⚠ Empty AI response."
 
-        return jsonify({
-            "reply": reply
-        })
+        return jsonify({"reply": reply})
 
     except Exception as e:
+        print("❌ /ask ERROR:", str(e))
+        return jsonify({"reply": "⚠ Connection error."})
+    
+    # ================= GIS GRADES CHAT =================
 
-        print("❌ /ask ERROR:")
-        print(str(e))
+@app.route("/api/chat", methods=["POST"])
+def gis_chat():
+    try:
+        import requests as req
+        data = request.get_json()
+        key = os.getenv("GROQ_API_KEY")
 
-        return jsonify({
-            "reply": "⚠ Connection error."
-        })
+        messages = [{"role": "system", "content": data["system"]}] + data["messages"]
+
+        r = req.post(
+            "https://api.groq.com/openai/v1/chat/completions",
+            headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
+            json={
+                "model": "llama-3.3-70b-versatile",
+                "messages": messages,
+                "max_tokens": 1000
+            },
+            timeout=20
+        )
+
+        result = r.json()
+        reply = result["choices"][0]["message"]["content"]
+        return jsonify({"reply": reply})
+
+    except Exception as e:
+        print("❌ /api/chat ERROR:", str(e))
+        return jsonify({"reply": "⚠️ Connection error, please try again."})
 
 @app.route("/quiz", methods=["POST"])
 def quiz():
-    quiz_text = chatbot_ai.generate_quiz()
+    data = request.get_json() or {}
+    message = data.get("message", "")
+    quiz_text = chatbot_ai.generate_quiz(message)
     return jsonify({"quiz": quiz_text})
 
 @app.route("/summarize", methods=["POST"])
 def summarize_ai():
-    summary_text = chatbot_ai.summarize()
+    data = request.get_json() or {}
+    message = data.get("message", "")
+    summary_text = chatbot_ai.summarize(message)
     return jsonify({"summary": summary_text})
 
 # ================= OTHER PAGES =================
@@ -468,24 +449,13 @@ def today_classes():
 
 @app.route("/payment")
 def payment():
-
     conn = sqlite3.connect("lms.db")
     cursor = conn.cursor()
-
-    cursor.execute("""
-    SELECT id, method, amount, status, paid_on
-    FROM payments
-    ORDER BY id DESC
-    """)
-
+    cursor.execute("SELECT id, method, amount, status, paid_on FROM payments ORDER BY id DESC")
     payments = cursor.fetchall()
-
     conn.close()
+    return render_template("payment.html", payments=payments)
 
-    return render_template(
-        "payment.html",
-        payments=payments
-    )
 @app.route("/register")
 def register():
     return render_template("register.html")
@@ -549,6 +519,23 @@ def update_grade():
 def courses_professor():
     return render_template("courses_professor.html")
 
+@app.route("/test")
+def test():
+    return "WORKING"
+
+@app.route("/gis-grades")
+def gis_grades():
+    student = {
+        "name": "Ahmed Ashraf",
+        "assignment": 18,
+        "mid": 25,
+        "final": 40
+    }
+
+    student["total"] = student["assignment"] + student["mid"] + student["final"]
+
+    return render_template("gis_grades.html", student=student)
+
 @app.route("/add_assignment", methods=["GET","POST"])
 def add_assignment():
     if request.method == "POST":
@@ -587,65 +574,36 @@ def add_assignment():
 def publish_announcement():
     return render_template("publish_announcement.html")
 
-
-
-UPLOAD_FOLDER = "static/files"
-
 @app.route("/upload_material", methods=["GET", "POST"])
 def upload_material():
-
     if session.get("role") != "professor":
         return redirect(url_for("login"))
 
     conn = sqlite3.connect("lms.db")
     cursor = conn.cursor()
-
-    # ✅ جلب الكورسات
     cursor.execute("SELECT id, name FROM courses")
     courses = cursor.fetchall()
 
     if request.method == "POST":
-
         file = request.files.get("file")
         course_id = request.form.get("course_id")
         title = request.form.get("title")
 
         if file and file.filename != "":
-
             filename = file.filename
-
-            filepath = os.path.join(
-                "static/files",
-                filename
-            )
-
+            filepath = os.path.join("static/files", filename)
             file.save(filepath)
 
-            # حفظ lecture
             cursor.execute("""
-            INSERT INTO lectures
-            (title, filename, course_id)
-            VALUES (?, ?, ?)
-            """,
-            (
-                title,
-                filename,
-                course_id
-            ))
-
+            INSERT INTO lectures (title, filename, course_id) VALUES (?, ?, ?)
+            """, (title, filename, course_id))
             conn.commit()
-
             flash("✅ File Uploaded Successfully")
-
             return redirect(url_for("upload_material"))
 
     conn.close()
+    return render_template("upload_material.html", courses=courses)
 
-  
-    return render_template(
-        "upload_material.html",
-        courses=courses
-    )
 # ================= STUDENT =================
 
 @app.route("/student_profile")
@@ -660,13 +618,8 @@ def view_gpa():
     email = session.get("email")
     conn = get_db()
 
-    user = conn.execute(
-        "SELECT * FROM users WHERE email=?", (email,)
-    ).fetchone()
-
-    student = conn.execute(
-        "SELECT * FROM students WHERE user_id=?", (user["id"],)
-    ).fetchone()
+    user = conn.execute("SELECT * FROM users WHERE email=?", (email,)).fetchone()
+    student = conn.execute("SELECT * FROM students WHERE user_id=?", (user["id"],)).fetchone()
 
     if not student:
         conn.close()
@@ -686,7 +639,6 @@ def view_gpa():
         total_credits += c["credits"]
 
     gpa = round(total_points / total_credits, 2) if total_credits > 0 else 0
-
     conn.close()
     return render_template("view_gpa.html", courses=courses, name=user["name"], gpa=gpa)
 
@@ -694,217 +646,126 @@ def view_gpa():
 
 @app.route("/submit_assignment/<course_name>", methods=["POST"])
 def submit_assignment(course_name):
-
     if session.get("role") != "student":
         return redirect(url_for("login"))
 
     file = request.files.get("file")
 
     if file and file.filename != "":
-
         filename = file.filename
-
-        filepath = os.path.join(
-            "static/files",
-            filename
-        )
-
+        filepath = os.path.join("static/files", filename)
         file.save(filepath)
 
         conn = sqlite3.connect("lms.db")
         cursor = conn.cursor()
 
-        # حفظ submission
-
         cursor.execute("""
         INSERT INTO assignment_submissions
-        (student_name,
-         assignment_title,
-         filename,
-         course_name,
-         submission_date)
-
+        (student_name, assignment_title, filename, course_name, submission_date)
         VALUES (?, ?, ?, ?, datetime('now'))
-        """,
-        (
-            session.get("name"),
-            "Assignment 1",
-            filename,
-            course_name
-        ))
-
-        # 🔔 Notification
+        """, (session.get("name"), "Assignment 1", filename, course_name))
 
         cursor.execute("""
-        INSERT INTO notifications
-        (message, created_at)
-
+        INSERT INTO notifications (message, created_at)
         VALUES (?, datetime('now'))
-        """,
-        (
-            f"{session.get('name')} submitted assignment",
-        ))
+        """, (f"{session.get('name')} submitted assignment",))
 
         conn.commit()
         conn.close()
-
         flash("Assignment submitted successfully ✅")
 
-    return redirect(
-        url_for(
-            "course_details",
-            course_name=course_name
-        )
-    )
+    return redirect(url_for("course_details", course_name=course_name))
+
 @app.route("/payment_history")
 def payment_history():
-
     conn = sqlite3.connect("lms.db")
     cursor = conn.cursor()
-
-    cursor.execute("""
-    SELECT * FROM payments
-    ORDER BY id DESC
-    """)
-
+    cursor.execute("SELECT * FROM payments ORDER BY id DESC")
     payments = cursor.fetchall()
-
     conn.close()
-
-    return render_template(
-        "payment_history.html",
-        payments=payments
-    )
+    return render_template("payment_history.html", payments=payments)
 
 @app.route("/pay/<method>")
 def pay(method):
-
-    return render_template(
-        "payment_gateway.html",
-        method=method
-    )
+    return render_template("payment_gateway.html", method=method)
 
 @app.route("/view_submissions")
 def view_submissions():
-
     if session.get("role") != "professor":
         return redirect(url_for("login"))
 
     conn = sqlite3.connect("lms.db")
     cursor = conn.cursor()
-
-    cursor.execute("""
-    SELECT * FROM assignment_submissions
-    ORDER BY id DESC
-    """)
-
+    cursor.execute("SELECT * FROM assignment_submissions ORDER BY id DESC")
     submissions = cursor.fetchall()
-
     conn.close()
+    return render_template("view_submissions.html", submissions=submissions)
 
-    return render_template(
-        "view_submissions.html",
-        submissions=submissions
-    )
+@app.route("/department_professor")
+def department_professor():
+    return render_template("department_professor.html")
+
 @app.route("/confirm_payment", methods=["POST"])
 def confirm_payment():
-
-    import random
-
     method = request.form.get("method")
     student_id = request.form.get("student_id")
     year = request.form.get("year")
     program = request.form.get("program")
     amount = request.form.get("amount")
-
-    transaction_id = "TX" + str(random.randint(10000,99999))
+    transaction_id = "TX" + str(random.randint(10000, 99999))
 
     conn = sqlite3.connect("lms.db")
     cursor = conn.cursor()
-
     cursor.execute("""
-
-    INSERT INTO payments
-    (
-        student_id,
-        method,
-        program,
-        year,
-        amount,
-        status,
-        paid_on
-    )
-
+    INSERT INTO payments (student_id, method, program, year, amount, status, paid_on)
     VALUES (?, ?, ?, ?, ?, ?, datetime('now'))
-
-    """,
-
-    (
-        student_id,
-        method,
-        program,
-        year,
-        amount,
-        "Done"
-    ))
-
+    """, (student_id, method, program, year, amount, "Done"))
     conn.commit()
     conn.close()
 
-    return render_template(
-        "payment_success.html",
-        transaction_id=transaction_id,
-        amount=amount
-    )
+    return render_template("payment_success.html", transaction_id=transaction_id, amount=amount)
 
+# ================= DEBUG ROUTES =================
 
 @app.route("/check-pdfs")
 def check_pdfs():
-
-    import os
-
     folder = "static/files"
-
     if not os.path.exists(folder):
         return "FOLDER NOT FOUND ❌"
-
     files = os.listdir(folder)
-
     return f"FILES: {files}"
+
 @app.route("/check-key")
 def check_key():
-
-    import os
-
     key = os.getenv("GROQ_API_KEY")
-
     if key:
-        return "KEY FOUND ✅"
-
+        return f"KEY FOUND ✅ → {key[:8]}...{key[-4:]}"
     else:
         return "KEY NOT FOUND ❌"
 
 @app.route("/test-ai")
 def test_ai():
-    import os
-    from groq import Groq
-
     try:
-        client = Groq(api_key=os.getenv("GROQ_API_KEY"))
-        response = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
-            messages=[{"role": "user", "content": "Say hello"}],
-            max_tokens=10
+        import requests as req
+        key = os.getenv("GROQ_API_KEY")
+        r = req.post(
+            "https://api.groq.com/openai/v1/chat/completions",
+            headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
+            json={
+                "model": "llama-3.3-70b-versatile",
+                "messages": [{"role": "user", "content": "Say hello"}],
+                "max_tokens": 10
+            },
+            timeout=15
         )
-        return response.choices[0].message.content
-
+        data = r.json()
+        if "choices" in data:
+            return "✅ Groq works! → " + data["choices"][0]["message"]["content"]
+        return f"❌ Response: {data}"
     except Exception as e:
-        return f"ERROR TYPE: {type(e).__name__} | MESSAGE: {str(e)}"  # ← غير السطر ده
-    
-    
-    
+        return f"❌ ERROR: {type(e).__name__} | {str(e)}"
+
 # ================= RUN =================
-import os
 if __name__ == "__main__":
     create_tables()
     insert_default_data()
@@ -912,9 +773,6 @@ if __name__ == "__main__":
     insert_student_courses()
 
     print("Server Started...")
+    print("GROQ KEY:", "✅ Found" if os.getenv("GROQ_API_KEY") else "❌ NOT FOUND")
 
-    app.run(
-        host="127.0.0.1",
-        port=5000,
-        debug=True
-    )
+    app.run(host="127.0.0.1", port=8080, debug=True)
